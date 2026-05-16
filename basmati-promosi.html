@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rafka Coffee x Nasgor Basmati | Premium Coffee & Nasgor di Medan</title>
+    <meta name="description" content="Rafka Coffee x Nasgor Basmati - Perpaduan nasi goreng basmati premium dan kopi terbaik untuk pengalaman nongkrong yang berbeda di Medan.">
+    <meta name="keywords" content="rafka coffee, nasgor basmati, coffee shop medan, nasi goreng basmati, cafe aesthetic medan, nongkrong medan, coffee medan">
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'matte-black': '#1a1a1a',
+                        'coffee-brown': '#6B4226',
+                        'coffee-dark': '#3C2415',
+                        'coffee-light': '#8B5E3C',
+                        'elegant-gold': '#C8963E',
+                        'gold-light': '#D4A853',
+                        'soft-white': '#F5F0EB',
+                        'cream': '#FAF7F2',
+                        'dark-surface': '#1E1E1E',
+                        'dark-card': '#252525',
+                    },
+                    fontFamily: {
+                        'display': ['Sora', 'Inter', 'Poppins', 'sans-serif'],
+                        'body': ['Inter', 'Poppins', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-slow': 'float 8s ease-in-out infinite',
+                        'pulse-gold': 'pulseGold 2s ease-in-out infinite',
+                        'smoke': 'smoke 4s ease-in-out infinite',
+                        'fadeInUp': 'fadeInUp 0.8s ease-out forwards',
+                        'slideInLeft': 'slideInLeft 0.8s ease-out forwards',
+                        'slideInRight': 'slideInRight 0.8s ease-out forwards',
+                        'shimmer': 'shimmer 2s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        pulseGold: {
+                            '0%, 100%': { boxShadow: '0 0 20px rgba(200, 150, 62, 0.3)' },
+                            '50%': { boxShadow: '0 0 40px rgba(200, 150, 62, 0.6)' },
+                        },
+                        smoke: {
+                            '0%, 100%': { opacity: '0.3', transform: 'translateY(0) scale(1)' },
+                            '50%': { opacity: '0.7', transform: 'translateY(-15px) scale(1.05)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(40px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        slideInLeft: {
+                            '0%': { opacity: '0', transform: 'translateX(-60px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' },
+                        },
+                        slideInRight: {
+                            '0%': { opacity: '0', transform: 'translateX(60px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #C8963E;
+            --gold-light: #D4A853;
+            --matte-black: #1a1a1a;
+            --coffee: #6B4226;
+        }
+        * {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', 'Poppins', sans-serif;
+            background: #1a1a1a;
+            color: #F5F0EB;
+            overflow-x: hidden;
+        }
+        /* Glassmorphism */
+        .glass {
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(200, 150, 62, 0.15);
+        }
+        .glass-light {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        #loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .loader-coffee {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(200, 150, 62, 0.3);
+            border-top-color: #C8963E;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        /* Smoke particles */
+        .smoke-particle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(200, 150, 62, 0.4) 0%, transparent 70%);
+            pointer-events: none;
+            animation: smokeRise 5s ease-out infinite;
+        }
+        @keyframes smokeRise {
+            0% {
+                opacity: 0;
+                transform: translateY(0) scale(0.3);
+            }
+            20% {
+                opacity: 0.6;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-120px) scale(2);
+            }
+        }
+        /* Parallax */
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        @media (max-width: 768px) {
+            .parallax-bg {
+                background-attachment: scroll;
+            }
+        }
+        /* Card hover */
+        .menu-card {
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+        }
+        .menu-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 30px 60px rgba(200, 150, 62, 0.2), 0 10px 20px rgba(0, 0, 0, 0.5);
+            border-color: rgba(200, 150, 62, 0.5);
+        }
+        .menu-card:hover .card-image {
+            transform: scale(1.08);
+        }
+        .card-image {
+            transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+        }
+        /* Gallery hover */
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 16px;
+            cursor: pointer;
+        }
+        .gallery-item img {
+            transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+        }
+        .gallery-item:hover img {
+            transform: scale(1.12);
+        }
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        .gallery-overlay {
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 60%);
+        }
+        /* Star rating */
+        .star {
+            color: #C8963E;
+            font-size: 1.1rem;
+        }
+        /* Floating WhatsApp */
+        .floating-wa {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 999;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #25D366;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+            cursor: pointer;
+            animation: pulseWA 2s ease-in-out infinite;
+        }
+        .floating-wa:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 40px rgba(37, 211, 102, 0.6);
+        }
+        @keyframes pulseWA {
+            0%,
+            100% {
+                box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
+            }
+            50% {
+                box-shadow: 0 8px 50px rgba(37, 211, 102, 0.7);
+            }
+        }
+        /* Navbar scroll */
+        #navbar {
+            transition: all 0.4s ease;
+        }
+        #navbar.scrolled {
+            background: rgba(26, 26, 26, 0.95) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid rgba(200, 150, 62, 0.2);
+        }
+        /* Badge */
+        .badge-bestseller {
+            background: linear-gradient(135deg, #C8963E, #D4A853);
+            color: #1a1a1a;
+            font-weight: 700;
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            animation: shimmer 2s linear infinite;
+            background-size: 200% auto;
+        }
+        /* Review slider */
+        .review-slider {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding-bottom: 10px;
+        }
+        .review-slider::-webkit-scrollbar {
+            display: none;
+        }
+        .review-card {
+            scroll-snap-align: start;
+            flex: 0 0 auto;
+            width: 340px;
+            max-width: 85vw;
+        }
+        /* Reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Map container */
+        .map-container {
+            border-radius: 20px;
+            overflow: hidden;
+            border: 2px solid rgba(200, 150, 62, 0.3);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+        .map-container iframe {
+            width: 100%;
+            height: 350px;
+            border: none;
+        }
+        /* Music toggle */
+        .music-toggle {
+            position: fixed;
+            bottom: 100px;
+            right: 28px;
+            z-index: 998;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(200, 150, 62, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #C8963E;
+            font-size: 1.1rem;
+        }
+        .music-toggle:hover {
+            background: rgba(200, 150, 62, 0.2);
+            border-color: #C8963E;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C8963E;
+            border-radius: 10px;
+        }
+        ::selection {
+            background: rgba(200, 150, 62, 0.4);
+            color: #fff;
+        }
+    </style>
+</head>
+<body class="bg-[#1a1a1a] text-[#F5F0EB] font-body">
+
+    <!-- ==================== LOADING SCREEN ==================== -->
+    <div id="loading-screen">
+        <div class="text-center flex flex-col items-center gap-5">
+            <div class="loader-coffee"></div>
+            <p class="text-elegant-gold font-display text-sm tracking-widest uppercase animate-pulse">Rafka Coffee x Nasgor Basmati</p>
+        </div>
+    </div>
+
+    <!-- ==================== NAVBAR ==================== -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-400 bg-transparent py-3">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <span class="text-2xl">☕</span>
+                <span class="font-display font-bold text-lg text-soft-white group-hover:text-elegant-gold transition-colors">
+                    Rafka<span class="text-elegant-gold">Coffee</span>
+                </span>
+            </a>
+            <!-- Desktop Menu -->
+            <div class="hidden lg:flex items-center gap-1">
+                <a href="#home" class="nav-link px-3 py-2 text-sm font-medium text-soft-white/80 hover:text-elegant-gold transition-colors rounded-lg hover:bg-white/5">Home</a>
+                <a href="#menu" class="nav-link px-3 py-2 text-sm font-medium text-soft-white/80 hover:text-elegant-gold transition-colors rounded-lg hover:bg-white/5">Menu</a>
+                <a href="#gallery" class="nav-link px-3 py-2 text-sm font-medium text-soft-white/80 hover:text-elegant-gold transition-colors rounded-lg hover:bg-white/5">Gallery</a>
+                <a href="#about" class="nav-link px-3 py-2 text-sm font-medium text-soft-white/80 hover:text-elegant-gold transition-colors rounded-lg hover:bg-white/5">About</a>
+                <a href="#reviews" class="nav-link px-3 py-2 text-sm font-medium text-soft-white/80 hover:text-elegant-gold transition-colors rounded-lg hover:bg-white/5">Reviews</a>
+                <a href="#location" class="nav-link px-3 py-2 text-sm font-medium text-soft-white/80 hover:text-elegant-gold transition-colors rounded-lg hover:bg-white/5">Location</a>
+                <a href="#contact" class="nav-link px-3 py-2 text-sm font-medium text-soft-white/80 hover:text-elegant-gold transition-colors rounded-lg hover:bg-white/5">Contact</a>
+            </div>
+            <!-- CTA -->
+            <a href="#menu" class="hidden lg:inline-flex bg-elegant-gold text-matte-black font-semibold px-5 py-2.5 rounded-full text-sm hover:bg-gold-light transition-all hover:shadow-lg hover:shadow-elegant-gold/30">
+                Order Now
+            </a>
+            <!-- Mobile hamburger -->
+            <button id="mobile-menu-btn" class="lg:hidden text-soft-white p-2" aria-label="Menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+            </button>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="lg:hidden hidden glass mx-4 mt-2 rounded-2xl p-4">
+            <div class="flex flex-col gap-1">
+                <a href="#home" class="mobile-nav-link block px-4 py-3 text-sm font-medium text-soft-white/80 hover:text-elegant-gold hover:bg-white/5 rounded-xl transition-all">Home</a>
+                <a href="#menu" class="mobile-nav-link block px-4 py-3 text-sm font-medium text-soft-white/80 hover:text-elegant-gold hover:bg-white/5 rounded-xl transition-all">Menu</a>
+                <a href="#gallery" class="mobile-nav-link block px-4 py-3 text-sm font-medium text-soft-white/80 hover:text-elegant-gold hover:bg-white/5 rounded-xl transition-all">Gallery</a>
+                <a href="#about" class="mobile-nav-link block px-4 py-3 text-sm font-medium text-soft-white/80 hover:text-elegant-gold hover:bg-white/5 rounded-xl transition-all">About</a>
+                <a href="#reviews" class="mobile-nav-link block px-4 py-3 text-sm font-medium text-soft-white/80 hover:text-elegant-gold hover:bg-white/5 rounded-xl transition-all">Reviews</a>
+                <a href="#location" class="mobile-nav-link block px-4 py-3 text-sm font-medium text-soft-white/80 hover:text-elegant-gold hover:bg-white/5 rounded-xl transition-all">Location</a>
+                <a href="#contact" class="mobile-nav-link block px-4 py-3 text-sm font-medium text-soft-white/80 hover:text-elegant-gold hover:bg-white/5 rounded-xl transition-all">Contact</a>
+                <a href="#menu" class="block text-center bg-elegant-gold text-matte-black font-semibold px-5 py-3 rounded-full text-sm mt-2 hover:bg-gold-light transition-all">Order Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <!-- Background Image -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=1920&q=80"
+            alt="Cafe interior aesthetic"
+            class="w-full h-full object-cover opacity-50"
+            loading="eager">
+            <div class="absolute inset-0 bg-gradient-to-b from-matte-black/80 via-matte-black/60 to-matte-black"></div>
+        </div>
+        <!-- Smoke particles -->
+        <div class="absolute inset-0 z-10 pointer-events-none overflow-hidden">
+            <div class="smoke-particle w-32 h-32 top-1/2 left-1/4" style="animation-delay: 0s;"></div>
+            <div class="smoke-particle w-40 h-40 top-1/3 right-1/4" style="animation-delay: 2s;"></div>
+            <div class="smoke-particle w-24 h-24 top-2/3 left-1/3" style="animation-delay: 3.5s;"></div>
+        </div>
+        <!-- Content -->
+        <div class="relative z-20 text-center px-4 max-w-4xl mx-auto">
+            <div class="mb-4 inline-block">
+                <span class="text-elegant-gold text-sm tracking-[0.3em] uppercase font-display font-medium">Est. 2024 • Medan</span>
+            </div>
+            <h1 class="font-display font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-soft-white leading-tight mb-6 animate-fadeInUp">
+                Rafka Coffee<br>
+                <span class="text-elegant-gold relative">
+                    x Nasgor Basmati
+                    <span class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-24 h-0.5 bg-elegant-gold/60 rounded-full"></span>
+                </span>
+            </h1>
+            <p class="text-lg sm:text-xl text-soft-white/70 max-w-2xl mx-auto mb-10 leading-relaxed font-light animate-fadeInUp" style="animation-delay: 0.2s;">
+                Perpaduan nasi goreng basmati premium dan kopi terbaik untuk pengalaman nongkrong yang berbeda.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fadeInUp" style="animation-delay: 0.4s;">
+                <a href="#menu" class="inline-flex items-center justify-center gap-2 bg-elegant-gold text-matte-black font-semibold px-8 py-4 rounded-full text-base hover:bg-gold-light transition-all hover:shadow-xl hover:shadow-elegant-gold/30 hover:-translate-y-1">
+                    📋 Lihat Menu
+                </a>
+                <a href="https://wa.me/6281234567890?text=Halo%20Rafka%20Coffee,%20saya%20mau%20order!" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 border-2 border-elegant-gold/50 text-elegant-gold font-semibold px-8 py-4 rounded-full text-base hover:bg-elegant-gold/10 transition-all hover:border-elegant-gold hover:-translate-y-1">
+                    🛵 Order Sekarang
+                </a>
+            </div>
+            <!-- Scroll indicator -->
+            <div class="mt-16 animate-bounce">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C8963E" stroke-width="2" class="mx-auto"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ABOUT SECTION ==================== -->
+    <section id="about" class="py-20 lg:py-28 px-4 relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                <!-- Left: Image -->
+                <div class="reveal relative">
+                    <div class="relative rounded-3xl overflow-hidden shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80"
+                        alt="Rafka Coffee interior"
+                        class="w-full h-[400px] object-cover"
+                        loading="lazy">
+                        <div class="absolute inset-0 bg-gradient-to-t from-matte-black/60 to-transparent"></div>
+                    </div>
+                    <!-- Floating stat card -->
+                    <div class="absolute -bottom-6 -right-6 glass rounded-2xl p-4 shadow-xl hidden sm:block">
+                        <div class="flex items-center gap-3">
+                            <span class="text-3xl">⭐</span>
+                            <div>
+                                <p class="text-elegant-gold font-display font-bold text-2xl">4.7</p>
+                                <p class="text-soft-white/60 text-xs">Rating Google</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Right: Content -->
+                <div class="reveal">
+                    <span class="text-elegant-gold text-sm tracking-[0.2em] uppercase font-display font-medium">Tentang Kami</span>
+                    <h2 class="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-soft-white mt-3 mb-6 leading-tight">
+                        Tempat Nongkrong<br>Modern di <span class="text-elegant-gold">Medan</span>
+                    </h2>
+                    <p class="text-soft-white/70 leading-relaxed mb-8 text-base">
+                        Rafka Coffee x Nasgor Basmati adalah tempat nongkrong modern di Medan yang menyajikan nasi goreng basmati premium, kopi pilihan, dan suasana nyaman untuk berkumpul bersama teman maupun keluarga. Dengan interior industrial yang hangat dan pencahayaan yang cozy, kami hadir untuk memberikan pengalaman berbeda.
+                    </p>
+                    <!-- Stats -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <div class="glass-light rounded-2xl p-4 text-center">
+                            <p class="text-elegant-gold font-display font-bold text-2xl">4.7</p>
+                            <p class="text-soft-white/50 text-xs mt-1">Rating</p>
+                        </div>
+                        <div class="glass-light rounded-2xl p-4 text-center">
+                            <p class="text-elegant-gold font-display font-bold text-2xl">66+</p>
+                            <p class="text-soft-white/50 text-xs mt-1">Reviews</p>
+                        </div>
+                        <div class="glass-light rounded-2xl p-4 text-center">
+                            <p class="text-elegant-gold font-display font-bold text-2xl">12AM</p>
+                            <p class="text-soft-white/50 text-xs mt-1">Tutup</p>
+                        </div>
+                        <div class="glass-light rounded-2xl p-4 text-center">
+                            <p class="text-elegant-gold font-display font-bold text-sm">Dine-in</p>
+                            <p class="text-soft-white/50 text-xs mt-1">Delivery • Takeaway</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== MENU SECTION ==================== -->
+    <section id="menu" class="py-20 lg:py-28 px-4 relative bg-[#1E1E1E]">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-14 reveal">
+                <span class="text-elegant-gold text-sm tracking-[0.2em] uppercase font-display font-medium">Menu Kami</span>
+                <h2 class="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-soft-white mt-3 mb-4">
+                    Signature <span class="text-elegant-gold">Selection</span>
+                </h2>
+                <p class="text-soft-white/60 max-w-xl mx-auto">Pilihan terbaik dari dapur dan bar kami, dibuat dengan bahan premium dan penuh cinta.</p>
+            </div>
+            <!-- Category tabs -->
+            <div class="flex flex-wrap justify-center gap-2 mb-10 reveal">
+                <button class="category-btn active bg-elegant-gold text-matte-black font-semibold px-5 py-2.5 rounded-full text-sm transition-all" data-category="all">Semua</button>
+                <button class="category-btn bg-transparent text-soft-white/70 font-medium px-5 py-2.5 rounded-full text-sm border border-white/10 hover:border-elegant-gold/50 transition-all" data-category="nasgor">🍛 Signature Nasgor</button>
+                <button class="category-btn bg-transparent text-soft-white/70 font-medium px-5 py-2.5 rounded-full text-sm border border-white/10 hover:border-elegant-gold/50 transition-all" data-category="coffee">☕ Coffee</button>
+                <button class="category-btn bg-transparent text-soft-white/70 font-medium px-5 py-2.5 rounded-full text-sm border border-white/10 hover:border-elegant-gold/50 transition-all" data-category="noncoffee">🍵 Non Coffee</button>
+                <button class="category-btn bg-transparent text-soft-white/70 font-medium px-5 py-2.5 rounded-full text-sm border border-white/10 hover:border-elegant-gold/50 transition-all" data-category="snacks">🍟 Snacks</button>
+            </div>
+            <!-- Menu Grid -->
+            <div id="menu-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Menu items will be rendered by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== GALLERY SECTION ==================== -->
+    <section id="gallery" class="py-20 lg:py-28 px-4 relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-14 reveal">
+                <span class="text-elegant-gold text-sm tracking-[0.2em] uppercase font-display font-medium">Gallery</span>
+                <h2 class="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-soft-white mt-3 mb-4">
+                    Suasana <span class="text-elegant-gold">Rafka</span>
+                </h2>
+                <p class="text-soft-white/60 max-w-xl mx-auto">Intip momen-momen seru dan sudut aesthetic di cafe kami.</p>
+            </div>
+            <!-- Masonry Grid -->
+            <div class="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
+                <div class="gallery-item reveal break-inside-avoid relative rounded-2xl overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&q=80" alt="Coffee art" class="w-full object-cover" loading="lazy">
+                    <div class="gallery-overlay absolute inset-0 flex items-end p-4"><p class="text-white font-medium text-sm">Latte Art Premium</p></div>
+                </div>
+                <div class="gallery-item reveal break-inside-avoid relative rounded-2xl overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&q=80" alt="Nasi goreng basmati" class="w-full object-cover" loading="lazy">
+                    <div class="gallery-overlay absolute inset-0 flex items-end p-4"><p class="text-white font-medium text-sm">Nasgor Basmati Original</p></div>
+                </div>
+                <div class="gallery-item reveal break-inside-avoid relative rounded-2xl overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80" alt="Cafe interior" class="w-full object-cover" loading="lazy">
+                    <div class="gallery-overlay absolute inset-0 flex items-end p-4"><p class="text-white font-medium text-sm">Interior Industrial</p></div>
+                </div>
+                <div class="gallery-item reveal break-inside-avoid relative rounded-2xl overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80" alt="Coffee brewing" class="w-full object-cover" loading="lazy">
+                    <div class="gallery-overlay absolute inset-0 flex items-end p-4"><p class="text-white font-medium text-sm">Brewing Process</p></div>
+                </div>
+                <div class="gallery-item reveal break-inside-avoid relative rounded-2xl overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Restaurant ambiance" class="w-full object-cover" loading="lazy">
+                    <div class="gallery-overlay absolute inset-0 flex items-end p-4"><p class="text-white font-medium text-sm">Suasana Malam</p></div>
+                </div>
+                <div class="gallery-item reveal break-inside-avoid relative rounded-2xl overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=600&q=80" alt="Friends gathering" class="w-full object-cover" loading="lazy">
+                    <div class="gallery-overlay absolute inset-0 flex items-end p-4"><p class="text-white font-medium text-sm">Nongkrong Seru</p></div>
+                </div>
+                <div class="gallery-item reveal break-inside-avoid relative rounded-2xl overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=80" alt="Coffee and snack" class="w-full object-cover" loading="lazy">
+                    <div class="gallery-overlay absolute inset-0 flex items-end p-4"><p class="text-white font-medium text-sm">Kopi & Camilan</p></div>
+                </div>
+                <div class="gallery-item reveal break-inside-avoid relative rounded-2xl overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb51f3a?w=600&q=80" alt="Cafe corner" class="w-full object-cover" loading="lazy">
+                    <div class="gallery-overlay absolute inset-0 flex items-end p-4"><p class="text-white font-medium text-sm">Spot Instagramable</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== REVIEWS SECTION ==================== -->
+    <section id="reviews" class="py-20 lg:py-28 px-4 relative bg-[#1E1E1E]">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-14 reveal">
+                <span class="text-elegant-gold text-sm tracking-[0.2em] uppercase font-display font-medium">Testimoni</span>
+                <h2 class="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-soft-white mt-3 mb-4">
+                    Kata <span class="text-elegant-gold">Pelanggan</span>
+                </h2>
+            </div>
+            <div class="review-slider reveal">
+                <div class="review-card glass rounded-2xl p-6 flex-shrink-0">
+                    <div class="flex gap-1 mb-3"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+                    <p class="text-soft-white/80 italic mb-4">"Tempat nyaman banget buat nongkrong malam. Suasananya hangat, cocok buat kumpul bareng teman-teman. Nasgor basmatinya juara!"</p>
+                    <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-elegant-gold/30 flex items-center justify-center font-bold text-elegant-gold">R</div><div><p class="font-semibold text-soft-white text-sm">Rizky A.</p><p class="text-soft-white/40 text-xs">Google Review</p></div></div>
+                </div>
+                <div class="review-card glass rounded-2xl p-6 flex-shrink-0">
+                    <div class="flex gap-1 mb-3"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+                    <p class="text-soft-white/80 italic mb-4">"Nasgor basmatinya beda dari yang lain. Bumbunya meresap, porsinya pas, dan kopinya enak banget. Auto balik lagi!"</p>
+                    <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-elegant-gold/30 flex items-center justify-center font-bold text-elegant-gold">S</div><div><p class="font-semibold text-soft-white text-sm">Sarah M.</p><p class="text-soft-white/40 text-xs">Google Review</p></div></div>
+                </div>
+                <div class="review-card glass rounded-2xl p-6 flex-shrink-0">
+                    <div class="flex gap-1 mb-3"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+                    <p class="text-soft-white/80 italic mb-4">"Kopinya enak dan aesthetic banget. Cocok buat kerja remote atau sekedar chill. Staffnya ramah-ramah!"</p>
+                    <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-elegant-gold/30 flex items-center justify-center font-bold text-elegant-gold">D</div><div><p class="font-semibold text-soft-white text-sm">Dimas P.</p><p class="text-soft-white/40 text-xs">Google Review</p></div></div>
+                </div>
+                <div class="review-card glass rounded-2xl p-6 flex-shrink-0">
+                    <div class="flex gap-1 mb-3"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+                    <p class="text-soft-white/80 italic mb-4">"Nongkrong di sini tuh vibes-nya dapet banget. Interior industrial tapi warm, bikin betah berlama-lama."</p>
+                    <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-elegant-gold/30 flex items-center justify-center font-bold text-elegant-gold">A</div><div><p class="font-semibold text-soft-white text-sm">Aulia N.</p><p class="text-soft-white/40 text-xs">Google Review</p></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== LOCATION SECTION ==================== -->
+    <section id="location" class="py-20 lg:py-28 px-4 relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-14 reveal">
+                <span class="text-elegant-gold text-sm tracking-[0.2em] uppercase font-display font-medium">Lokasi</span>
+                <h2 class="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-soft-white mt-3 mb-4">
+                    Kunjungi <span class="text-elegant-gold">Kami</span>
+                </h2>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-10 reveal">
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3981.9!2d98.65!3d3.58!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zM8KwMzQnNDguMCJOIDk4wrAzOScwMC4wIkU!5e0!3m2!1sid!2sid!4v1700000000000"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="Rafka Coffee Location">
+                    </iframe>
+                </div>
+                <div class="flex flex-col justify-center gap-6">
+                    <div class="glass rounded-2xl p-6">
+                        <h3 class="font-display font-semibold text-lg text-elegant-gold mb-3">📍 Alamat</h3>
+                        <p class="text-soft-white/80 leading-relaxed">Jl. Karya Kasih No.49, Pangkalan Masyhur, Kec. Medan Johor, Kota Medan, Sumatera Utara 20143</p>
+                    </div>
+                    <div class="glass rounded-2xl p-6">
+                        <h3 class="font-display font-semibold text-lg text-elegant-gold mb-3">🕐 Jam Operasional</h3>
+                        <p class="text-soft-white/80">Senin - Minggu: <span class="text-soft-white font-semibold">10:00 AM - 12:00 AM</span></p>
+                        <p class="text-soft-white/50 text-sm mt-1">Buka setiap hari, termasuk hari libur nasional</p>
+                    </div>
+                    <a href="https://maps.google.com/?q=Rafka+Coffee+x+Nasgor+Basmati+Medan" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 bg-elegant-gold text-matte-black font-semibold px-6 py-3.5 rounded-full hover:bg-gold-light transition-all hover:shadow-lg">
+                        🗺️ Buka di Google Maps
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== CONTACT SECTION ==================== -->
+    <section id="contact" class="py-20 lg:py-28 px-4 relative bg-[#1E1E1E]">
+        <div class="max-w-4xl mx-auto text-center reveal">
+            <span class="text-elegant-gold text-sm tracking-[0.2em] uppercase font-display font-medium">Hubungi Kami</span>
+            <h2 class="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-soft-white mt-3 mb-4">
+                Tetap <span class="text-elegant-gold">Terhubung</span>
+            </h2>
+            <p class="text-soft-white/60 max-w-lg mx-auto mb-10">Follow social media kami untuk info promo, event, dan menu terbaru.</p>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <a href="https://wa.me/6281234567890?text=Halo%20Rafka%20Coffee!" target="_blank" rel="noopener" class="glass-light rounded-2xl p-6 flex flex-col items-center gap-3 hover:border-elegant-gold/50 transition-all hover:-translate-y-2 group">
+                    <span class="text-3xl group-hover:scale-110 transition-transform">💬</span>
+                    <span class="text-soft-white font-medium text-sm">WhatsApp</span>
+                </a>
+                <a href="https://instagram.com/rafkacoffee" target="_blank" rel="noopener" class="glass-light rounded-2xl p-6 flex flex-col items-center gap-3 hover:border-elegant-gold/50 transition-all hover:-translate-y-2 group">
+                    <span class="text-3xl group-hover:scale-110 transition-transform">📸</span>
+                    <span class="text-soft-white font-medium text-sm">Instagram</span>
+                </a>
+                <a href="https://tiktok.com/@rafkacoffee" target="_blank" rel="noopener" class="glass-light rounded-2xl p-6 flex flex-col items-center gap-3 hover:border-elegant-gold/50 transition-all hover:-translate-y-2 group">
+                    <span class="text-3xl group-hover:scale-110 transition-transform">🎵</span>
+                    <span class="text-soft-white font-medium text-sm">TikTok</span>
+                </a>
+                <a href="https://linktr.ee/rafkacoffee" target="_blank" rel="noopener" class="glass-light rounded-2xl p-6 flex flex-col items-center gap-3 hover:border-elegant-gold/50 transition-all hover:-translate-y-2 group">
+                    <span class="text-3xl group-hover:scale-110 transition-transform">🔗</span>
+                    <span class="text-soft-white font-medium text-sm">Linktree</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="bg-[#141414] py-14 px-4 border-t border-white/5">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-3 gap-10 mb-10">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-2xl">☕</span>
+                        <span class="font-display font-bold text-lg text-soft-white">Rafka<span class="text-elegant-gold">Coffee</span></span>
+                    </div>
+                    <p class="text-soft-white/50 text-sm leading-relaxed">Perpaduan nasi goreng basmati premium dan kopi terbaik. Tempat nongkrong modern di Medan.</p>
+                </div>
+                <div>
+                    <h4 class="font-display font-semibold text-soft-white mb-4">Quick Links</h4>
+                    <div class="flex flex-col gap-2">
+                        <a href="#home" class="text-soft-white/50 text-sm hover:text-elegant-gold transition-colors">Home</a>
+                        <a href="#menu" class="text-soft-white/50 text-sm hover:text-elegant-gold transition-colors">Menu</a>
+                        <a href="#gallery" class="text-soft-white/50 text-sm hover:text-elegant-gold transition-colors">Gallery</a>
+                        <a href="#location" class="text-soft-white/50 text-sm hover:text-elegant-gold transition-colors">Location</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-display font-semibold text-soft-white mb-4">Social Media</h4>
+                    <div class="flex gap-3">
+                        <a href="#" class="w-10 h-10 rounded-full glass-light flex items-center justify-center text-soft-white/70 hover:text-elegant-gold hover:border-elegant-gold/50 transition-all text-sm">📸</a>
+                        <a href="#" class="w-10 h-10 rounded-full glass-light flex items-center justify-center text-soft-white/70 hover:text-elegant-gold hover:border-elegant-gold/50 transition-all text-sm">🎵</a>
+                        <a href="#" class="w-10 h-10 rounded-full glass-light flex items-center justify-center text-soft-white/70 hover:text-elegant-gold hover:border-elegant-gold/50 transition-all text-sm">💬</a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p class="text-soft-white/40 text-xs">© 2024 Rafka Coffee x Nasgor Basmati. All rights reserved.</p>
+                <p class="text-soft-white/30 text-xs">Made with ❤️ in Medan</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== FLOATING WHATSAPP BUTTON ==================== -->
+    <a href="https://wa.me/6281234567890?text=Halo%20Rafka%20Coffee,%20saya%20mau%20order!" target="_blank" rel="noopener" class="floating-wa" aria-label="Chat via WhatsApp" title="Order via WhatsApp">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+
+    <!-- ==================== MUSIC TOGGLE (Optional) ==================== -->
+    <button class="music-toggle" id="music-toggle" aria-label="Toggle music" title="Cafe Ambience">
+        🎵
+    </button>
+
+    <script>
+        // ==================== LOADING SCREEN ====================
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading-screen').classList.add('hidden');
+            }, 1200);
+        });
+
+        // ==================== NAVBAR SCROLL ====================
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 80) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // ==================== MOBILE MENU ====================
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // ==================== REVEAL ON SCROLL ====================
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // ==================== MENU DATA ====================
+        const menuItems = [
+            { id: 1, name: 'Nasgor Basmati Original', category: 'nasgor', price: 'Rp 28.000',
+                image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=500&q=80',
+                badge: 'Best Seller', desc: 'Nasi goreng basmati dengan bumbu rempah pilihan' },
+            { id: 2, name: 'Nasgor Basmati Spicy', category: 'nasgor', price: 'Rp 32.000',
+                image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=500&q=80', badge: 'Pedas!',
+                desc: 'Nasi goreng basmati level pedas dengan sambal special' },
+            { id: 3, name: 'Nasgor Basmati Seafood', category: 'nasgor', price: 'Rp 38.000',
+                image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=500&q=80', badge: '',
+                desc: 'Nasi goreng basmati dengan udang dan cumi segar' },
+            { id: 4, name: 'Cappuccino', category: 'coffee', price: 'Rp 25.000',
+                image: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=500&q=80', badge: 'Favorite',
+                desc: 'Espresso dengan steamed milk dan foam lembut' },
+            { id: 5, name: 'Latte', category: 'coffee', price: 'Rp 24.000',
+                image: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&q=80', badge: '',
+                desc: 'Espresso dengan susu steamed yang creamy' },
+            { id: 6, name: 'Americano', category: 'coffee', price: 'Rp 20.000',
+                image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&q=80', badge: '',
+                desc: 'Espresso dengan air panas, simpel dan bold' },
+            { id: 7, name: 'Matcha Latte', category: 'noncoffee', price: 'Rp 27.000',
+                image: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=500&q=80', badge: 'Best Seller',
+                desc: 'Matcha premium Jepang dengan susu creamy' },
+            { id: 8, name: 'Chocolate Signature', category: 'noncoffee', price: 'Rp 26.000',
+                image: 'https://images.unsplash.com/photo-1542990253-0d0f28f2d43b?w=500&q=80', badge: '',
+                desc: 'Coklat Belgian premium dengan whipped cream' },
+            { id: 9, name: 'French Fries', category: 'snacks', price: 'Rp 18.000',
+                image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&q=80', badge: '',
+                desc: 'Kentang goreng crispy dengan saus pilihan' },
+            { id: 10, name: 'Chicken Wings', category: 'snacks', price: 'Rp 22.000',
+                image: 'https://images.unsplash.com/photo-1608039829572-bc8c8e0a4c9e?w=500&q=80', badge: 'Pedas!',
+                desc: 'Sayap ayam dengan bumbu special Rafka' },
+            { id: 11, name: 'Onion Rings', category: 'snacks', price: 'Rp 16.000',
+                image: 'https://images.unsplash.com/photo-1639024471283-03518883512d?w=500&q=80', badge: '',
+                desc: 'Cincin bawang renyah dengan dipping sauce' },
+            { id: 12, name: 'Es Kopi Susu Gula Aren', category: 'coffee', price: 'Rp 26.000',
+                image: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=500&q=80', badge: 'Best Seller',
+                desc: 'Kopi susu dengan gula aren asli, favorit semua' },
+        ];
+
+        // ==================== RENDER MENU ====================
+        const menuGrid = document.getElementById('menu-grid');
+
+        function renderMenu(category = 'all') {
+            const filtered = category === 'all' ? menuItems : menuItems.filter(item => item.category ===
+                category);
+            menuGrid.innerHTML = filtered.map(item => `
+            <div class="menu-card glass rounded-2xl overflow-hidden group cursor-pointer reveal">
+              <div class="relative overflow-hidden h-48">
+                <img src="${item.image}" alt="${item.name}" class="card-image w-full h-full object-cover" loading="lazy">
+                ${item.badge ? `<span class="badge-bestseller absolute top-3 left-3">${item.badge}</span>` : ''}
+                <div class="absolute inset-0 bg-gradient-to-t from-matte-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-4">
+                  <span class="text-white font-semibold text-sm bg-elegant-gold/90 px-4 py-2 rounded-full">+ Add to Cart</span>
+                </div>
+              </div>
+              <div class="p-4">
+                <h3 class="font-display font-semibold text-soft-white text-base mb-1">${item.name}</h3>
+                <p class="text-soft-white/50 text-xs mb-3">${item.desc}</p>
+                <p class="text-elegant-gold font-bold text-lg">${item.price}</p>
+              </div>
+            </div>
+          `).join('');
+
+            // Re-observe new cards
+            document.querySelectorAll('#menu-grid .reveal').forEach(el => revealObserver.observe(el));
+        }
+
+        renderMenu();
+
+        // Category buttons
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.category-btn').forEach(b => {
+                    b.classList.remove('active', 'bg-elegant-gold', 'text-matte-black');
+                    b.classList.add('bg-transparent', 'text-soft-white/70');
+                });
+                btn.classList.add('active', 'bg-elegant-gold', 'text-matte-black');
+                btn.classList.remove('bg-transparent', 'text-soft-white/70');
+                const category = btn.dataset.category;
+                renderMenu(category);
+            });
+        });
+
+        // ==================== MUSIC TOGGLE ====================
+        let musicPlaying = false;
+        const musicToggle = document.getElementById('music-toggle');
+        musicToggle.addEventListener('click', () => {
+            musicPlaying = !musicPlaying;
+            musicToggle.textContent = musicPlaying ? '🔊' : '🎵';
+            musicToggle.style.background = musicPlaying ? 'rgba(200,150,62,0.3)' : 'rgba(30,30,30,0.8)';
+        });
+
+        // ==================== SMOOTH SCROLL FOR ALL ANCHOR LINKS ====================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ==================== PARALLAX EFFECT ON SCROLL ====================
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            const heroBg = document.querySelector('#home .absolute.inset-0.z-0 img');
+            if (heroBg && scrolled < window.innerHeight) {
+                heroBg.style.transform = `translateY(${scrolled * 0.4}px)`;
+            }
+        });
+
+        console.log('☕ Rafka Coffee x Nasgor Basmati - Website Ready!');
+        console.log('📍 Jl. Karya Kasih No.49, Medan Johor, Medan');
+        console.log('✨ Designed with love for the best nongkrong experience');
+    </script>
+</body>
+</html>
