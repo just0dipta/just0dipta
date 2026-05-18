@@ -13,12 +13,8 @@
     .form-group { margin-bottom: 1.25rem; text-align: left; }
     .form-group label { font-weight: 600; font-size: 0.9rem; display: block; margin-bottom: 0.4rem; }
     .form-group input { width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); font-family: inherit; }
-    .form-group input:focus { border-color: var(--color-purple); outline: none; box-shadow: 0 0 0 3px rgba(124,58,237,0.1); }
-    .btn--full { width: 100%; justify-content: center; }
-    .auth-footer { margin-top: 1.5rem; font-size: 0.9rem; }
+    .auth-footer { margin-top: 1.5rem; font-size: 0.9rem; text-align: center; }
     .auth-footer a { color: var(--color-purple); font-weight: 600; }
-    .divider { display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0; color: var(--color-text-secondary); }
-    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--color-border); }
   </style>
 </head>
 <body class="auth-page">
@@ -27,25 +23,12 @@
     <h2 style="text-align:center;">Buat Akun</h2>
     <p style="text-align:center;">Mulai perjalanan digital Anda bersama kami.</p>
     <form id="registerForm">
-      <div class="form-group">
-        <label for="name">Nama Lengkap</label>
-        <input type="text" id="name" placeholder="Nama Anda" required>
-      </div>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" placeholder="anda@email.com" required>
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Min. 6 karakter" required minlength="6">
-      </div>
+      <div class="form-group"><label for="name">Nama Lengkap</label><input type="text" id="name" placeholder="Nama Anda" required></div>
+      <div class="form-group"><label for="email">Email</label><input type="email" id="email" placeholder="anda@email.com" required></div>
+      <div class="form-group"><label for="password">Password</label><input type="password" id="password" placeholder="Min. 6 karakter" required minlength="6"></div>
       <button type="submit" class="btn btn--primary btn--full btn--lg">Daftar Sekarang</button>
     </form>
-    <div class="auth-footer" style="text-align:center;">
-      Sudah punya akun? <a href="login.html">Masuk</a>
-    </div>
-    <div class="divider">atau</div>
-    <button class="btn btn--outline btn--full" onclick="alert('Google sign-up via Firebase')">Daftar dengan Google</button>
+    <div class="auth-footer">Sudah punya akun? <a href="login.html">Masuk</a></div>
   </div>
 
   <script type="module">
@@ -53,15 +36,7 @@
     import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
     import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDX0ZI6LnmijvmVlJgbNXkbudOXaUT6fsM",
-  authDomain: "diptadigital-service.firebaseapp.com",
-  databaseURL: "https://diptadigital-service-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "diptadigital-service",
-  storageBucket: "diptadigital-service.firebasestorage.app",
-  messagingSenderId: "411938166244",
-  appId: "1:411938166244:web:75f063e07fb95ae2e9e3f1"
-};
+    const firebaseConfig = { /* isi config */ };
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getDatabase(app);
@@ -71,19 +46,17 @@ const firebaseConfig = {
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
-
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
         await updateProfile(user, { displayName: name });
-        // Simpan ke realtime database
         await set(ref(db, 'users/' + user.uid), {
           name: name,
           email: email,
           role: 'user',
           createdAt: new Date().toISOString()
         });
-        window.location.href = 'order.html';
+        window.location.href = 'order.html'; // langsung ke form order
       } catch (error) {
         alert('Pendaftaran gagal: ' + error.message);
       }
