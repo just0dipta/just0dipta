@@ -1,0 +1,1880 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Omilen Coffee - Tempat nyaman untuk menikmati kopi, bersantai, dan berkumpul di Medan Johor. Indoor AC, outdoor, cozy ambience.">
+    <meta name="keywords" content="Omilen Coffee, coffee shop Medan, kopi Medan Johor, cafe cozy Medan, nongkrong Medan">
+    <title>Omilen Coffee — Cozy Coffee Shop di Medan Johor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #0c0704;
+            --bg-surface: #15100c;
+            --bg-card: #1c1610;
+            --bg-card-hover: #221a13;
+            --accent: #8b5a3c;
+            --accent-light: #b8835a;
+            --accent-glow: #c4946c;
+            --cream: #e8d5c0;
+            --cream-light: #f3e8d9;
+            --text-primary: #ede3d7;
+            --text-secondary: #b8a898;
+            --text-muted: #8a7b6e;
+            --border-subtle: #2a221b;
+            --border-card: #302820;
+            --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 60px rgba(139, 90, 60, 0.15);
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            --transition: 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+            --transition-slow: 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+            --font-display: 'Playfair Display', Georgia, serif;
+            --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) var(--bg-deep);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-deep);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 3px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ─── LOADING SCREEN ─────────────────────────── */
+        #loading-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: var(--bg-deep);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        #loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .loader-cup {
+            width: 48px;
+            height: 52px;
+            position: relative;
+            animation: cupFloat 1.8s ease-in-out infinite;
+        }
+        .loader-cup .cup-body {
+            width: 40px;
+            height: 36px;
+            border: 2.5px solid var(--accent-light);
+            border-radius: 0 0 14px 14px;
+            border-top: none;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(139, 90, 60, 0.08);
+        }
+        .loader-cup .cup-handle {
+            width: 14px;
+            height: 18px;
+            border: 2.5px solid var(--accent-light);
+            border-left: none;
+            border-radius: 0 10px 10px 0;
+            position: absolute;
+            right: -6px;
+            top: 10px;
+        }
+        .loader-cup .steam {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+        }
+        .loader-cup .steam span {
+            display: block;
+            width: 3px;
+            height: 14px;
+            background: var(--accent-light);
+            border-radius: 3px;
+            opacity: 0;
+            animation: steamRise 1.5s ease-in-out infinite;
+        }
+        .loader-cup .steam span:nth-child(1) {
+            animation-delay: 0s;
+        }
+        .loader-cup .steam span:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+        .loader-cup .steam span:nth-child(3) {
+            animation-delay: 0.8s;
+        }
+        @keyframes cupFloat {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+        @keyframes steamRise {
+            0% {
+                opacity: 0;
+                transform: translateY(0) scaleY(1);
+            }
+            40% {
+                opacity: 0.7;
+            }
+            80% {
+                opacity: 0;
+                transform: translateY(-16px) scaleY(2.5);
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+        .loader-text {
+            margin-top: 20px;
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            color: var(--accent-light);
+            letter-spacing: 0.15em;
+            animation: fadePulse 2s ease-in-out infinite;
+        }
+        @keyframes fadePulse {
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* ─── AMBIENT ORBS ──────────────────────────── */
+        .ambient-orb {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(120px);
+            opacity: 0.06;
+        }
+        .ambient-orb.orb-1 {
+            width: 500px;
+            height: 500px;
+            background: #8b5a3c;
+            top: -15%;
+            right: -10%;
+            animation: orbDrift1 20s ease-in-out infinite;
+        }
+        .ambient-orb.orb-2 {
+            width: 400px;
+            height: 400px;
+            background: #c4946c;
+            bottom: -12%;
+            left: -8%;
+            animation: orbDrift2 25s ease-in-out infinite;
+        }
+        .ambient-orb.orb-3 {
+            width: 300px;
+            height: 300px;
+            background: #6b4530;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: orbDrift3 18s ease-in-out infinite;
+        }
+        @keyframes orbDrift1 {
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+            33% {
+                transform: translate(-60px, 40px);
+            }
+            66% {
+                transform: translate(30px, -30px);
+            }
+        }
+        @keyframes orbDrift2 {
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+            33% {
+                transform: translate(50px, -30px);
+            }
+            66% {
+                transform: translate(-40px, 20px);
+            }
+        }
+        @keyframes orbDrift3 {
+            0%,
+            100% {
+                transform: translate(-50%, -50%);
+            }
+            50% {
+                transform: translate(-45%, -55%);
+            }
+        }
+
+        /* ─── NAVBAR ─────────────────────────────────── */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 18px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all var(--transition);
+            background: transparent;
+        }
+        .navbar.scrolled {
+            background: rgba(12, 7, 4, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 12px 40px;
+            border-bottom: 1px solid var(--border-subtle);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+        .nav-brand {
+            font-family: var(--font-display);
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: var(--cream-light);
+            letter-spacing: 0.04em;
+            text-decoration: none;
+            position: relative;
+            z-index: 1001;
+            transition: color var(--transition);
+        }
+        .nav-brand:hover {
+            color: var(--accent-glow);
+        }
+        .nav-brand .dot {
+            color: var(--accent-light);
+            display: inline-block;
+            transform: translateY(-2px);
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 34px;
+            align-items: center;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            transition: color var(--transition);
+            position: relative;
+            padding: 4px 0;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: var(--accent-light);
+            transition: width var(--transition);
+            border-radius: 1px;
+        }
+        .nav-links a:hover {
+            color: var(--cream-light);
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        .nav-links a.active {
+            color: var(--cream-light);
+        }
+        .nav-links a.active::after {
+            width: 100%;
+        }
+        .nav-cta {
+            background: var(--accent);
+            color: var(--cream-light) !important;
+            padding: 10px 22px !important;
+            border-radius: 30px !important;
+            font-weight: 600 !important;
+            font-size: 0.85rem !important;
+            transition: all var(--transition) !important;
+            letter-spacing: 0.03em !important;
+        }
+        .nav-cta:hover {
+            background: var(--accent-light) !important;
+            box-shadow: 0 8px 28px rgba(139, 90, 60, 0.3);
+        }
+        .nav-cta::after {
+            display: none !important;
+        }
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1001;
+            padding: 6px;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .menu-toggle span {
+            display: block;
+            width: 26px;
+            height: 2px;
+            background: var(--cream-light);
+            border-radius: 2px;
+            transition: all var(--transition);
+        }
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* ─── SECTIONS ───────────────────────────────── */
+        .section {
+            position: relative;
+            z-index: 1;
+            padding: 100px 40px;
+        }
+        .section-label {
+            display: inline-block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--accent-light);
+            margin-bottom: 16px;
+            font-family: var(--font-body);
+        }
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.2rem, 4vw, 3.2rem);
+            font-weight: 700;
+            color: var(--cream-light);
+            margin-bottom: 18px;
+            line-height: 1.25;
+            letter-spacing: 0.02em;
+        }
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 560px;
+            line-height: 1.75;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ─── HERO ───────────────────────────────────── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            padding: 120px 40px 80px;
+            overflow: hidden;
+        }
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background: linear-gradient(180deg,
+                    rgba(12, 7, 4, 0.3) 0%,
+                    rgba(12, 7, 4, 0.6) 40%,
+                    rgba(12, 7, 4, 0.95) 100%),
+                url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1600&q=80') center/cover no-repeat;
+            background-position: center 30%;
+            filter: saturate(0.7) brightness(0.5);
+            animation: heroBgSlow 30s ease-in-out infinite;
+        }
+        @keyframes heroBgSlow {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.06);
+            }
+        }
+        .hero .container {
+            position: relative;
+            z-index: 2;
+        }
+        .hero-tag {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent-glow);
+            margin-bottom: 20px;
+            padding: 8px 18px;
+            border: 1px solid rgba(196, 148, 108, 0.3);
+            border-radius: 30px;
+            background: rgba(139, 90, 60, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(3.2rem, 6.5vw, 5.5rem);
+            font-weight: 800;
+            color: var(--cream-light);
+            line-height: 1.08;
+            margin-bottom: 22px;
+            letter-spacing: 0.03em;
+        }
+        .hero-title .accent {
+            color: var(--accent-glow);
+            display: block;
+            font-size: 0.55em;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            margin-top: 4px;
+            font-family: var(--font-body);
+            text-transform: uppercase;
+        }
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 480px;
+            margin-bottom: 36px;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 30px;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all var(--transition);
+            font-family: var(--font-body);
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: var(--cream-light);
+            box-shadow: 0 6px 24px rgba(139, 90, 60, 0.3);
+        }
+        .btn-primary:hover {
+            background: var(--accent-light);
+            box-shadow: 0 12px 36px rgba(139, 90, 60, 0.4);
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--cream-light);
+            border: 1.5px solid rgba(232, 213, 192, 0.35);
+        }
+        .btn-outline:hover {
+            border-color: var(--cream-light);
+            background: rgba(232, 213, 192, 0.06);
+            transform: translateY(-2px);
+        }
+
+        /* ─── ABOUT ──────────────────────────────────── */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        .about-image-wrapper {
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            box-shadow: var(--shadow-lg);
+        }
+        .about-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-slow);
+        }
+        .about-image-wrapper:hover img {
+            transform: scale(1.04);
+        }
+        .about-image-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 60%, rgba(12, 7, 4, 0.5));
+            pointer-events: none;
+        }
+        .about-info-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 24px;
+        }
+        .about-info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-card);
+            transition: all var(--transition);
+        }
+        .about-info-item:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-subtle);
+            box-shadow: var(--shadow-sm);
+        }
+        .about-info-icon {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .about-info-text strong {
+            display: block;
+            color: var(--cream-light);
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.02em;
+            margin-bottom: 2px;
+        }
+        .about-info-text span {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        /* ─── MENU ───────────────────────────────────── */
+        .menu-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 36px;
+        }
+        .menu-filter-btn {
+            padding: 10px 22px;
+            border-radius: 30px;
+            border: 1.5px solid var(--border-card);
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            transition: all var(--transition);
+            font-family: var(--font-body);
+        }
+        .menu-filter-btn:hover,
+        .menu-filter-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--cream-light);
+            box-shadow: 0 4px 16px rgba(139, 90, 60, 0.25);
+        }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 24px;
+        }
+        .menu-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border-card);
+            transition: all var(--transition);
+            position: relative;
+            cursor: pointer;
+        }
+        .menu-card:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--border-subtle);
+        }
+        .menu-card-img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            display: block;
+            transition: transform var(--transition-slow);
+        }
+        .menu-card:hover .menu-card-img {
+            transform: scale(1.06);
+        }
+        .menu-card-body {
+            padding: 18px 20px 20px;
+        }
+        .menu-card-badge {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: var(--accent);
+            color: var(--cream-light);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 20px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            z-index: 2;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+        }
+        .menu-card-body h4 {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            color: var(--cream-light);
+            margin-bottom: 4px;
+            letter-spacing: 0.02em;
+        }
+        .menu-card-body .menu-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        .menu-card-body .menu-price {
+            font-weight: 700;
+            color: var(--accent-glow);
+            font-size: 1.05rem;
+            letter-spacing: 0.02em;
+        }
+
+        /* ─── GALLERY ────────────────────────────────── */
+        .gallery-masonry {
+            columns: 3;
+            column-gap: 18px;
+        }
+        .gallery-item {
+            break-inside: avoid;
+            margin-bottom: 18px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            transition: all var(--transition);
+        }
+        .gallery-item img {
+            width: 100%;
+            display: block;
+            transition: transform var(--transition-slow);
+            border-radius: var(--radius-md);
+        }
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        .gallery-item:hover {
+            box-shadow: var(--shadow-lg);
+            z-index: 2;
+        }
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 50%, rgba(12, 7, 4, 0.55));
+            opacity: 0;
+            transition: opacity var(--transition);
+            border-radius: var(--radius-md);
+        }
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        /* ─── REVIEWS ────────────────────────────────── */
+        .reviews-slider-wrapper {
+            position: relative;
+            overflow: hidden;
+            padding: 10px 0;
+        }
+        .reviews-track {
+            display: flex;
+            gap: 24px;
+            transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+            will-change: transform;
+        }
+        .review-card {
+            flex: 0 0 380px;
+            max-width: 380px;
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 28px 26px;
+            border: 1px solid var(--border-card);
+            transition: all var(--transition);
+            position: relative;
+        }
+        .review-card:hover {
+            background: var(--bg-card-hover);
+            box-shadow: var(--shadow-md);
+        }
+        .review-quote {
+            font-size: 3rem;
+            line-height: 0.5;
+            color: var(--accent);
+            font-family: var(--font-display);
+            margin-bottom: 10px;
+            opacity: 0.7;
+        }
+        .review-text {
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 16px;
+            font-style: italic;
+        }
+        .review-author {
+            font-weight: 600;
+            color: var(--cream-light);
+            font-size: 0.88rem;
+            letter-spacing: 0.02em;
+        }
+        .review-stars {
+            color: #d4a853;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+        .reviews-nav {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            justify-content: center;
+        }
+        .reviews-nav button {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1.5px solid var(--border-card);
+            background: var(--bg-card);
+            color: var(--cream-light);
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .reviews-nav button:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 4px 16px rgba(139, 90, 60, 0.3);
+        }
+        .review-dots {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 16px;
+        }
+        .review-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border-card);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        .review-dot.active {
+            background: var(--accent-light);
+            width: 24px;
+            border-radius: 10px;
+        }
+
+        /* ─── LOCATION ───────────────────────────────── */
+        .location-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        .map-wrapper {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-card);
+            aspect-ratio: 4/3;
+            background: var(--bg-card);
+        }
+        .map-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            filter: grayscale(30%) brightness(0.85) contrast(1.1);
+            transition: filter var(--transition);
+        }
+        .map-wrapper:hover iframe {
+            filter: grayscale(0%) brightness(0.9) contrast(1);
+        }
+        .location-details {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .location-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 20px 22px;
+            border: 1px solid var(--border-card);
+            transition: all var(--transition);
+        }
+        .location-card:hover {
+            background: var(--bg-card-hover);
+            box-shadow: var(--shadow-sm);
+        }
+        .location-card h4 {
+            font-family: var(--font-display);
+            color: var(--cream-light);
+            font-size: 1.05rem;
+            margin-bottom: 6px;
+            letter-spacing: 0.02em;
+        }
+        .location-card p {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+
+        /* ─── CONTACT / FOOTER ──────────────────────── */
+        .contact-section {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-subtle);
+            padding: 60px 40px;
+            position: relative;
+            z-index: 1;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+        .contact-col h4 {
+            font-family: var(--font-display);
+            color: var(--cream-light);
+            font-size: 1.1rem;
+            margin-bottom: 14px;
+            letter-spacing: 0.03em;
+        }
+        .contact-col p,
+        .contact-col a {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-decoration: none;
+            line-height: 1.8;
+            display: block;
+            transition: color var(--transition);
+        }
+        .contact-col a:hover {
+            color: var(--accent-glow);
+        }
+        .contact-social {
+            display: flex;
+            gap: 14px;
+            margin-top: 12px;
+        }
+        .contact-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all var(--transition);
+            color: var(--text-secondary);
+        }
+        .contact-social a:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--cream-light);
+            box-shadow: 0 6px 20px rgba(139, 90, 60, 0.3);
+        }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 36px;
+            margin-top: 36px;
+            border-top: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            letter-spacing: 0.03em;
+        }
+
+        /* ─── FLOATING BUTTONS ──────────────────────── */
+        .floating-wa {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 999;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #25d366;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 28px rgba(37, 211, 102, 0.35);
+            cursor: pointer;
+            transition: all var(--transition);
+            text-decoration: none;
+            animation: waPulse 2.5s ease-in-out infinite;
+        }
+        .floating-wa:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 36px rgba(37, 211, 102, 0.5);
+        }
+        @keyframes waPulse {
+            0%,
+            100% {
+                box-shadow: 0 8px 28px rgba(37, 211, 102, 0.35);
+            }
+            50% {
+                box-shadow: 0 8px 40px rgba(37, 211, 102, 0.6);
+            }
+        }
+        .back-to-top {
+            position: fixed;
+            bottom: 96px;
+            right: 28px;
+            z-index: 998;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1.5px solid var(--border-card);
+            color: var(--cream-light);
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .back-to-top:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 6px 20px rgba(139, 90, 60, 0.3);
+        }
+
+        /* ─── SCROLL REVEAL ─────────────────────────── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 {
+            transition-delay: 0.1s;
+        }
+        .reveal-delay-2 {
+            transition-delay: 0.2s;
+        }
+        .reveal-delay-3 {
+            transition-delay: 0.3s;
+        }
+        .reveal-delay-4 {
+            transition-delay: 0.4s;
+        }
+
+        /* ─── MOBILE NAV ────────────────────────────── */
+        .mobile-nav-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            background: rgba(12, 7, 4, 0.96);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+        .mobile-nav-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .mobile-nav-links {
+            list-style: none;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+        .mobile-nav-links a {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            color: var(--cream-light);
+            text-decoration: none;
+            letter-spacing: 0.04em;
+            transition: color var(--transition);
+        }
+        .mobile-nav-links a:hover {
+            color: var(--accent-glow);
+        }
+
+        /* ─── RESPONSIVE ────────────────────────────── */
+        @media (max-width: 1024px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 36px;
+            }
+            .location-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .gallery-masonry {
+                columns: 2;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+            }
+            .nav-links {
+                display: none;
+            }
+            .menu-toggle {
+                display: flex;
+            }
+            .section {
+                padding: 70px 24px;
+            }
+            .hero {
+                padding: 100px 24px 60px;
+            }
+            .navbar {
+                padding: 14px 24px;
+            }
+            .navbar.scrolled {
+                padding: 10px 24px;
+            }
+        }
+        @media (max-width: 640px) {
+            .gallery-masonry {
+                columns: 1;
+            }
+            .menu-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .review-card {
+                flex: 0 0 85vw;
+                max-width: 85vw;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            .hero-title {
+                font-size: 2.6rem;
+            }
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            .section {
+                padding: 50px 16px;
+            }
+            .hero {
+                padding: 80px 16px 50px;
+            }
+            .navbar {
+                padding: 12px 16px;
+            }
+            .navbar.scrolled {
+                padding: 8px 16px;
+            }
+            .floating-wa {
+                bottom: 20px;
+                right: 16px;
+                width: 48px;
+                height: 48px;
+                font-size: 1.3rem;
+            }
+            .back-to-top {
+                bottom: 80px;
+                right: 16px;
+                width: 38px;
+                height: 38px;
+                font-size: 0.95rem;
+            }
+            .btn {
+                padding: 12px 22px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOADING SCREEN -->
+    <div id="loading-screen">
+        <div class="loader-cup">
+            <div class="steam"><span></span><span></span><span></span></div>
+            <div class="cup-handle"></div>
+            <div class="cup-body"></div>
+        </div>
+        <p class="loader-text">OMILEN COFFEE</p>
+    </div>
+
+    <!-- AMBIENT ORBS -->
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="nav-brand">Omilen<span class="dot">.</span></a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home" class="active">Beranda</a></li>
+            <li><a href="#about">Tentang</a></li>
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="#gallery">Galeri</a></li>
+            <li><a href="#reviews">Ulasan</a></li>
+            <li><a href="#location">Lokasi</a></li>
+            <li><a href="#contact" class="nav-cta">Hubungi Kami</a></li>
+        </ul>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- MOBILE NAV OVERLAY -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay">
+        <ul class="mobile-nav-links">
+            <li><a href="#home" data-nav>Beranda</a></li>
+            <li><a href="#about" data-nav>Tentang</a></li>
+            <li><a href="#menu" data-nav>Menu</a></li>
+            <li><a href="#gallery" data-nav>Galeri</a></li>
+            <li><a href="#reviews" data-nav>Ulasan</a></li>
+            <li><a href="#location" data-nav>Lokasi</a></li>
+            <li><a href="#contact" data-nav>Hubungi Kami</a></li>
+        </ul>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="home">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <span class="hero-tag reveal">☕ Coffee Shop di Medan Johor</span>
+            <h1 class="hero-title reveal reveal-delay-1">
+                OMILEN COFFEE
+                <span class="accent">— sejak 2023 —</span>
+            </h1>
+            <p class="hero-subtitle reveal reveal-delay-2">
+                Tempat nyaman untuk menikmati kopi, bersantai, dan berkumpul.
+                Suasana hangat dengan sentuhan modern industrial yang bikin betah.
+            </p>
+            <div class="hero-buttons reveal reveal-delay-3">
+                <a href="#menu" class="btn btn-primary">☕ Lihat Menu</a>
+                <a href="#location" class="btn btn-outline">📍 Kunjungi Kami</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section class="section" id="about">
+        <div class="container">
+            <span class="section-label reveal">Tentang Kami</span>
+            <div class="about-grid">
+                <div class="about-image-wrapper reveal">
+                    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80"
+                    alt="Omilen Coffee interior"
+                    loading="lazy"
+                    onerror="this.style.background='linear-gradient(135deg, #1c1610, #2a1f16)'; this.style.minHeight='300px';">
+                </div>
+                <div>
+                    <h2 class="section-title reveal reveal-delay-1">
+                        Lebih dari sekadar secangkir kopi
+                    </h2>
+                    <p class="section-desc reveal reveal-delay-2">
+                        Omilen Coffee hadir sebagai ruang nyaman di tengah Medan Johor —
+                        tempat di mana aroma kopi segar berpadu dengan suasana hangat yang
+                        mengundang. Kami percaya bahwa setiap kunjungan adalah momen
+                        istimewa yang pantas dinikmati dengan tenang.
+                    </p>
+                    <ul class="about-info-list reveal reveal-delay-3">
+                        <li class="about-info-item">
+                            <span class="about-info-icon">📍</span>
+                            <div class="about-info-text">
+                                <strong>Alamat</strong>
+                                <span>Jl. Karya Wisata No.20, Pangkalan Masyhur, Kec. Medan Johor, Kota Medan, Sumatera Utara 20143</span>
+                            </div>
+                        </li>
+                        <li class="about-info-item">
+                            <span class="about-info-icon">🕐</span>
+                            <div class="about-info-text">
+                                <strong>Jam Buka</strong>
+                                <span>Setiap hari · 06:00 — 22:00</span>
+                            </div>
+                        </li>
+                        <li class="about-info-item">
+                            <span class="about-info-icon">📞</span>
+                            <div class="about-info-text">
+                                <strong>WhatsApp</strong>
+                                <span>0821-6664-0266</span>
+                            </div>
+                        </li>
+                        <li class="about-info-item">
+                            <span class="about-info-icon">❄️</span>
+                            <div class="about-info-text">
+                                <strong>Fasilitas</strong>
+                                <span>Indoor AC · Outdoor area · Wi-Fi · Area parkir luas</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MENU SECTION -->
+    <section class="section" id="menu" style="background: var(--bg-surface);">
+        <div class="container">
+            <span class="section-label reveal">Menu Kami</span>
+            <h2 class="section-title reveal reveal-delay-1">Pilihan terbaik untukmu</h2>
+            <p class="section-desc reveal reveal-delay-2" style="margin-bottom: 32px;">
+                Dari kopi klasik hingga menu favorit, semuanya dibuat dengan bahan berkualitas dan penuh perhatian.
+            </p>
+            <div class="menu-filters reveal reveal-delay-2">
+                <button class="menu-filter-btn active" data-filter="all">Semua</button>
+                <button class="menu-filter-btn" data-filter="minuman">☕ Minuman</button>
+                <button class="menu-filter-btn" data-filter="makanan">🍽 Makanan</button>
+            </div>
+            <div class="menu-grid" id="menuGrid">
+                <!-- Menu items -->
+                <div class="menu-card reveal" data-category="minuman">
+                    <span class="menu-card-badge">Populer</span>
+                    <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&q=80"
+                    alt="Kopi Susu Gula Aren" class="menu-card-img" loading="lazy"
+                    onerror="this.style.background='linear-gradient(135deg, #3b2618, #5c3822)'; this.style.minHeight='190px'; this.src='';">
+                    <div class="menu-card-body">
+                        <h4>Kopi Susu Gula Aren</h4>
+                        <p class="menu-desc">Espresso kental berpadu susu creamy dan manis alami gula aren.</p>
+                        <span class="menu-price">Rp 22.000</span>
+                    </div>
+                </div>
+                <div class="menu-card reveal reveal-delay-1" data-category="minuman">
+                    <img src="https://images.unsplash.com/photo-1551030173-122aabc4489c?w=500&q=80"
+                    alt="Americano" class="menu-card-img" loading="lazy"
+                    onerror="this.style.background='linear-gradient(135deg, #2a1a10, #3d2618)'; this.style.minHeight='190px'; this.src='';">
+                    <div class="menu-card-body">
+                        <h4>Americano</h4>
+                        <p class="menu-desc">Espresso murni dengan air panas — ringan, bersih, dan berkarakter.</p>
+                        <span class="menu-price">Rp 18.000</span>
+                    </div>
+                </div>
+                <div class="menu-card reveal reveal-delay-2" data-category="minuman">
+                    <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=500&q=80"
+                    alt="Cappuccino" class="menu-card-img" loading="lazy"
+                    onerror="this.style.background='linear-gradient(135deg, #2e1c10, #4a2d1a)'; this.style.minHeight='190px'; this.src='';">
+                    <div class="menu-card-body">
+                        <h4>Cappuccino</h4>
+                        <p class="menu-desc">Espresso, steamed milk, dan foam lembut — klasik yang selalu memuaskan.</p>
+                        <span class="menu-price">Rp 24.000</span>
+                    </div>
+                </div>
+                <div class="menu-card reveal" data-category="minuman">
+                    <img src="https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?w=500&q=80"
+                    alt="Latte" class="menu-card-img" loading="lazy"
+                    onerror="this.style.background='linear-gradient(135deg, #352215, #4f3320)'; this.style.minHeight='190px'; this.src='';">
+                    <div class="menu-card-body">
+                        <h4>Latte</h4>
+                        <p class="menu-desc">Keseimbangan sempurna antara espresso dan susu segar yang creamy.</p>
+                        <span class="menu-price">Rp 24.000</span>
+                    </div>
+                </div>
+                <div class="menu-card reveal reveal-delay-1" data-category="minuman">
+                    <span class="menu-card-badge">Favorit</span>
+                    <img src="https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=500&q=80"
+                    alt="Espresso" class="menu-card-img" loading="lazy"
+                    onerror="this.style.background='linear-gradient(135deg, #1f1008, #3a1f10)'; this.style.minHeight='190px'; this.src='';">
+                    <div class="menu-card-body">
+                        <h4>Espresso</h4>
+                        <p class="menu-desc">Shot murni biji kopi pilihan — intens, pekat, dan penuh cita rasa.</p>
+                        <span class="menu-price">Rp 16.000</span>
+                    </div>
+                </div>
+                <div class="menu-card reveal reveal-delay-2" data-category="minuman">
+                    <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&q=80"
+                    alt="Teh Manis Dingin" class="menu-card-img" loading="lazy"
+                    onerror="this.style.background='linear-gradient(135deg, #2c1f10, #4a3520)'; this.style.minHeight='190px'; this.src='';">
+                    <div class="menu-card-body">
+                        <h4>Teh Manis Dingin</h4>
+                        <p class="menu-desc">Teh segar dengan manis pas — teman setia cuaca tropis Medan.</p>
+                        <span class="menu-price">Rp 12.000</span>
+                    </div>
+                </div>
+                <div class="menu-card reveal" data-category="makanan">
+                    <img src="https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=500&q=80"
+                    alt="Mie Goreng" class="menu-card-img" loading="lazy"
+                    onerror="this.style.background='linear-gradient(135deg, #3a2810, #5c3d1a)'; this.style.minHeight='190px'; this.src='';">
+                    <div class="menu-card-body">
+                        <h4>Mie Goreng</h4>
+                        <p class="menu-desc">Mie goreng khas dengan bumbu rempah — gurih, hangat, dan mengenyangkan.</p>
+                        <span class="menu-price">Rp 20.000</span>
+                    </div>
+                </div>
+                <div class="menu-card reveal reveal-delay-1" data-category="makanan">
+                    <span class="menu-card-badge">Best Seller</span>
+                    <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?w=500&q=80"
+                    alt="Nasi Goreng" class="menu-card-img" loading="lazy"
+                    onerror="this.style.background='linear-gradient(135deg, #3d2a12, #5e3f1c)'; this.style.minHeight='190px'; this.src='';">
+                    <div class="menu-card-body">
+                        <h4>Nasi Goreng</h4>
+                        <p class="menu-desc">Nasi goreng spesial ala Omilen — lengkap dengan telur dan kerupuk renyah.</p>
+                        <span class="menu-price">Rp 25.000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY SECTION -->
+    <section class="section" id="gallery">
+        <div class="container">
+            <span class="section-label reveal">Galeri</span>
+            <h2 class="section-title reveal reveal-delay-1">Suasana Omilen Coffee</h2>
+            <p class="section-desc reveal reveal-delay-2" style="margin-bottom: 36px;">
+                Lihat sendiri vibes cozy yang bikin kamu betah berlama-lama di sini.
+            </p>
+            <div class="gallery-masonry reveal reveal-delay-2">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&q=80"
+                    alt="Interior coffee shop" loading="lazy"
+                    onerror="this.style.background='linear-gradient(135deg, #1c1610, #3a2a1a)'; this.style.minHeight='250px'; this.src='';">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80"
+                    alt="Coffee preparation" loading="lazy"
+                    onerror="this.style.background='linear-gradient(135deg, #2a1f14, #4a3520)'; this.style.minHeight='320px'; this.src='';">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=600&q=80"
+                    alt="Coffee beans" loading="lazy"
+                    onerror="this.style.background='linear-gradient(135deg, #1a1008, #352215)'; this.style.minHeight='200px'; this.src='';">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80"
+                    alt="Outdoor seating" loading="lazy"
+                    onerror="this.style.background='linear-gradient(135deg, #2c1f12, #453020)'; this.style.minHeight='280px'; this.src='';">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=600&q=80"
+                    alt="Cozy atmosphere" loading="lazy"
+                    onerror="this.style.background='linear-gradient(135deg, #1e140c, #362818)'; this.style.minHeight='240px'; this.src='';">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefda?w=600&q=80"
+                    alt="Latte art" loading="lazy"
+                    onerror="this.style.background='linear-gradient(135deg, #25180e, #3d2818)'; this.style.minHeight='300px'; this.src='';">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- REVIEWS SECTION -->
+    <section class="section" id="reviews" style="background: var(--bg-surface);">
+        <div class="container">
+            <span class="section-label reveal">Ulasan</span>
+            <h2 class="section-title reveal reveal-delay-1">Apa kata mereka</h2>
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 28px;" class="reveal reveal-delay-2">
+                <span style="font-size: 2rem; color: #d4a853;">★★★★★</span>
+                <span style="font-weight: 700; color: var(--cream-light); font-size: 1.3rem;">4.6</span>
+                <span style="color: var(--text-secondary); font-size: 0.9rem;">dari 200+ ulasan</span>
+            </div>
+            <div class="reviews-slider-wrapper reveal reveal-delay-2">
+                <div class="reviews-track" id="reviewsTrack">
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <div class="review-quote">“</div>
+                        <p class="review-text">Tempatnya nyaman dan cozy banget. Interiornya Instagramable, kopinya juga enak. Cocok buat nongkrong sore sambil kerja atau ngobrol santai.</p>
+                        <p class="review-author">— Rina A.</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <div class="review-quote">“</div>
+                        <p class="review-text">Cocok nongkrong sore. Outdoor-nya adem, ada tanaman hijau bikin seger. Kopi susu gula arennya juara, wajib coba!</p>
+                        <p class="review-author">— Dimas P.</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★☆</div>
+                        <div class="review-quote">“</div>
+                        <p class="review-text">Kopi dan suasananya mantap. Pelayan ramah, tempat bersih, dan yang penting harganya masih terjangkau. Langganan sekarang.</p>
+                        <p class="review-author">— Sari W.</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <div class="review-quote">“</div>
+                        <p class="review-text">Nasi gorengnya enak banget! Porsinya pas, bumbunya terasa. Ditambah es teh manis, udah deh, siang jadi sempurna.</p>
+                        <p class="review-author">— Andi K.</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <div class="review-quote">“</div>
+                        <p class="review-text">Tempat favorit buat kumpul teman-teman. Suasananya chill, musiknya enak, bikin betah berjam-jam. Highly recommended!</p>
+                        <p class="review-author">— Lia M.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="reviews-nav reveal reveal-delay-3">
+                <button id="reviewPrev" aria-label="Previous review">←</button>
+                <button id="reviewNext" aria-label="Next review">→</button>
+            </div>
+            <div class="review-dots" id="reviewDots"></div>
+        </div>
+    </section>
+
+    <!-- LOCATION SECTION -->
+    <section class="section" id="location">
+        <div class="container">
+            <span class="section-label reveal">Lokasi</span>
+            <h2 class="section-title reveal reveal-delay-1">Temukan kami</h2>
+            <p class="section-desc reveal reveal-delay-2" style="margin-bottom: 36px;">
+                Datang langsung dan rasakan sendiri suasana cozy Omilen Coffee. Kami tunggu kedatanganmu!
+            </p>
+            <div class="location-grid">
+                <div class="map-wrapper reveal">
+                    <iframe
+                    src="https://www.google.com/maps?q=Jl.+Karya+Wisata+No.20+Medan+Johor+Medan+Sumatera+Utara&output=embed"
+                    title="Omilen Coffee Location"
+                    loading="lazy"
+                    allowfullscreen
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+            <div class="location-details reveal reveal-delay-2">
+                <div class="location-card">
+                    <h4>📍 Alamat Lengkap</h4>
+                    <p>Jl. Karya Wisata No.20, Pangkalan Masyhur, Kec. Medan Johor, Kota Medan, Sumatera Utara 20143</p>
+                </div>
+                <div class="location-card">
+                    <h4>🕐 Jam Operasional</h4>
+                    <p>Senin — Minggu<br>06:00 — 22:00<br><span style="font-size:0.8rem;color:var(--text-muted);">Buka setiap hari, termasuk hari libur nasional</span></p>
+                </div>
+                <div class="location-card">
+                    <h4>🚗 Akses & Parkir</h4>
+                    <p>Area parkir luas tersedia untuk motor dan mobil. Mudah dijangkau dari Jl. Karya Wisata utama.</p>
+                </div>
+                <a href="https://www.google.com/maps?q=Jl.+Karya+Wisata+No.20+Medan+Johor+Medan"
+                target="_blank" rel="noopener"
+                class="btn btn-outline"
+                style="align-self: flex-start; margin-top: 8px;">
+                🗺 Buka Google Maps
+            </a>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- CONTACT / FOOTER SECTION -->
+<section class="contact-section" id="contact">
+    <div class="container">
+        <div class="contact-grid">
+            <div class="contact-col">
+                <h4>Omilen Coffee</h4>
+                <p>Tempat nyaman untuk menikmati kopi, bersantai, dan berkumpul sejak 2023. Hadir dengan suasana hangat di tengah kota Medan.</p>
+                <div class="contact-social">
+                    <a href="https://wa.me/6282166640266" target="_blank" rel="noopener" title="WhatsApp" aria-label="WhatsApp">💬</a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener" title="Instagram" aria-label="Instagram">📸</a>
+                    <a href="tel:+6282166640266" title="Telepon" aria-label="Telepon">📞</a>
+                </div>
+            </div>
+            <div class="contact-col">
+                <h4>Kontak</h4>
+                <a href="https://wa.me/6282166640266" target="_blank" rel="noopener">💬 WhatsApp: 0821-6664-0266</a>
+                <a href="tel:+6282166640266">📞 Telepon: 0821-6664-0266</a>
+                <a href="mailto:omilencoffee@gmail.com">✉️ omilencoffee@gmail.com</a>
+                <p style="margin-top:8px;">🕐 Buka 06:00 — 22:00</p>
+            </div>
+            <div class="contact-col">
+                <h4>Quick Links</h4>
+                <a href="#home">Beranda</a>
+                <a href="#about">Tentang Kami</a>
+                <a href="#menu">Menu</a>
+                <a href="#gallery">Galeri</a>
+                <a href="#reviews">Ulasan</a>
+                <a href="#location">Lokasi</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Omilen Coffee. All rights reserved. Made with ☕ in Medan.</p>
+        </div>
+    </div>
+</section>
+
+<!-- FLOATING WHATSAPP BUTTON -->
+<a href="https://wa.me/6282166640266" target="_blank" rel="noopener"
+class="floating-wa" aria-label="Chat via WhatsApp" title="Pesan via WhatsApp">
+💬
+</a>
+
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" aria-label="Back to top" title="Kembali ke atas">
+    ↑
+</button>
+
+<script>
+    (function() {
+        // ─── LOADING SCREEN ──────────────────────────
+        const loadingScreen = document.getElementById('loading-screen');
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+            }, 1200);
+        });
+        // Fallback if load event already fired
+        if (document.readyState === 'complete') {
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+            }, 800);
+        }
+
+        // ─── NAVBAR SCROLL ───────────────────────────
+        const navbar = document.getElementById('navbar');
+        const backToTop = document.getElementById('backToTop');
+        const navLinks = document.querySelectorAll('#navLinks a');
+        const sections = document.querySelectorAll('section[id], .hero[id]');
+
+        function updateNavOnScroll() {
+            const scrollY = window.scrollY;
+            // Sticky navbar
+            if (scrollY > 60) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            // Back to top
+            if (scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+            // Active nav link
+            let currentSection = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 120;
+                if (scrollY >= sectionTop) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + currentSection) {
+                    link.classList.add('active');
+                }
+            });
+            // Also update mobile nav links
+            document.querySelectorAll('.mobile-nav-links a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        window.addEventListener('scroll', updateNavOnScroll, { passive: true });
+        updateNavOnScroll();
+
+        // ─── MOBILE MENU ─────────────────────────────
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+        const mobileNavLinks = document.querySelectorAll('[data-nav]');
+
+        menuToggle.addEventListener('click', () => {
+            const isActive = mobileNavOverlay.classList.contains('active');
+            if (isActive) {
+                mobileNavOverlay.classList.remove('active');
+                menuToggle.classList.remove('active');
+                document.body.style.overflow = '';
+            } else {
+                mobileNavOverlay.classList.add('active');
+                menuToggle.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNavOverlay.classList.remove('active');
+                menuToggle.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+        mobileNavOverlay.addEventListener('click', (e) => {
+            if (e.target === mobileNavOverlay) {
+                mobileNavOverlay.classList.remove('active');
+                menuToggle.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // ─── BACK TO TOP ─────────────────────────────
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ─── SCROLL REVEAL ───────────────────────────
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.12,
+            rootMargin: '0px 0px -40px 0px'
+        });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // ─── MENU FILTER ─────────────────────────────
+        const filterButtons = document.querySelectorAll('.menu-filter-btn');
+        const menuCards = document.querySelectorAll('.menu-card');
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const filter = btn.getAttribute('data-filter');
+                menuCards.forEach(card => {
+                    const category = card.getAttribute('data-category');
+                    if (filter === 'all' || category === filter) {
+                        card.style.display = '';
+                        card.style.animation = 'fadeInCard 0.4s ease forwards';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // ─── REVIEWS SLIDER ──────────────────────────
+        const reviewsTrack = document.getElementById('reviewsTrack');
+        const reviewCards = document.querySelectorAll('.review-card');
+        const reviewPrev = document.getElementById('reviewPrev');
+        const reviewNext = document.getElementById('reviewNext');
+        const reviewDotsContainer = document.getElementById('reviewDots');
+        let currentReviewIndex = 0;
+        let reviewsPerView = 3;
+        let autoSlideInterval;
+
+        function getReviewsPerView() {
+            if (window.innerWidth <= 640) return 1;
+            if (window.innerWidth <= 1024) return 2;
+            return 3;
+        }
+
+        function updateReviewsPerView() {
+            reviewsPerView = getReviewsPerView();
+            createDots();
+            goToReview(currentReviewIndex);
+        }
+
+        function createDots() {
+            const totalDots = Math.max(1, reviewCards.length - reviewsPerView + 1);
+            reviewDotsContainer.innerHTML = '';
+            for (let i = 0; i < totalDots; i++) {
+                const dot = document.createElement('span');
+                dot.classList.add('review-dot');
+                if (i === currentReviewIndex) dot.classList.add('active');
+                dot.addEventListener('click', () => goToReview(i));
+                reviewDotsContainer.appendChild(dot);
+            }
+        }
+
+        function goToReview(index) {
+            const totalDots = Math.max(1, reviewCards.length - reviewsPerView + 1);
+            currentReviewIndex = Math.max(0, Math.min(index, totalDots - 1));
+            const cardWidth = reviewCards[0]?.offsetWidth || 380;
+            const gap = 24;
+            const offset = currentReviewIndex * (cardWidth + gap);
+            reviewsTrack.style.transform = `translateX(-${offset}px)`;
+            // Update dots
+            const dots = reviewDotsContainer.querySelectorAll('.review-dot');
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentReviewIndex);
+            });
+        }
+
+        function nextReview() {
+            const totalDots = Math.max(1, reviewCards.length - reviewsPerView + 1);
+            if (currentReviewIndex >= totalDots - 1) {
+                goToReview(0);
+            } else {
+                goToReview(currentReviewIndex + 1);
+            }
+        }
+
+        function prevReview() {
+            const totalDots = Math.max(1, reviewCards.length - reviewsPerView + 1);
+            if (currentReviewIndex <= 0) {
+                goToReview(totalDots - 1);
+            } else {
+                goToReview(currentReviewIndex - 1);
+            }
+        }
+
+        function startAutoSlide() {
+            stopAutoSlide();
+            autoSlideInterval = setInterval(nextReview, 4500);
+        }
+
+        function stopAutoSlide() {
+            if (autoSlideInterval) clearInterval(autoSlideInterval);
+        }
+
+        reviewPrev.addEventListener('click', () => {
+            prevReview();
+            stopAutoSlide();
+            startAutoSlide();
+        });
+        reviewNext.addEventListener('click', () => {
+            nextReview();
+            stopAutoSlide();
+            startAutoSlide();
+        });
+        reviewsTrack.addEventListener('mouseenter', stopAutoSlide);
+        reviewsTrack.addEventListener('mouseleave', startAutoSlide);
+        // Touch swipe support
+        let touchStartX = 0;
+        reviewsTrack.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            stopAutoSlide();
+        }, { passive: true });
+        reviewsTrack.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) nextReview();
+                else prevReview();
+            }
+            startAutoSlide();
+        });
+
+        updateReviewsPerView();
+        goToReview(0);
+        startAutoSlide();
+        window.addEventListener('resize', () => {
+            updateReviewsPerView();
+            goToReview(currentReviewIndex);
+        });
+
+        // ─── SMOOTH SCROLL FOR ALL ANCHOR LINKS ──────
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                const target = document.querySelector(href);
+                if (target) {
+                    e.preventDefault();
+                    const navHeight = navbar.offsetHeight + 20;
+                    const targetPosition = target.offsetTop - navHeight;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // ─── KEYBOARD NAVIGATION ─────────────────────
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileNavOverlay.classList.contains('active')) {
+                mobileNavOverlay.classList.remove('active');
+                menuToggle.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        console.log('%c☕ Omilen Coffee %c— Website siap!',
+            'font-size:1.2rem; color:#c4946c; font-weight:bold;',
+            'color:#b8a898;');
+        console.log('%cDesain premium · Warm dark mode · Cozy aesthetic',
+            'color:#8a7b6e; font-style:italic;');
+    })();
+</script>
+
+<!-- Inline keyframe for menu card filter animation -->
+<style>
+    @keyframes fadeInCard {
+        from {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+</body>
+</html>

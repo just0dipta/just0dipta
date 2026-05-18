@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daftar — Dipta Digital Service</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    .auth-page { display: flex; min-height: 100vh; align-items: center; justify-content: center; padding: 2rem; background: var(--color-bg-secondary); }
+    .auth-card { background: var(--color-card-bg); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: 3rem 2rem; width: 100%; max-width: 440px; box-shadow: var(--shadow-lg); }
+    .auth-card h2 { font-weight: 700; font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .auth-card p { color: var(--color-text-secondary); margin-bottom: 2rem; font-size: 0.95rem; }
+    .form-group { margin-bottom: 1.25rem; text-align: left; }
+    .form-group label { font-weight: 600; font-size: 0.9rem; display: block; margin-bottom: 0.4rem; }
+    .form-group input { width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); font-family: inherit; }
+    .form-group input:focus { border-color: var(--color-purple); outline: none; box-shadow: 0 0 0 3px rgba(124,58,237,0.1); }
+    .btn--full { width: 100%; justify-content: center; }
+    .auth-footer { margin-top: 1.5rem; font-size: 0.9rem; }
+    .auth-footer a { color: var(--color-purple); font-weight: 600; }
+    .divider { display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0; color: var(--color-text-secondary); }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--color-border); }
+  </style>
+</head>
+<body class="auth-page">
+  <div class="auth-card reveal-up visible">
+    <div style="text-align:center; margin-bottom:1rem;"><span style="font-size:2rem;">✦</span></div>
+    <h2 style="text-align:center;">Buat Akun</h2>
+    <p style="text-align:center;">Mulai perjalanan digital Anda bersama kami.</p>
+    <form id="registerForm">
+      <div class="form-group">
+        <label for="name">Nama Lengkap</label>
+        <input type="text" id="name" placeholder="Nama Anda" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="anda@email.com" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Min. 6 karakter" required minlength="6">
+      </div>
+      <button type="submit" class="btn btn--primary btn--full btn--lg">Daftar Sekarang</button>
+    </form>
+    <div class="auth-footer" style="text-align:center;">
+      Sudah punya akun? <a href="login.html">Masuk</a>
+    </div>
+    <div class="divider">atau</div>
+    <button class="btn btn--outline btn--full" onclick="alert('Google sign-up via Firebase')">Daftar dengan Google</button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB_PLACEHOLDER",
+      authDomain: "dipta-digital.firebaseapp.com",
+      databaseURL: "https://dipta-digital-default-rtdb.firebaseio.com",
+      projectId: "dipta-digital",
+      storageBucket: "dipta-digital.appspot.com",
+      messagingSenderId: "123456789",
+      appId: "1:123456789:web:abc123"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        await updateProfile(user, { displayName: name });
+        // Simpan ke realtime database
+        await set(ref(db, 'users/' + user.uid), {
+          name: name,
+          email: email,
+          role: 'user',
+          createdAt: new Date().toISOString()
+        });
+        window.location.href = 'dashboard.html';
+      } catch (error) {
+        alert('Pendaftaran gagal: ' + error.message);
+      }
+    });
+  </script>
+</body>
+</html>

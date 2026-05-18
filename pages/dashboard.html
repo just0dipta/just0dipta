@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Dipta Digital</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    .dashboard-layout { display: flex; min-height: 100vh; }
+    .sidebar { width: 260px; background: var(--color-card-bg); border-right: 1px solid var(--color-border); padding: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+    .sidebar__logo { font-weight: 700; font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem; }
+    .sidebar__nav { display: flex; flex-direction: column; gap: 0.25rem; }
+    .sidebar__link { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.75rem; border-radius: var(--radius-md); font-weight: 500; color: var(--color-text-secondary); transition: 0.2s; }
+    .sidebar__link:hover, .sidebar__link.active { background: var(--color-purple-bg); color: var(--color-purple); }
+    .sidebar__footer { margin-top: auto; }
+    .main-content { flex: 1; padding: 2rem; background: var(--color-bg-secondary); overflow-y: auto; }
+    .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+    .user-info { display: flex; align-items: center; gap: 1rem; }
+    .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--color-purple); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .stat-card { background: var(--color-card-bg); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 1.25rem; }
+    .stat-card__label { color: var(--color-text-secondary); font-size: 0.85rem; }
+    .stat-card__value { font-size: 1.8rem; font-weight: 700; }
+    .projects-list { display: flex; flex-direction: column; gap: 1rem; }
+    .project-item { background: var(--color-card-bg); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 1.25rem; display: flex; justify-content: space-between; align-items: center; }
+    .badge-status { padding: 0.2rem 0.75rem; border-radius: 100px; font-size: 0.8rem; font-weight: 600; }
+    .badge--pending { background: #fef3c7; color: #92400e; }
+    .badge--progress { background: #dbeafe; color: #1e40af; }
+    .badge--done { background: #d1fae5; color: #065f46; }
+    @media (max-width: 768px) { .sidebar { display: none; } .dashboard-layout { flex-direction: column; } }
+  </style>
+</head>
+<body>
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar__logo">
+        <span>✦</span> DiptaDigital
+      </div>
+      <nav class="sidebar__nav">
+        <a href="#" class="sidebar__link active">🏠 Overview</a>
+        <a href="websites.html" class="sidebar__link">🌐 Website Saya</a>
+        <a href="domains.html" class="sidebar__link">🔗 Domain</a>
+        <a href="billing.html" class="sidebar__link">💳 Invoice & Tagihan</a>
+        <a href="consultation.html" class="sidebar__link">💬 Konsultasi</a>
+        <a href="profile.html" class="sidebar__link">👤 Profil</a>
+      </nav>
+      <div class="sidebar__footer">
+        <button class="btn btn--ghost btn--full" id="logoutBtn">Keluar</button>
+      </div>
+    </aside>
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="dashboard-header">
+        <div>
+          <h1 style="font-weight:700; font-size:1.5rem;">Selamat datang, <span id="userName">User</span></h1>
+          <p style="color:var(--color-text-secondary);">Kelola project dan pantau perkembangannya.</p>
+        </div>
+        <div class="user-info">
+          <div class="avatar" id="avatarInitial">U</div>
+        </div>
+      </div>
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card__label">Total Project</div>
+          <div class="stat-card__value" id="totalProjects">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__label">Dalam Proses</div>
+          <div class="stat-card__value" id="inProgress">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__label">Tagihan Pending</div>
+          <div class="stat-card__value" id="pendingBills">0</div>
+        </div>
+      </div>
+      <!-- Project List -->
+      <h2 style="font-weight:600; margin-bottom:1rem;">Project Terbaru</h2>
+      <div class="projects-list" id="projectsContainer">
+        <p style="color:var(--color-text-secondary);">Belum ada project. <a href="websites.html" style="color:var(--color-purple);">Pesan website sekarang</a></p>
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+    const firebaseConfig = { /* Isi konfigurasi */ };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) { window.location.href = 'login.html'; return; }
+      document.getElementById('userName').textContent = user.displayName || 'User';
+      document.getElementById('avatarInitial').textContent = (user.displayName || 'U')[0].toUpperCase();
+      // Ambil data user dari database
+      const snapshot = await get(child(ref(db), `users/${user.uid}`));
+      if (snapshot.exists()) {
+        const userData = snapshot.val();
+        // Tampilkan statistik (contoh static, nanti bisa dari database)
+        document.getElementById('totalProjects').textContent = userData.projects?.length || 0;
+      }
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      signOut(auth).then(() => window.location.href = '../index.html');
+    });
+  </script>
+</body>
+</html>
