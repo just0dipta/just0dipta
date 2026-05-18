@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Website Saya — Dipta Digital</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    .dashboard-layout { display: flex; min-height: 100vh; }
+    .sidebar { width: 260px; background: var(--color-card-bg); border-right: 1px solid var(--color-border); padding: 1.5rem; }
+    .main-content { flex: 1; padding: 2rem; background: var(--color-bg-secondary); }
+    .project-card { background: var(--color-card-bg); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
+    .progress-bar { width: 100%; height: 6px; background: var(--color-border); border-radius: 3px; margin-top: 0.5rem; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--color-purple); border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <div class="dashboard-layout">
+    <aside class="sidebar" id="sidebarContainer"></aside>
+    <main class="main-content" id="websitesContent">
+      <h2>🌐 Website Saya</h2>
+      <div id="projectList"></div>
+      <button class="btn btn--primary mt-4" onclick="window.location.href='consultation.html'">Pesan Website Baru</button>
+    </main>
+  </div>
+
+  <script type="module">
+    import { initSidebar } from '../components/sidebar.js';
+    initSidebar('sidebarContainer', [
+      { label: 'Overview', href: 'dashboard.html', icon: '🏠' },
+      { label: 'Website Saya', href: 'websites.html', icon: '🌐', active: true },
+      { label: 'Domain', href: 'domains.html', icon: '🔗' },
+      { label: 'Invoice', href: 'billing.html', icon: '💳' },
+      { label: 'Konsultasi', href: 'consultation.html', icon: '💬' },
+      { label: 'Profil', href: 'profile.html', icon: '👤' },
+    ]);
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+    const firebaseConfig = { /* ... */ };
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) window.location.href = 'login.html';
+      const projectRef = ref(db, `projects/${user.uid}`);
+      onValue(projectRef, (snap) => {
+        const projects = snap.val();
+        const list = document.getElementById('projectList');
+        if (!projects) { list.innerHTML = '<p>Belum ada project. Pesan sekarang!</p>'; return; }
+        list.innerHTML = Object.entries(projects).map(([id, p]) => `
+          <div class="project-card">
+            <div>
+              <strong>${p.package} - ${p.domain}</strong>
+              <div class="progress-bar"><div class="progress-fill" style="width:${p.progress || 0}%"></div></div>
+              <small>Status: ${p.status}</small>
+            </div>
+            <span class="badge-status badge--${p.status === 'completed' ? 'done' : 'progress'}">${p.status}</span>
+          </div>
+        `).join('');
+      });
+    });
+  </script>
+</body>
+</html>

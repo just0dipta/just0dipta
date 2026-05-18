@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Konsultasi — Dipta Digital</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    .chat-container { max-width: 600px; margin: 2rem auto; background: var(--color-card-bg); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: 1.5rem; }
+    .chat-messages { height: 400px; overflow-y: auto; margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    .msg { max-width: 80%; padding: 0.5rem 1rem; border-radius: 1rem; }
+    .msg-user { background: var(--color-purple-bg); align-self: flex-end; }
+    .msg-admin { background: var(--color-bg-secondary); align-self: flex-start; }
+    .chat-input { display: flex; gap: 0.5rem; }
+    .chat-input input { flex: 1; }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <h2>💬 Konsultasi dengan Admin</h2>
+    <div class="chat-messages" id="chatMessages"></div>
+    <form class="chat-input" id="chatForm">
+      <input type="text" id="messageInput" placeholder="Ketik pesan..." required class="form-control">
+      <button type="submit" class="btn btn--primary">Kirim</button>
+    </form>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getDatabase, ref, push, onChildAdded, query, orderByChild } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+    const firebaseConfig = { /* ... */ };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    onAuthStateChanged(auth, user => {
+      if (!user) window.location.href = 'login.html';
+      const chatRef = ref(db, `consultations/${user.uid}`);
+      const q = query(chatRef, orderByChild('timestamp'));
+      onChildAdded(q, (snap) => {
+        const msg = snap.val();
+        const div = document.createElement('div');
+        div.className = `msg ${msg.sender === 'user' ? 'msg-user' : 'msg-admin'}`;
+        div.textContent = msg.message;
+        document.getElementById('chatMessages').appendChild(div);
+        document.getElementById('chatMessages').scrollTop = 9999;
+      });
+
+      document.getElementById('chatForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const input = document.getElementById('messageInput');
+        if (!input.value.trim()) return;
+        push(chatRef, {
+          message: input.value,
+          sender: 'user',
+          timestamp: Date.now()
+        });
+        input.value = '';
+      });
+    });
+  </script>
+</body>
+</html>

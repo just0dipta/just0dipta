@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel — Dipta Digital</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    .admin-layout { display: flex; min-height: 100vh; }
+    .admin-sidebar { width: 260px; background: var(--color-card-bg); border-right: 1px solid var(--color-border); padding: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+    .admin-sidebar__logo { font-weight: 700; font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem; }
+    .admin-sidebar__nav { display: flex; flex-direction: column; gap: 0.25rem; flex: 1; }
+    .admin-sidebar__link { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.75rem; border-radius: var(--radius-md); font-weight: 500; color: var(--color-text-secondary); transition: 0.2s; cursor: pointer; text-decoration: none; }
+    .admin-sidebar__link:hover, .admin-sidebar__link.active { background: var(--color-purple-bg); color: var(--color-purple); }
+    .admin-content { flex: 1; padding: 2rem; background: var(--color-bg-secondary); overflow-y: auto; }
+    .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+    .dashboard-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .admin-card { background: var(--color-card-bg); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 1.5rem; }
+    .admin-card__label { color: var(--color-text-secondary); font-size: 0.85rem; }
+    .admin-card__value { font-size: 2rem; font-weight: 700; }
+    .data-table { width: 100%; background: var(--color-card-bg); border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; }
+    .data-table th, .data-table td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); font-size: 0.9rem; }
+    .data-table th { background: var(--color-bg-secondary); font-weight: 600; }
+    .btn--sm { padding: 0.3rem 0.75rem; font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__logo"><span>✦</span> Dipta Admin</div>
+      <nav class="admin-sidebar__nav">
+        <a href="#overview" class="admin-sidebar__link active" data-section="overview">📊 Overview</a>
+        <a href="#users" class="admin-sidebar__link" data-section="users">👥 Users</a>
+        <a href="#payments" class="admin-sidebar__link" data-section="payments">💳 Pembayaran</a>
+        <a href="#invoices" class="admin-sidebar__link" data-section="invoices">📄 Invoice</a>
+        <a href="#domains" class="admin-sidebar__link" data-section="domains">🌐 Domain</a>
+        <a href="#portfolio" class="admin-sidebar__link" data-section="portfolio">📸 Portfolio</a>
+      </nav>
+      <button class="btn btn--ghost btn--full" id="logoutAdmin">Keluar</button>
+    </aside>
+    <main class="admin-content" id="adminContent">
+      <!-- Dynamic content loaded by JS -->
+    </main>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+    const firebaseConfig = { /* konfigurasi */ };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) window.location.href = 'login.html';
+      // Cek role admin (seharusnya dari database)
+    });
+
+    document.getElementById('logoutAdmin').addEventListener('click', () => signOut(auth).then(() => window.location.href = '../index.html'));
+
+    // Navigasi section
+    document.querySelectorAll('.admin-sidebar__link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelectorAll('.admin-sidebar__link').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        loadSection(link.dataset.section);
+      });
+    });
+
+    function loadSection(section) {
+      const content = document.getElementById('adminContent');
+      switch(section) {
+        case 'overview': loadOverview(content); break;
+        case 'users': loadUsers(content); break;
+        case 'payments': loadPayments(content); break;
+        case 'invoices': loadInvoices(content); break;
+        case 'domains': loadDomains(content); break;
+        case 'portfolio': loadPortfolio(content); break;
+      }
+    }
+
+    function loadOverview(container) {
+      container.innerHTML = `
+        <div class="admin-header"><h2>Overview</h2></div>
+        <div class="dashboard-cards">
+          <div class="admin-card"><div class="admin-card__label">Total Users</div><div class="admin-card__value" id="totalUsers">-</div></div>
+          <div class="admin-card"><div class="admin-card__label">Invoice Pending</div><div class="admin-card__value" id="pendingInvoices">-</div></div>
+          <div class="admin-card"><div class="admin-card__label">Pendapatan Bulan Ini</div><div class="admin-card__value">Rp --</div></div>
+        </div>`;
+      // Fetch realtime
+      const usersRef = ref(db, 'users');
+      onValue(usersRef, snap => {
+        document.getElementById('totalUsers').textContent = snap.size;
+      });
+    }
+
+    function loadUsers(container) {
+      container.innerHTML = `<div class="admin-header"><h2>Manajemen User</h2></div><div id="userTable"></div>`;
+      const usersRef = ref(db, 'users');
+      onValue(usersRef, snap => {
+        const users = snap.val();
+        let html = '<table class="data-table"><tr><th>Nama</th><th>Email</th><th>Role</th><th>Aksi</th></tr>';
+        for (let id in users) {
+          html += `<tr><td>${users[id].name}</td><td>${users[id].email}</td><td>${users[id].role || 'user'}</td>
+            <td><button class="btn btn--sm btn--ghost" onclick="editUser('${id}')">Edit</button></td></tr>`;
+        }
+        html += '</table>';
+        document.getElementById('userTable').innerHTML = html;
+      });
+    }
+
+    function loadPayments(container) {
+      container.innerHTML = `<div class="admin-header"><h2>Verifikasi Pembayaran</h2></div><div id="paymentList"></div>`;
+      const invRef = ref(db, 'invoices');
+      onValue(invRef, snap => {
+        const invs = snap.val();
+        let html = '';
+        for (let id in invs) {
+          if (invs[id].status === 'menunggu verifikasi') {
+            html += `<div class="admin-card" style="margin-bottom:1rem;">
+              <strong>${invs[id].customerName}</strong> - ${invs[id].package} (Rp${invs[id].amount})<br>
+              <button class="btn btn--sm btn--primary approve-pay" data-id="${id}">Approve</button>
+              <button class="btn btn--sm btn--ghost reject-pay" data-id="${id}">Reject</button>
+            </div>`;
+          }
+        }
+        document.getElementById('paymentList').innerHTML = html || '<p>Tidak ada pembayaran menunggu.</p>';
+        document.querySelectorAll('.approve-pay').forEach(b => b.addEventListener('click', (e) => {
+          update(ref(db, `invoices/${e.target.dataset.id}`), { status: 'paid' });
+        }));
+        document.querySelectorAll('.reject-pay').forEach(b => b.addEventListener('click', (e) => {
+          update(ref(db, `invoices/${e.target.dataset.id}`), { status: 'rejected' });
+        }));
+      });
+    }
+
+    function loadInvoices(container) {
+      container.innerHTML = `<div class="admin-header"><h2>Semua Invoice</h2></div><div id="allInvoices"></div>`;
+      const invRef = ref(db, 'invoices');
+      onValue(invRef, snap => {
+        const invs = snap.val();
+        let html = '<table class="data-table"><tr><th>ID</th><th>Customer</th><th>Paket</th><th>Total</th><th>Status</th></tr>';
+        for (let id in invs) {
+          html += `<tr><td>${id}</td><td>${invs[id].customerName}</td><td>${invs[id].package}</td><td>Rp${invs[id].amount}</td><td>${invs[id].status}</td></tr>`;
+        }
+        html += '</table>';
+        document.getElementById('allInvoices').innerHTML = html;
+      });
+    }
+
+    function loadDomains(container) { container.innerHTML = `<p>Manajemen domain (coming soon).</p>`; }
+    function loadPortfolio(container) { container.innerHTML = `<p>Manajemen portfolio (coming soon).</p>`; }
+
+    // Load default
+    loadSection('overview');
+  </script>
+</body>
+</html>
