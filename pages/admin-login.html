@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Admin Login — Dipta Digital</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    .auth-page { display: flex; min-height: 100vh; align-items: center; justify-content: center; padding: 2rem; background: var(--color-bg-secondary); }
+    .auth-card { background: var(--color-card-bg); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: 3rem 2.5rem; width: 100%; max-width: 400px; box-shadow: var(--shadow-lg); }
+    .auth-card h2 { font-weight: 700; font-size: 1.8rem; text-align: center; margin-bottom: 1rem; }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label { font-weight: 600; display: block; margin-bottom: 0.5rem; }
+    .form-group input { width: 100%; padding: 0.85rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); font-family: inherit; font-size: 1rem; }
+    .error-msg { color: #dc2626; font-size: 0.9rem; text-align: center; margin-bottom: 1rem; display: none; }
+    .btn--primary { width: 100%; padding: 0.85rem; font-size: 1rem; }
+  </style>
+</head>
+<body class="auth-page">
+  <div class="auth-card">
+    <div style="text-align:center; font-size:2.5rem;">🔐</div>
+    <h2>Admin Login</h2>
+    <p style="text-align:center; color:var(--color-text-secondary); margin-bottom:1.5rem;">Masukkan password admin.</p>
+    <div class="error-msg" id="errorMsg">Password salah.</div>
+    <form id="adminLoginForm">
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Masukkan password" required autocomplete="off">
+      </div>
+      <button type="submit" class="btn btn--primary">Masuk Admin</button>
+    </form>
+    <p style="text-align:center; margin-top:1.5rem; font-size:0.9rem;">
+      <a href="login.html">← Login User</a>
+    </p>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDX0ZI6LnmijvmVlJgbNXkbudOXaUT6fsM",
+      authDomain: "diptadigital-service.firebaseapp.com",
+      databaseURL: "https://diptadigital-service-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "diptadigital-service",
+      storageBucket: "diptadigital-service.firebasestorage.app",
+      messagingSenderId: "411938166244",
+      appId: "1:411938166244:web:75f063e07fb95ae2e9e3f1"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const ADMIN_EMAIL = "admin@diptadigital.com";
+
+    document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const password = document.getElementById('password').value;
+      const errorMsg = document.getElementById('errorMsg');
+      errorMsg.style.display = 'none';
+
+      try {
+        await signInWithEmailAndPassword(auth, ADMIN_EMAIL, password);
+        // Simpan flag bahwa admin sudah login
+        sessionStorage.setItem('adminLogin', 'true');
+        window.location.href = 'admin.html';
+      } catch (error) {
+        console.error(error);
+        errorMsg.textContent = 'Password salah atau terjadi kesalahan.';
+        errorMsg.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>

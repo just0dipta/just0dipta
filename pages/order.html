@@ -2,58 +2,67 @@
 <html lang="id" data-theme="light">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Pesan Website — Dipta Digital Service</title>
   <link rel="stylesheet" href="../assets/css/style.css">
   <style>
-    .progress-steps { display: flex; justify-content: center; margin-bottom: 2rem; }
-    .step { display: flex; align-items: center; gap: 0.5rem; }
-    .step-circle { width: 36px; height: 36px; border-radius: 50%; background: var(--color-border); color: var(--color-text-secondary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; transition: 0.3s; }
-    .step.active .step-circle { background: var(--color-purple); color: white; }
-    .step.completed .step-circle { background: #22c55e; color: white; }
-    .step-label { font-size: 0.85rem; font-weight: 500; color: var(--color-text-secondary); }
-    .step.active .step-label { color: var(--color-purple); font-weight: 600; }
-    .step-line { width: 40px; height: 2px; background: var(--color-border); margin: 0 0.5rem; }
-    .step.completed .step-line { background: #22c55e; }
-
-    .order-container { max-width: 700px; margin: 2rem auto; padding: 2rem; background: var(--color-card-bg); border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
-    .form-step { display: none; }
-    .form-step.active { display: block; }
-    .form-group { margin-bottom: 1.25rem; }
-    .form-group label { font-weight: 600; font-size: 0.9rem; display: block; margin-bottom: 0.4rem; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); font-family: inherit; }
-    .form-group textarea { resize: vertical; min-height: 80px; }
-    .btn-group { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem; }
-    .preview-domain { background: var(--color-purple-bg); padding: 0.5rem 1rem; border-radius: var(--radius-md); font-weight: 600; color: var(--color-purple); margin-top: 0.5rem; }
-    .price-summary { background: var(--color-bg-secondary); padding: 1rem; border-radius: var(--radius-md); margin-top: 1rem; }
-    .price-summary div { display: flex; justify-content: space-between; padding: 0.3rem 0; }
-    .total-price { font-weight: 700; font-size: 1.2rem; border-top: 1px solid var(--color-border); padding-top: 0.5rem; margin-top: 0.5rem; }
-    .estimate { font-size: 0.85rem; color: var(--color-text-secondary); margin-top: 0.5rem; }
+    :root {
+      --color-bg: #fff; --color-bg-secondary: #f9fafb; --color-card-bg: #fff; --color-text: #0a0a0b;
+      --color-text-secondary: #52525b; --color-border: #e4e4e7; --color-purple: #7c3aed;
+    }
+    [data-theme="dark"] {
+      --color-bg: #0f0f11; --color-bg-secondary: #1a1a1e; --color-card-bg: #1e1e22;
+      --color-text: #f1f1f3; --color-text-secondary: #a1a1aa; --color-border: #2a2a2e;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background:var(--color-bg-secondary); color:var(--color-text); }
+    .order-container { max-width:700px; margin:2rem auto; padding:2rem; background:var(--color-card-bg); border:1px solid var(--color-border); border-radius:1.5rem; box-shadow:0 8px 30px rgba(0,0,0,0.03); }
+    .progress-steps { display:flex; justify-content:center; margin-bottom:2rem; }
+    .step { display:flex; align-items:center; gap:0.5rem; }
+    .step-circle { width:36px; height:36px; border-radius:50%; background:var(--color-border); color:var(--color-text-secondary); display:flex; align-items:center; justify-content:center; font-weight:700; transition:0.3s; }
+    .step.active .step-circle { background:var(--color-purple); color:white; }
+    .step.completed .step-circle { background:#22c55e; color:white; }
+    .step-label { font-size:0.85rem; font-weight:500; color:var(--color-text-secondary); }
+    .step.active .step-label { color:var(--color-purple); font-weight:600; }
+    .step-line { width:40px; height:2px; background:var(--color-border); margin:0 0.5rem; }
+    .step.completed .step-line { background:#22c55e; }
+    .form-step { display:none; } .form-step.active { display:block; animation:fade 0.3s; }
+    @keyframes fade { from { opacity:0; } to { opacity:1; } }
+    .form-group { margin-bottom:1.25rem; }
+    .form-group label { font-weight:600; font-size:0.9rem; display:block; margin-bottom:0.4rem; }
+    .form-group input, .form-group select, .form-group textarea { width:100%; padding:0.75rem 1rem; border:1px solid var(--color-border); border-radius:0.75rem; background:var(--color-bg); font-family:inherit; }
+    .btn-group { display:flex; gap:1rem; justify-content:flex-end; margin-top:2rem; }
+    .btn { display:inline-flex; align-items:center; gap:0.5rem; padding:0.65rem 1.5rem; border-radius:0.75rem; font-weight:600; cursor:pointer; border:1px solid transparent; transition:0.2s; }
+    .btn--primary { background:var(--color-purple); color:white; }
+    .btn--ghost { background:transparent; border-color:var(--color-border); color:var(--color-text); }
+    .price-summary { background:var(--color-bg-secondary); padding:1.5rem; border-radius:1rem; margin-top:1rem; }
+    .price-summary table { width:100%; border-collapse:collapse; }
+    .price-summary td { padding:0.5rem 0; border-bottom:1px solid var(--color-border); }
+    .total-row { font-weight:700; font-size:1.2rem; }
+    .domain-preview { margin-top:0.5rem; font-weight:600; color:var(--color-purple); }
+    .checkbox-group { display:flex; align-items:center; gap:0.5rem; margin-top:0.5rem; }
+    .estimate { font-size:0.85rem; color:var(--color-text-secondary); margin-top:0.3rem; }
   </style>
 </head>
 <body>
   <div class="order-container">
     <h2 style="text-align:center; font-weight:700; margin-bottom:2rem;">Pesan Website</h2>
-    
+
+    <!-- Progress Steps -->
     <div class="progress-steps" id="progressSteps">
-      <div class="step active" id="step1Indicator">
-        <span class="step-circle">1</span><span class="step-label">Paket</span>
-      </div>
+      <div class="step active" id="step1Indicator"><span class="step-circle">1</span><span class="step-label">Paket</span></div>
       <div class="step-line"></div>
-      <div class="step" id="step2Indicator">
-        <span class="step-circle">2</span><span class="step-label">Domain</span>
-      </div>
+      <div class="step" id="step2Indicator"><span class="step-circle">2</span><span class="step-label">Domain</span></div>
       <div class="step-line"></div>
-      <div class="step" id="step3Indicator">
-        <span class="step-circle">3</span><span class="step-label">Detail</span>
-      </div>
+      <div class="step" id="step3Indicator"><span class="step-circle">3</span><span class="step-label">Detail</span></div>
+      <div class="step-line"></div>
+      <div class="step" id="step4Indicator"><span class="step-circle">4</span><span class="step-label">Konfirmasi</span></div>
     </div>
 
     <form id="orderForm">
-      <!-- Step 1 -->
+      <!-- Step 1: Paket -->
       <div class="form-step active" id="step1">
-        <div class="form-group">
-          <label>Paket Website</label>
+        <div class="form-group"><label>Paket Website</label>
           <select id="packageSelect" required>
             <option value="">-- Pilih Paket --</option>
             <option value="basic" data-price="200000">💠 Basic Package - Rp200.000</option>
@@ -64,17 +73,14 @@
           </select>
           <div class="estimate" id="packageEstimate"></div>
         </div>
-        <div class="btn-group">
-          <button type="button" class="btn btn--primary" id="nextStep1">Selanjutnya →</button>
-        </div>
+        <div class="btn-group"><button type="button" class="btn btn--primary" id="nextStep1">Selanjutnya →</button></div>
       </div>
 
-      <!-- Step 2 -->
+      <!-- Step 2: Domain -->
       <div class="form-step" id="step2">
-        <div class="form-group">
-          <label>Pilihan Domain (opsional)</label>
+        <div class="form-group"><label>Pilihan Domain</label>
           <select id="domainSelect">
-            <option value="">Tanpa domain (abaikan)</option>
+            <option value="" data-price="0">Tanpa domain (biaya Rp2.000)</option>
             <optgroup label="Domain Indonesia">
               <option value="my.id" data-price="35000">.my.id - Rp35.000/th</option>
               <option value="web.id" data-price="50000">.web.id - Rp50.000/th</option>
@@ -95,7 +101,11 @@
         <div class="form-group" id="domainNameGroup" style="display:none;">
           <label>Nama Domain (tanpa ekstensi)</label>
           <input type="text" id="domainName" placeholder="contoh: tokokue">
-          <div class="preview-domain" id="domainPreview"></div>
+          <div class="domain-preview" id="domainPreview"></div>
+        </div>
+        <div class="checkbox-group" id="maintenanceGroup" style="display:none;">
+          <input type="checkbox" id="maintenanceCheck">
+          <label for="maintenanceCheck">🛠️ Monthly Maintenance Domain (Rp30.000/tahun)</label>
         </div>
         <div class="btn-group">
           <button type="button" class="btn btn--ghost" id="prevStep2">← Kembali</button>
@@ -103,7 +113,7 @@
         </div>
       </div>
 
-      <!-- Step 3 -->
+      <!-- Step 3: Detail -->
       <div class="form-step" id="step3">
         <div class="form-group"><label>Nama Lengkap</label><input type="text" id="fullName" required></div>
         <div class="form-group"><label>Nama Bisnis</label><input type="text" id="businessName" required></div>
@@ -111,90 +121,109 @@
         <div class="form-group"><label>Email</label><input type="email" id="email" required></div>
         <div class="form-group"><label>Jenis Bisnis</label>
           <select id="businessType" required>
-            <option value="">-- Pilih --</option>
-            <option value="umkm">UMKM</option><option value="cafe">Cafe / Resto</option>
-            <option value="sekolah">Sekolah</option><option value="laundry">Laundry</option>
-            <option value="toko">Toko Online</option><option value="lainnya">Lainnya</option>
+            <option value="">-- Pilih --</option><option value="umkm">UMKM</option><option value="cafe">Cafe / Resto</option>
+            <option value="sekolah">Sekolah</option><option value="laundry">Laundry</option><option value="toko">Toko Online</option>
+            <option value="lainnya">Lainnya</option>
           </select>
         </div>
-        <div class="form-group"><label>Deskripsi Kebutuhan</label><textarea id="description" placeholder="Jelaskan fitur yang diinginkan..." required></textarea></div>
-        <div class="form-group"><label>Upload Logo / Gambar Referensi</label><input type="file" id="logoFile" accept="image/*"></div>
-        <div class="form-group"><label>Pilihan Warna Tema</label><input type="text" id="themeColor" placeholder="Contoh: Ungu & Putih"></div>
-        <div class="form-group"><label>Deadline Project</label><input type="date" id="deadline"></div>
-
-        <div class="price-summary" id="priceSummary">
-          <div><span>Paket:</span><span id="summaryPackage">-</span></div>
-          <div><span>Domain:</span><span id="summaryDomain">-</span></div>
-          <div class="total-price"><span>Total:</span><span id="totalPrice">Rp0</span></div>
-        </div>
-
+        <div class="form-group"><label>Deskripsi Kebutuhan</label><textarea id="description" rows="3" required></textarea></div>
         <div class="btn-group">
           <button type="button" class="btn btn--ghost" id="prevStep3">← Kembali</button>
-          <button type="submit" class="btn btn--primary btn--lg" id="submitOrder">Buat Pesanan & Invoice</button>
+          <button type="button" class="btn btn--primary" id="nextStep3">Selanjutnya →</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Konfirmasi -->
+      <div class="form-step" id="step4">
+        <h3>Ringkasan Pesanan</h3>
+        <div class="price-summary" id="summaryContent"></div>
+        <div class="btn-group">
+          <button type="button" class="btn btn--ghost" id="prevStep4">← Kembali</button>
+          <button type="submit" class="btn btn--primary btn--lg">Pesan Website</button>
         </div>
       </div>
     </form>
   </div>
 
-  <!-- Semua script dalam satu module -->
   <script type="module">
-    // === Navigasi Step (UI) ===
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getDatabase, ref, set, push } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+    import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDX0ZI6LnmijvmVlJgbNXkbudOXaUT6fsM",
+      authDomain: "diptadigital-service.firebaseapp.com",
+      databaseURL: "https://diptadigital-service-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "diptadigital-service",
+      storageBucket: "diptadigital-service.firebasestorage.app",
+      messagingSenderId: "411938166244",
+      appId: "1:411938166244:web:75f063e07fb95ae2e9e3f1"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+    const storage = getStorage(app);
+
+    // Auth guard
+    onAuthStateChanged(auth, (user) => {
+      if (!user) window.location.href = 'login.html';
+    });
+
+    // Step navigation
+    let currentStep = 1;
     function goToStep(step) {
       document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
       document.getElementById('step' + step).classList.add('active');
-      for (let i = 1; i <= 3; i++) {
+      for (let i = 1; i <= 4; i++) {
         const indicator = document.getElementById('step' + i + 'Indicator');
         indicator.classList.remove('active', 'completed');
         if (i < step) indicator.classList.add('completed');
         if (i === step) indicator.classList.add('active');
       }
-      if (step === 3) updateSummary();
+      currentStep = step;
+      if (step === 4) generateSummary();
     }
 
-    function updateSummary() {
-      const packageOpt = document.getElementById('packageSelect').selectedOptions[0];
-      const domainOpt = document.getElementById('domainSelect').selectedOptions[0];
-      const packagePrice = packageOpt ? parseInt(packageOpt.dataset.price) : 0;
-      const domainPrice = domainOpt ? parseInt(domainOpt.dataset.price) : 0;
-      const packageName = packageOpt ? packageOpt.text.split(' -')[0] : '-';
-      const domainName = domainOpt ? domainOpt.text : '-';
-
-      document.getElementById('summaryPackage').textContent = packageName + ' (Rp' + packagePrice.toLocaleString() + ')';
-      document.getElementById('summaryDomain').textContent = domainName + (domainPrice ? ' (Rp' + domainPrice.toLocaleString() + ')' : '');
-      document.getElementById('totalPrice').textContent = 'Rp' + (packagePrice + domainPrice).toLocaleString();
-    }
-
-    // Tombol-tombol navigasi
     document.getElementById('nextStep1').addEventListener('click', () => {
-      if (!document.getElementById('packageSelect').value) {
-        alert('Silakan pilih paket terlebih dahulu.');
-        return;
-      }
+      if (!document.getElementById('packageSelect').value) { alert('Pilih paket dahulu.'); return; }
       goToStep(2);
     });
-    document.getElementById('nextStep2').addEventListener('click', () => goToStep(3));
+    document.getElementById('nextStep2').addEventListener('click', () => {
+      const domainSelect = document.getElementById('domainSelect');
+      if (domainSelect.value && !document.getElementById('domainName').value.trim()) {
+        alert('Masukkan nama domain.'); return;
+      }
+      goToStep(3);
+    });
+    document.getElementById('nextStep3').addEventListener('click', () => goToStep(4));
     document.getElementById('prevStep2').addEventListener('click', () => goToStep(1));
     document.getElementById('prevStep3').addEventListener('click', () => goToStep(2));
+    document.getElementById('prevStep4').addEventListener('click', () => goToStep(3));
 
-    // Domain dinamis
+    // Domain dynamic
     const domainSelect = document.getElementById('domainSelect');
     domainSelect.addEventListener('change', function() {
+      const nameGroup = document.getElementById('domainNameGroup');
+      const maintGroup = document.getElementById('maintenanceGroup');
       if (this.value) {
-        document.getElementById('domainNameGroup').style.display = 'block';
+        nameGroup.style.display = 'block';
+        maintGroup.style.display = 'block';
       } else {
-        document.getElementById('domainNameGroup').style.display = 'none';
+        nameGroup.style.display = 'none';
+        maintGroup.style.display = 'none';
         document.getElementById('domainPreview').textContent = '';
       }
       updateDomainPreview();
     });
     document.getElementById('domainName').addEventListener('input', updateDomainPreview);
-
     function updateDomainPreview() {
       const name = document.getElementById('domainName').value.trim();
       const ext = domainSelect.value;
       document.getElementById('domainPreview').textContent = name && ext ? name + '.' + ext : '';
     }
 
+    // Estimasi paket
     document.getElementById('packageSelect').addEventListener('change', function() {
       const est = document.getElementById('packageEstimate');
       if (this.value === 'basic') est.textContent = 'Estimasi pengerjaan: 1–2 hari';
@@ -203,62 +232,52 @@
       else est.textContent = '';
     });
 
-    // === Firebase & Submit ===
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
-    import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
+    function generateSummary() {
+      const packageOpt = document.getElementById('packageSelect').selectedOptions[0];
+      const packagePrice = parseInt(packageOpt.dataset.price);
+      const domainOpt = domainSelect.selectedOptions[0];
+      const domainPrice = domainOpt ? parseInt(domainOpt.dataset.price) : 0;
+      const noDomainFee = domainSelect.value ? 0 : 2000;
+      const maintenance = document.getElementById('maintenanceCheck').checked ? 30000 : 0;
+      const adminFee = 5000;
+      const total = packagePrice + domainPrice + noDomainFee + maintenance + adminFee;
+      const dp = Math.ceil(total / 2);
 
-    // ⚠️ GANTI DENGAN KONFIGURASI FIREBASE ANDA
-const firebaseConfig = {
-  apiKey: "AIzaSyDX0ZI6LnmijvmVlJgbNXkbudOXaUT6fsM",
-  authDomain: "diptadigital-service.firebaseapp.com",
-  databaseURL: "https://diptadigital-service-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "diptadigital-service",
-  storageBucket: "diptadigital-service.firebasestorage.app",
-  messagingSenderId: "411938166244",
-  appId: "1:411938166244:web:75f063e07fb95ae2e9e3f1"
-};
-
-    let app, auth, db, storage;
-    try {
-      app = initializeApp(firebaseConfig);
-      auth = getAuth(app);
-      db = getDatabase(app);
-      storage = getStorage(app);
-    } catch (e) {
-      console.error('Firebase config error:', e);
+      document.getElementById('summaryContent').innerHTML = `
+        <table>
+          <tr><td>${packageOpt.text.split(' -')[0]}</td><td style="text-align:right;">Rp${packagePrice.toLocaleString()}</td></tr>
+          ${domainSelect.value ? `<tr><td>Domain ${document.getElementById('domainName').value}.${domainSelect.value}</td><td style="text-align:right;">Rp${domainPrice.toLocaleString()}</td></tr>` : ''}
+          ${noDomainFee ? `<tr><td>Tanpa Domain</td><td style="text-align:right;">Rp${noDomainFee.toLocaleString()}</td></tr>` : ''}
+          ${maintenance ? `<tr><td>Maintenance Domain</td><td style="text-align:right;">Rp${maintenance.toLocaleString()}</td></tr>` : ''}
+          <tr><td>Biaya Admin</td><td style="text-align:right;">Rp${adminFee.toLocaleString()}</td></tr>
+          <tr class="total-row"><td>Total</td><td style="text-align:right;">Rp${total.toLocaleString()}</td></tr>
+          <tr><td style="color:var(--color-purple); font-weight:600;">DP 50% (dibayar sekarang)</td><td style="text-align:right; color:var(--color-purple); font-weight:600;">Rp${dp.toLocaleString()}</td></tr>
+          <tr><td style="font-size:0.9rem;">Sisa setelah website siap</td><td style="text-align:right;">Rp${(total - dp).toLocaleString()}</td></tr>
+        </table>
+        ${domainSelect.value ? `<div class="estimate" style="margin-top:1rem;">🗓️ Estimasi renewal domain: <strong>${new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' })}</strong></div>` : ''}
+      `;
     }
 
-    // Proteksi halaman (harus login)
-    if (auth) {
-      onAuthStateChanged(auth, (user) => {
-        if (!user) window.location.href = 'login.html';
-      });
-    }
-
-    // Submit Handler
-    document.getElementById('orderForm').addEventListener('submit', async function(e) {
+    // Submit order & setup website awal
+    document.getElementById('orderForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-
-      if (!app || !auth || !db || !storage) {
-        alert('Firebase belum dikonfigurasi. Silakan hubungi admin.');
-        return;
-      }
-
       const user = auth.currentUser;
-      if (!user) {
-        alert('Anda harus login terlebih dahulu.');
-        window.location.href = 'login.html';
-        return;
-      }
+      if (!user) { alert('Login diperlukan.'); return; }
 
       const packageOpt = document.getElementById('packageSelect').selectedOptions[0];
-      const domainOpt = document.getElementById('domainSelect').selectedOptions[0];
       const packagePrice = parseInt(packageOpt.dataset.price);
+      const domainOpt = domainSelect.selectedOptions[0];
       const domainPrice = domainOpt ? parseInt(domainOpt.dataset.price) : 0;
-      const total = packagePrice + domainPrice;
+      const noDomainFee = domainSelect.value ? 0 : 2000;
+      const maintenance = document.getElementById('maintenanceCheck').checked ? 30000 : 0;
+      const adminFee = 5000;
+      const total = packagePrice + domainPrice + noDomainFee + maintenance + adminFee;
+      const dp = Math.ceil(total / 2);
+      const domainFull = domainSelect.value ? document.getElementById('domainName').value.trim() + '.' + domainSelect.value : '';
+      const domainExpiry = domainSelect.value ? new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString() : null;
 
+      const invoiceId = 'INV-' + Date.now();
+      const projectId = 'proj_' + Date.now();
       const orderData = {
         userId: user.uid,
         customerName: document.getElementById('fullName').value.trim(),
@@ -267,53 +286,114 @@ const firebaseConfig = {
         email: document.getElementById('email').value.trim(),
         businessType: document.getElementById('businessType').value,
         package: packageOpt.text.split(' -')[0],
-        domainExt: document.getElementById('domainSelect').value,
-        domainName: document.getElementById('domainName').value.trim(),
-        domainFull: (document.getElementById('domainName').value.trim() && document.getElementById('domainSelect').value) ? 
-                    document.getElementById('domainName').value.trim() + '.' + document.getElementById('domainSelect').value : '',
-        description: document.getElementById('description').value.trim(),
-        themeColor: document.getElementById('themeColor').value.trim(),
-        deadline: document.getElementById('deadline').value,
-        packagePrice: packagePrice,
+        domainFull: domainFull,
+        domainExpiry: domainExpiry,
         domainPrice: domainPrice,
+        maintenance: maintenance > 0,
+        noDomainFee: noDomainFee,
+        adminFee: adminFee,
         total: total,
-        status: 'pending',
+        dpAmount: dp,
+        remaining: total - dp,
+        status: 'dp_pending',
         createdAt: new Date().toISOString(),
-        invoiceId: 'INV-' + Date.now()
+        dueDate: new Date(Date.now() + 24*60*60*1000).toISOString(),
+        invoiceId: invoiceId,
+        projectId: projectId
       };
 
-      // Upload logo (opsional)
-      const logoFile = document.getElementById('logoFile').files[0];
-      if (logoFile) {
-        try {
-          const logoStorageRef = storageRef(storage, `logos/${user.uid}/${Date.now()}_${logoFile.name}`);
-          await uploadBytes(logoStorageRef, logoFile);
-          orderData.logoUrl = await getDownloadURL(logoStorageRef);
-        } catch (uploadError) {
-          console.error('Upload logo gagal:', uploadError);
-        }
-      }
-
-      // Simpan ke Firebase
       try {
-        await set(ref(db, 'invoices/' + orderData.invoiceId), {
-          ...orderData,
-          dueDate: new Date(Date.now() + 24*60*60*1000).toISOString()
-        });
-        await set(ref(db, 'projects/' + user.uid + '/' + orderData.invoiceId), {
+        // Simpan invoice
+        await set(ref(db, 'invoices/' + invoiceId), orderData);
+        // Simpan project
+        await set(ref(db, 'projects/' + user.uid + '/' + projectId), {
           package: orderData.package,
-          domain: orderData.domainFull,
-          status: 'menunggu pembayaran',
+          domain: domainFull,
+          status: 'dp_pending',
           progress: 0,
-          createdAt: orderData.createdAt
+          createdAt: orderData.createdAt,
+          projectId: projectId,
+          businessName: orderData.businessName,
+          description: document.getElementById('description').value.trim(),
+          logo: '',
+          version: '1.0.0',
+          maintenance: false,
+          visitors: 0,
+          visitorsToday: 0,
+          visitorsMonth: 0,
+          totalUsers: 0,
+          activeUsers: 0,
+          newUsers: 0,
+          totalOrders: 0,
+          totalProducts: 0,
+          revenue: 0,
         });
-        alert('Pesanan berhasil dibuat! Lanjut ke invoice.');
-        window.location.href = 'invoice.html?id=' + orderData.invoiceId;
-      } catch (error) {
-        console.error('Gagal menyimpan pesanan:', error);
-        alert('Terjadi kesalahan saat menyimpan pesanan. Silakan coba lagi.');
+
+        // ======= SETUP WEBSITE AWAL =======
+        await setupInitialWebsite(user.uid, projectId, orderData);
+
+        // Log aktivitas
+        await push(ref(db, 'activities'), {
+          message: `User ${user.uid} memesan ${orderData.package} (${invoiceId})`,
+          timestamp: Date.now()
+        });
+
+        window.location.href = 'invoice.html?id=' + invoiceId;
+      } catch (err) {
+        alert('Gagal membuat pesanan: ' + err.message);
       }
     });
+
+    // Fungsi untuk membuat halaman awal website
+    async function setupInitialWebsite(userId, projectId, orderData) {
+      const websiteRef = ref(db, `websites/${userId}/${projectId}`);
+
+      const defaultPages = {
+        home: {
+          title: 'Beranda',
+          slug: 'home',
+          content: `<h1>Selamat datang di ${orderData.businessName}</h1><p>Ini adalah website bisnis Anda yang dibuat oleh Dipta Digital Service.</p>`,
+          meta: { description: 'Website profesional untuk bisnis Anda' }
+        },
+        about: {
+          title: 'Tentang Kami',
+          slug: 'about',
+          content: `<h1>Tentang ${orderData.businessName}</h1><p>Kami menyediakan layanan terbaik untuk Anda.</p>`,
+          meta: { description: 'Informasi tentang bisnis kami' }
+        },
+        contact: {
+          title: 'Kontak',
+          slug: 'contact',
+          content: `<h1>Hubungi Kami</h1><p>WhatsApp: ${orderData.whatsapp} | Email: ${orderData.email}</p>`,
+          meta: { description: 'Hubungi kami melalui WhatsApp atau email' }
+        }
+      };
+
+      const defaultSettings = {
+        siteName: orderData.businessName,
+        tagline: 'Website profesional dari Dipta Digital',
+        logo: '',
+        theme: { primary: '#7c3aed', secondary: '#f9fafb' },
+        navigation: [
+          { label: 'Home', url: '/' },
+          { label: 'About', url: '/about' },
+          { label: 'Contact', url: '/contact' }
+        ],
+        socialMedia: {
+          whatsapp: orderData.whatsapp,
+          email: orderData.email
+        },
+        maintenance: false,
+        analytics: { visitors: 0, today: 0 }
+      };
+
+      await set(websiteRef, {
+        pages: defaultPages,
+        settings: defaultSettings,
+        createdAt: new Date().toISOString(),
+        lastUpdated: new Date().toISOString()
+      });
+    }
   </script>
 </body>
 </html>

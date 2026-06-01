@@ -2,63 +2,136 @@
 <html lang="id" data-theme="light">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daftar — Dipta Digital Service</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Admin Login — Dipta Digital</title>
   <link rel="stylesheet" href="../assets/css/style.css">
   <style>
-    .auth-page { display: flex; min-height: 100vh; align-items: center; justify-content: center; padding: 2rem; background: var(--color-bg-secondary); }
-    .auth-card { background: var(--color-card-bg); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: 3rem 2rem; width: 100%; max-width: 440px; box-shadow: var(--shadow-lg); }
-    .auth-card h2 { font-weight: 700; font-size: 1.8rem; margin-bottom: 0.5rem; }
-    .auth-card p { color: var(--color-text-secondary); margin-bottom: 2rem; font-size: 0.95rem; }
-    .form-group { margin-bottom: 1.25rem; text-align: left; }
-    .form-group label { font-weight: 600; font-size: 0.9rem; display: block; margin-bottom: 0.4rem; }
-    .form-group input { width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); font-family: inherit; }
-    .auth-footer { margin-top: 1.5rem; font-size: 0.9rem; text-align: center; }
-    .auth-footer a { color: var(--color-purple); font-weight: 600; }
+    .auth-page {
+      display: flex;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: var(--color-bg-secondary);
+    }
+    .auth-card {
+      background: var(--color-card-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: 3rem 2.5rem;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: var(--shadow-lg);
+    }
+    .auth-card h2 {
+      font-weight: 700;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-group label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+      font-size: 1rem;
+      font-family: inherit;
+    }
+    .error-msg {
+      color: #dc2626;
+      font-size: 0.9rem;
+      text-align: center;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    .btn--primary {
+      width: 100%;
+      padding: 0.85rem;
+      font-size: 1rem;
+    }
   </style>
 </head>
 <body class="auth-page">
-  <div class="auth-card reveal-up visible">
-    <div style="text-align:center; margin-bottom:1rem;"><span style="font-size:2rem;">✦</span></div>
-    <h2 style="text-align:center;">Buat Akun</h2>
-    <p style="text-align:center;">Mulai perjalanan digital Anda bersama kami.</p>
-    <form id="registerForm">
-      <div class="form-group"><label for="name">Nama Lengkap</label><input type="text" id="name" placeholder="Nama Anda" required></div>
-      <div class="form-group"><label for="email">Email</label><input type="email" id="email" placeholder="anda@email.com" required></div>
-      <div class="form-group"><label for="password">Password</label><input type="password" id="password" placeholder="Min. 6 karakter" required minlength="6"></div>
-      <button type="submit" class="btn btn--primary btn--full btn--lg">Daftar Sekarang</button>
+  <div class="auth-card">
+    <div style="text-align:center; font-size:2.5rem;">🔐</div>
+    <h2>Admin Login</h2>
+    <p style="text-align:center; color:var(--color-text-secondary); margin-bottom:1.5rem;">
+      Masukkan password admin untuk melanjutkan.
+    </p>
+
+    <div class="error-msg" id="errorMsg">Password salah. Coba lagi.</div>
+
+    <form id="adminLoginForm">
+      <div class="form-group">
+        <label for="password">Password Admin</label>
+        <input type="password" id="password" placeholder="Masukkan password" required autocomplete="off">
+      </div>
+      <button type="submit" class="btn btn--primary">Masuk Admin</button>
     </form>
-    <div class="auth-footer">Sudah punya akun? <a href="login.html">Masuk</a></div>
+
+    <p style="text-align:center; margin-top:1.5rem; font-size:0.9rem;">
+      <a href="login.html">← Kembali ke login user</a>
+    </p>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
-    const firebaseConfig = { /* isi config */ };
+    // ⚠️ Ganti dengan konfigurasi Firebase Anda
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+      projectId: "YOUR_PROJECT",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "123456789",
+      appId: "YOUR_APP_ID"
+    };
+
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getDatabase(app);
 
-    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+    // Email admin yang sudah terdaftar di Firebase Authentication
+    const ADMIN_EMAIL = "admin@diptadigital.com"; // ⚠️ Sesuaikan dengan email admin di Firebase Anda
+
+    document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
+      const errorMsg = document.getElementById('errorMsg');
+      errorMsg.style.display = 'none';
+
       try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const userCredential = await signInWithEmailAndPassword(auth, ADMIN_EMAIL, password);
         const user = userCredential.user;
-        await updateProfile(user, { displayName: name });
-        await set(ref(db, 'users/' + user.uid), {
-          name: name,
-          email: email,
-          role: 'user',
-          createdAt: new Date().toISOString()
-        });
-        window.location.href = 'order.html'; // langsung ke form order
+
+        // Verifikasi role admin di database
+        const snap = await get(child(ref(db), `users/${user.uid}`));
+        if (!snap.exists() || snap.val().role !== 'admin') {
+          await auth.signOut();
+          errorMsg.textContent = 'Akses ditolak. Anda bukan admin.';
+          errorMsg.style.display = 'block';
+          return;
+        }
+
+        // Berhasil, arahkan ke panel admin
+        window.location.href = 'admin.html';
       } catch (error) {
-        alert('Pendaftaran gagal: ' + error.message);
+        console.error(error);
+        errorMsg.textContent = 'Password salah atau terjadi kesalahan.';
+        errorMsg.style.display = 'block';
       }
     });
   </script>

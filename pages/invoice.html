@@ -2,110 +2,106 @@
 <html lang="id" data-theme="light">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Invoice — Dipta Digital</title>
   <link rel="stylesheet" href="../assets/css/style.css">
   <style>
-    .invoice-page { max-width: 800px; margin: 2rem auto; padding: 2rem; background: var(--color-card-bg); border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
+    .invoice-container { max-width: 800px; margin: 2rem auto; padding: 2rem; background: var(--color-card-bg); border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
     .invoice-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
-    .invoice-logo { font-weight: 700; font-size: 1.5rem; }
-    .invoice-status { padding: 0.25rem 1rem; border-radius: 100px; font-weight: 600; display: inline-block; }
+    .invoice-logo { font-weight: 700; font-size: 1.8rem; }
+    .status-badge { padding: 0.4rem 1.2rem; border-radius: 100px; font-weight: 600; font-size: 0.9rem; }
     .status-pending { background: #fef3c7; color: #92400e; }
-    .status-waiting { background: #dbeafe; color: #1e40af; }
+    .status-verification { background: #dbeafe; color: #1e40af; }
     .status-paid { background: #d1fae5; color: #065f46; }
     .status-expired { background: #fee2e2; color: #991b1b; }
     .invoice-details { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
     .invoice-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
     .invoice-table th, .invoice-table td { padding: 0.75rem; border-bottom: 1px solid var(--color-border); text-align: left; }
     .invoice-table th { background: var(--color-bg-secondary); font-weight: 600; }
-    .qris-section { text-align: center; margin: 2rem 0; background: var(--color-bg-secondary); padding: 1.5rem; border-radius: var(--radius-lg); }
-    .qris-img { max-width: 200px; margin: 0 auto; display: block; }
-    .countdown { font-weight: 700; color: var(--color-purple); margin: 1rem 0; font-size: 1.1rem; }
+    .payment-section { background: var(--color-bg-secondary); border-radius: var(--radius-lg); padding: 1.5rem; margin: 2rem 0; }
+    .qris-img { max-width: 200px; margin: 1rem auto; display: block; border-radius: var(--radius-md); }
+    .gopay-info { background: #00AA13; color: white; padding: 0.8rem 1rem; border-radius: var(--radius-md); text-align: center; font-weight: 600; margin-top: 1rem; }
     .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
-    .loading { text-align: center; padding: 2rem; }
+    .popup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    .popup-box { background: var(--color-card-bg); border-radius: var(--radius-xl); padding: 2rem; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+    .popup-box h3 { margin-bottom: 1rem; }
+    .popup-box .btn { margin: 0.5rem; }
   </style>
 </head>
 <body>
-  <div class="invoice-page" id="invoicePage">
-    <div class="loading">Memuat invoice...</div>
+  <div class="invoice-container" id="invoiceContent">
+    <div style="text-align:center; padding:2rem;">Memuat invoice...</div>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getDatabase, ref, get, child, update } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-    // ⚠️ Ganti dengan konfigurasi Anda
-const firebaseConfig = {
-  apiKey: "AIzaSyDX0ZI6LnmijvmVlJgbNXkbudOXaUT6fsM",
-  authDomain: "diptadigital-service.firebaseapp.com",
-  databaseURL: "https://diptadigital-service-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "diptadigital-service",
-  storageBucket: "diptadigital-service.firebasestorage.app",
-  messagingSenderId: "411938166244",
-  appId: "1:411938166244:web:75f063e07fb95ae2e9e3f1"
-};
+    const firebaseConfig = {
+      apiKey: "AIzaSyDX0ZI6LnmijvmVlJgbNXkbudOXaUT6fsM",
+      authDomain: "diptadigital-service.firebaseapp.com",
+      databaseURL: "https://diptadigital-service-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "diptadigital-service",
+      storageBucket: "diptadigital-service.firebasestorage.app",
+      messagingSenderId: "411938166244",
+      appId: "1:411938166244:web:75f063e07fb95ae2e9e3f1"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-    let app, db, auth;
-    try {
-      app = initializeApp(firebaseConfig);
-      db = getDatabase(app);
-      auth = getAuth(app);
-    } catch (e) {
-      console.error('Firebase config error:', e);
-      // Fallback: tampilkan data dummy jika Firebase belum diatur
-      renderFallbackInvoice();
-    }
-
-    // Ambil ID dari URL (?id=INV-xxx)
     const urlParams = new URLSearchParams(window.location.search);
     const invoiceId = urlParams.get('id');
-
     if (!invoiceId) {
-      document.getElementById('invoicePage').innerHTML = '<p>ID invoice tidak ditemukan di URL.</p>';
+      document.getElementById('invoiceContent').innerHTML = '<p style="text-align:center;">ID invoice tidak ditemukan.</p>';
       throw new Error('Missing invoice ID');
     }
 
-    // Fungsi untuk mengambil data invoice
     async function loadInvoice() {
-      if (!db) {
-        renderFallbackInvoice();
-        return;
-      }
-
       try {
-        const snapshot = await get(child(ref(db), `invoices/${invoiceId}`));
-        if (!snapshot.exists()) {
-          document.getElementById('invoicePage').innerHTML = '<p>Invoice tidak ditemukan.</p>';
+        const snap = await get(child(ref(db), `invoices/${invoiceId}`));
+        if (!snap.exists()) {
+          document.getElementById('invoiceContent').innerHTML = '<p style="text-align:center;">Invoice tidak ditemukan.</p>';
           return;
         }
-        const inv = snapshot.val();
-        renderInvoice(inv);
-      } catch (error) {
-        console.error('Gagal mengambil invoice:', error);
-        document.getElementById('invoicePage').innerHTML = '<p>Gagal memuat invoice. Periksa koneksi Anda.</p>';
+        renderInvoice(snap.val());
+      } catch (err) {
+        document.getElementById('invoiceContent').innerHTML = '<p style="text-align:center;">Gagal memuat data.</p>';
       }
     }
 
-    // Render data invoice ke HTML
     function renderInvoice(inv) {
-      const statusClass = 
-        inv.status === 'pending' ? 'status-pending' :
-        inv.status === 'menunggu verifikasi' ? 'status-waiting' :
-        inv.status === 'paid' ? 'status-paid' :
-        inv.status === 'expired' ? 'status-expired' : 'status-pending';
+      const status = inv.status || 'pending';
+      // Tampilan status: jika paid, tampilkan "Lunas - Waiting for Dev"
+      let statusText, statusClass;
+      if (status === 'dp_pending') {
+        statusText = 'Menunggu DP';
+        statusClass = 'status-pending';
+      } else if (status === 'menunggu verifikasi') {
+        statusText = 'Menunggu Verifikasi';
+        statusClass = 'status-verification';
+      } else if (status === 'paid') {
+        statusText = 'Lunas - Waiting for Developer';
+        statusClass = 'status-paid';
+      } else if (status === 'expired') {
+        statusText = 'Kadaluarsa';
+        statusClass = 'status-expired';
+      } else {
+        statusText = status;
+        statusClass = 'status-pending';
+      }
 
-      const total = (inv.packagePrice || 0) + (inv.domainPrice || 0);
+      const total = inv.total || 0;
+      const dp = inv.dpAmount || 0;
+      const remaining = inv.remaining || (total - dp);
+      const showPayment = (status === 'dp_pending');
 
-      document.getElementById('invoicePage').innerHTML = `
+      const html = `
         <div class="invoice-header">
           <div>
             <div class="invoice-logo">✦ Dipta Digital</div>
             <p style="color:var(--color-text-secondary);">Invoice #${invoiceId}</p>
           </div>
-          <div>
-            <span class="invoice-status ${statusClass}">${inv.status.toUpperCase()}</span>
-          </div>
+          <div><span class="status-badge ${statusClass}">${statusText}</span></div>
         </div>
 
         <div class="invoice-details">
@@ -117,92 +113,97 @@ const firebaseConfig = {
           </div>
           <div>
             <strong>Tanggal:</strong> ${new Date(inv.createdAt).toLocaleDateString()}<br>
-            <strong>Jatuh Tempo:</strong> ${new Date(inv.dueDate).toLocaleDateString()}
+            ${inv.domainExpiry ? `<strong>Renewal Domain:</strong> ${new Date(inv.domainExpiry).toLocaleDateString()}` : ''}
           </div>
         </div>
 
         <table class="invoice-table">
           <thead><tr><th>Deskripsi</th><th>Harga</th></tr></thead>
           <tbody>
-            <tr><td>${inv.package || '-'} Website</td><td>Rp ${(inv.packagePrice || 0).toLocaleString()}</td></tr>
-            ${inv.domainFull ? `<tr><td>Domain (${inv.domainFull})</td><td>Rp ${(inv.domainPrice || 0).toLocaleString()}</td></tr>` : ''}
+            <tr><td>${inv.package} Website</td><td>Rp ${(total - (inv.domainPrice || 0) - (inv.noDomainFee || 0) - (inv.maintenance ? 30000 : 0)).toLocaleString()}</td></tr>
+            ${inv.domainFull ? `<tr><td>Domain ${inv.domainFull}</td><td>Rp ${(inv.domainPrice || 0).toLocaleString()}</td></tr>` : ''}
+            ${inv.noDomainFee ? `<tr><td>Tanpa Domain</td><td>Rp ${inv.noDomainFee.toLocaleString()}</td></tr>` : ''}
+            ${inv.maintenance ? `<tr><td>Maintenance Domain (tahunan)</td><td>Rp 30.000</td></tr>` : ''}
+            <tr><td>Biaya Admin</td><td>Rp ${(inv.adminFee || 5000).toLocaleString()}</td></tr>
             <tr><td colspan="2" style="text-align:right; font-weight:700;">Total: Rp ${total.toLocaleString()}</td></tr>
+            <tr><td colspan="2" style="text-align:right; color:var(--color-purple); font-weight:600;">
+              DP yang harus dibayar sekarang (50%): Rp ${dp.toLocaleString()}
+            </td></tr>
+            <tr><td colspan="2" style="text-align:right;">Sisa pelunasan: Rp ${remaining.toLocaleString()}</td></tr>
           </tbody>
         </table>
 
-        ${inv.status === 'pending' ? `
-        <div class="qris-section">
-          <h3>Pembayaran via QRIS</h3>
-          <img src="../assets/images/qris.jpg" alt="QRIS" class="qris-img" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect width=%22200%22 height=%22200%22 fill=%22%23f0f0f0%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2216%22>QRIS</text></svg>'">
-          <p>Total: <strong>Rp ${total.toLocaleString()}</strong></p>
-          <div class="countdown" id="countdown">Menghitung sisa waktu...</div>
-          <button class="btn btn--primary" id="markAsPaid">Saya Sudah Bayar</button>
+        ${showPayment ? `
+        <div class="payment-section" id="paymentSection">
+          <h3>Metode Pembayaran DP</h3>
+          <div style="text-align:center;">
+            <img src="../assets/images/qris.jpg" alt="QRIS" class="qris-img" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect width=%22200%22 height=%22200%22 fill=%22%23f0f0f0%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23999%22>QRIS</text></svg>'">
+            <p style="margin-top:0.5rem;">Scan QRIS di atas atau transfer ke:</p>
+          </div>
+          <div class="gopay-info">
+            GOPAY: 082169797528<br>
+            <small>a.n. Dipta Digital Service</small>
+          </div>
+          <div style="text-align:center; margin-top:1.5rem;">
+            <button class="btn btn--primary" id="markAsPaidBtn">Saya Sudah Bayar</button>
+          </div>
+        </div>
+        ` : ''}
+
+        ${status === 'menunggu verifikasi' ? `
+        <div style="text-align:center; font-size:1.1rem; color:var(--color-purple); font-weight:600; margin:2rem 0;">
+          ⏳ Menunggu verifikasi dari admin. Status akan diperbarui setelah pembayaran dikonfirmasi.
+        </div>` : ''}
+
+        ${status === 'paid' ? `
+        <div style="text-align:center; font-size:1.1rem; color:#065f46; font-weight:600; margin:2rem 0;">
+          ✅ Pembayaran lunas. Website Anda sedang dalam antrian pengerjaan oleh tim developer.
         </div>` : ''}
 
         <div class="btn-group">
           <button class="btn btn--outline" onclick="window.print()">Cetak PDF</button>
           <button class="btn btn--ghost" onclick="navigator.clipboard.writeText('${invoiceId}')">Salin Kode Invoice</button>
-          <button class="btn btn--ghost" onclick="navigator.clipboard.writeText('${total}')">Salin Nominal</button>
         </div>
       `;
 
-      // Hitung mundur & tombol "Saya Sudah Bayar"
-      if (inv.status === 'pending' && inv.dueDate) {
-        const dueTime = new Date(inv.dueDate).getTime();
-        const timer = setInterval(() => {
-          const now = Date.now();
-          const diff = dueTime - now;
-          const el = document.getElementById('countdown');
-          if (!el) { clearInterval(timer); return; }
-          if (diff <= 0) {
-            el.textContent = 'Waktu pembayaran habis';
-            clearInterval(timer);
-            // Auto update status expired (opsional)
-            if (db) update(ref(db, `invoices/${invoiceId}`), { status: 'expired' });
-          } else {
-            const h = Math.floor(diff / (1000*60*60));
-            const m = Math.floor((diff % (1000*60*60)) / (1000*60));
-            const s = Math.floor((diff % (1000*60)) / 1000);
-            el.textContent = `Sisa waktu: ${h}j ${m}m ${s}d`;
-          }
-        }, 1000);
+      document.getElementById('invoiceContent').innerHTML = html;
 
-        document.getElementById('markAsPaid').addEventListener('click', async () => {
-          if (!db) {
-            alert('Firebase belum dikonfigurasi. Status tidak dapat diperbarui.');
-            return;
-          }
-          try {
-            await update(ref(db, `invoices/${invoiceId}`), { status: 'menunggu verifikasi' });
-            alert('Terima kasih! Status berubah menjadi "Menunggu Verifikasi".');
-            window.location.reload();
-          } catch (error) {
-            alert('Gagal memperbarui status.');
-          }
-        });
+      if (showPayment) {
+        document.getElementById('markAsPaidBtn').addEventListener('click', () => showConfirmationPopup());
       }
     }
 
-    // Fallback untuk testing tanpa Firebase
-    function renderFallbackInvoice() {
-      const dummyInv = {
-        status: 'pending',
-        customerName: 'Nama Pelanggan',
-        email: 'email@contoh.com',
-        whatsapp: '08123456789',
-        package: 'Standard Package',
-        domainFull: 'tokokue.com',
-        packagePrice: 450000,
-        domainPrice: 209000,
-        total: 659000,
-        createdAt: new Date().toISOString(),
-        dueDate: new Date(Date.now() + 24*60*60*1000).toISOString(),
-        invoiceId: invoiceId || 'INV-DUMMY'
-      };
-      renderInvoice(dummyInv);
+    function showConfirmationPopup() {
+      const overlay = document.createElement('div');
+      overlay.className = 'popup-overlay';
+      overlay.innerHTML = `
+        <div class="popup-box">
+          <h3>Konfirmasi Pembayaran</h3>
+          <p>Apakah Anda yakin sudah melakukan pembayaran DP?</p>
+          <p style="font-size:0.9rem; color:var(--color-text-secondary);">Status invoice akan berubah menjadi "Menunggu Verifikasi".</p>
+          <div>
+            <button class="btn btn--primary" id="confirmYes">Ya, Saya Sudah Bayar</button>
+            <button class="btn btn--ghost" id="confirmNo">Batal</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+
+      document.getElementById('confirmYes').addEventListener('click', async () => {
+        try {
+          await update(ref(db, `invoices/${invoiceId}`), { status: 'menunggu verifikasi' });
+          overlay.remove();
+          window.location.reload();
+        } catch (err) {
+          alert('Gagal memperbarui status: ' + err.message);
+          overlay.remove();
+        }
+      });
+
+      document.getElementById('confirmNo').addEventListener('click', () => overlay.remove());
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
     }
 
-    // Jalankan
     loadInvoice();
   </script>
 </body>
