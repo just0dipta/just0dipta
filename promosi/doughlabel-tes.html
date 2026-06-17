@@ -1,0 +1,2237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Doughlabel Cafe Binjai menghadirkan kopi premium, pastry lezat, dan suasana nyaman untuk bersantai bersama keluarga dan teman.">
+    <meta name="keywords" content="Doughlabel, cafe Binjai, kopi premium, pastry, dessert, cafe modern, Binjai Kota, Sumatera Utara">
+    <meta name="author" content="Doughlabel">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Doughlabel Cafe Binjai | Fresh Coffee & Delicious Pastry">
+    <meta property="og:description" content="Doughlabel Cafe Binjai menghadirkan kopi premium, pastry lezat, dan suasana nyaman untuk bersantai bersama keluarga dan teman.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:site_name" content="Doughlabel">
+    <title>Doughlabel Cafe Binjai | Fresh Coffee & Delicious Pastry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== CSS RESET & VARIABLES ===== */
+        :root {
+            --primary: #8B5E3C;
+            --primary-dark: #6B3E20;
+            --secondary: #D6B28D;
+            --accent: #F4E7D3;
+            --dark: #2C2C2C;
+            --white: #FFFFFF;
+            --gray: #F9F6F0;
+            --gray-dark: #5A5A5A;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Inter', sans-serif;
+            --transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+            --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 15px 50px rgba(0, 0, 0, 0.15);
+            --radius-sm: 12px;
+            --radius-md: 20px;
+            --radius-lg: 28px;
+            --max-width: 1200px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--gray);
+            color: var(--dark);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        img,
+        svg {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: color var(--transition);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: var(--font-body);
+            border: none;
+            background: none;
+        }
+
+        /* ===== LOADING SCREEN ===== */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--accent);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+            pointer-events: all;
+        }
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .loading-content {
+            text-align: center;
+        }
+        .loading-logo {
+            animation: spinPulse 1.5s ease-in-out infinite;
+        }
+        .loading-circle {
+            stroke-dasharray: 226;
+            stroke-dashoffset: 226;
+            animation: drawCircle 2s ease forwards;
+        }
+        @keyframes drawCircle {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+        @keyframes spinPulse {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+        .loading-text {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: 0.15em;
+            margin-top: 16px;
+            animation: fadeText 1.5s ease-in-out infinite;
+        }
+        @keyframes fadeText {
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* ===== FLOATING WHATSAPP ===== */
+        .floating-whatsapp {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 58px;
+            height: 58px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            transition: transform var(--transition), box-shadow var(--transition);
+            animation: floatWiggle 3s ease-in-out infinite;
+        }
+        .floating-whatsapp:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(37, 211, 102, 0.55);
+            animation: none;
+        }
+        @keyframes floatWiggle {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            25% {
+                transform: translateY(-6px);
+            }
+            75% {
+                transform: translateY(3px);
+            }
+        }
+
+        /* ===== BACK TO TOP ===== */
+        .back-to-top {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-md);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all var(--transition);
+            pointer-events: none;
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+        .back-to-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-4px);
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 16px 0;
+            transition: all var(--transition);
+        }
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+            padding: 10px 0;
+        }
+        .nav-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-logo {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 0.12em;
+            transition: color var(--transition);
+        }
+        .navbar.scrolled .nav-logo {
+            color: var(--primary-dark);
+        }
+        .nav-menu {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .nav-link {
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--dark);
+            transition: all var(--transition);
+            position: relative;
+        }
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary);
+            background: rgba(139, 94, 60, 0.08);
+        }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            padding: 8px;
+            z-index: 1001;
+            cursor: pointer;
+        }
+        .hamburger-line {
+            width: 28px;
+            height: 2.5px;
+            background: var(--primary);
+            border-radius: 4px;
+            transition: all var(--transition);
+        }
+        .hamburger.active .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+        .hamburger.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(160deg, #FDF5EC 0%, #F4E7D3 40%, #E8D5B7 100%);
+            padding: 100px 0 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -150px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(214, 178, 141, 0.25) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .hero-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+        .badge-star {
+            font-size: 1.1rem;
+        }
+        .hero-title {
+            font-family: var(--font-heading);
+            font-size: clamp(2.4rem, 5vw, 3.8rem);
+            font-weight: 700;
+            line-height: 1.15;
+            color: var(--dark);
+            margin-bottom: 18px;
+        }
+        .hero-subtitle {
+            font-size: 1.05rem;
+            color: var(--gray-dark);
+            max-width: 480px;
+            margin-bottom: 20px;
+        }
+        .hero-price-info {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            margin-bottom: 28px;
+        }
+        .price-tag {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            background: rgba(139, 94, 60, 0.08);
+            padding: 6px 16px;
+            border-radius: 25px;
+        }
+        .price-per {
+            font-size: 0.9rem;
+            color: var(--gray-dark);
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 35px;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all var(--transition);
+            letter-spacing: 0.02em;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+            box-shadow: 0 8px 25px rgba(139, 94, 60, 0.3);
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(139, 94, 60, 0.4);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+        .btn-sm {
+            padding: 8px 20px;
+            font-size: 0.82rem;
+            border-radius: 20px;
+        }
+        .hero-stats {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+        .stat-number {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--gray-dark);
+            text-align: center;
+        }
+        .hero-illustration {
+            position: relative;
+            z-index: 1;
+        }
+        .hero-svg {
+            width: 100%;
+            max-width: 500px;
+            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.1));
+            animation: floatIllustration 6s ease-in-out infinite;
+        }
+        @keyframes floatIllustration {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* ===== SECTION STYLES ===== */
+        .section-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+        .section-label {
+            display: inline-block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 10px;
+            background: rgba(139, 94, 60, 0.08);
+            padding: 6px 16px;
+            border-radius: 20px;
+        }
+        .section-label.center {
+            display: block;
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+            width: fit-content;
+        }
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 12px;
+        }
+        .section-title.center {
+            text-align: center;
+        }
+        .section-subtitle {
+            color: var(--gray-dark);
+            max-width: 550px;
+            margin-bottom: 40px;
+        }
+        .section-subtitle.center {
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ===== ABOUT SECTION ===== */
+        .about {
+            background: var(--white);
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        .about-illustration svg {
+            width: 100%;
+            max-width: 450px;
+            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.08));
+            border-radius: var(--radius-lg);
+        }
+        .about-text {
+            color: var(--gray-dark);
+            margin-bottom: 16px;
+            line-height: 1.8;
+        }
+        .about-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 25px;
+        }
+        .about-card {
+            background: var(--gray);
+            border-radius: var(--radius-md);
+            padding: 18px 20px;
+            text-align: center;
+            transition: all var(--transition);
+            border: 1px solid transparent;
+        }
+        .about-card:hover {
+            border-color: var(--secondary);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-3px);
+        }
+        .about-card-icon {
+            font-size: 1.6rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .about-card-value {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+        }
+        .about-card-label {
+            font-size: 0.8rem;
+            color: var(--gray-dark);
+        }
+
+        /* ===== MENU SECTION ===== */
+        .menu {
+            background: var(--gray);
+        }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+        .menu-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition);
+            border: 1px solid transparent;
+        }
+        .menu-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--secondary);
+        }
+        .menu-card-image {
+            background: linear-gradient(135deg, #FDF5EC, #F4E7D3);
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+        .menu-card-image svg {
+            width: 140px;
+            height: 130px;
+            transition: transform 0.5s ease;
+        }
+        .menu-card:hover .menu-card-image svg {
+            transform: scale(1.08);
+        }
+        .menu-card-content {
+            padding: 20px 22px 24px;
+        }
+        .menu-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 5px 12px;
+            border-radius: 15px;
+            margin-bottom: 8px;
+            background: rgba(139, 94, 60, 0.1);
+            color: var(--primary);
+        }
+        .menu-badge.hot {
+            background: rgba(220, 80, 60, 0.1);
+            color: #c0392b;
+        }
+        .menu-badge.pastry {
+            background: rgba(200, 150, 80, 0.12);
+            color: #b8860b;
+        }
+        .menu-badge.sweet {
+            background: rgba(180, 100, 140, 0.1);
+            color: #a0527a;
+        }
+        .menu-name {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 6px;
+        }
+        .menu-desc {
+            font-size: 0.85rem;
+            color: var(--gray-dark);
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        .menu-rating {
+            font-size: 0.85rem;
+            color: #e6a817;
+            margin-bottom: 14px;
+        }
+        .menu-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .menu-price {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* ===== SERVICES SECTION ===== */
+        .services {
+            background: var(--white);
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+        }
+        .service-card {
+            background: var(--gray);
+            border-radius: var(--radius-lg);
+            padding: 35px 28px;
+            text-align: center;
+            transition: all var(--transition);
+            border: 1px solid transparent;
+        }
+        .service-card:hover {
+            border-color: var(--secondary);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-5px);
+            background: var(--white);
+        }
+        .service-icon {
+            margin-bottom: 18px;
+            display: inline-block;
+        }
+        .service-icon svg {
+            transition: transform var(--transition);
+        }
+        .service-card:hover .service-icon svg {
+            transform: scale(1.1);
+        }
+        .service-title {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+        .service-desc {
+            font-size: 0.9rem;
+            color: var(--gray-dark);
+            line-height: 1.6;
+        }
+
+        /* ===== GALLERY SECTION ===== */
+        .gallery {
+            background: var(--gray);
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 18px;
+        }
+        .gallery-item {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition);
+            position: relative;
+        }
+        .gallery-item:hover {
+            transform: scale(1.04);
+            box-shadow: var(--shadow-lg);
+            z-index: 2;
+        }
+        .gallery-item svg {
+            width: 100%;
+            height: 220px;
+            display: block;
+        }
+
+        /* ===== LIGHTBOX ===== */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            pointer-events: none;
+        }
+        .lightbox.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: all;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            font-size: 2.5rem;
+            color: var(--white);
+            cursor: pointer;
+            z-index: 10;
+            transition: transform var(--transition);
+        }
+        .lightbox-close:hover {
+            transform: scale(1.2);
+        }
+        .lightbox-content {
+            max-width: 80vw;
+            max-height: 80vh;
+        }
+        .lightbox-content svg {
+            width: 100%;
+            height: auto;
+            max-height: 70vh;
+            border-radius: var(--radius-md);
+        }
+
+        /* ===== REVIEWS SECTION ===== */
+        .reviews {
+            background: var(--white);
+        }
+        .reviews-slider {
+            overflow: hidden;
+            position: relative;
+            margin: 0 -12px;
+        }
+        .reviews-track {
+            display: flex;
+            gap: 20px;
+            transition: transform 0.5s ease;
+            padding: 10px 12px;
+        }
+        .review-card {
+            min-width: 320px;
+            max-width: 380px;
+            flex-shrink: 0;
+            background: var(--gray);
+            border-radius: var(--radius-lg);
+            padding: 30px 24px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid transparent;
+            transition: all var(--transition);
+        }
+        .review-card:hover {
+            border-color: var(--secondary);
+            box-shadow: var(--shadow-md);
+        }
+        .review-avatar {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 14px;
+        }
+        .review-avatar svg {
+            width: 100%;
+            height: 100%;
+        }
+        .review-stars {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        .review-text {
+            font-size: 0.9rem;
+            color: var(--gray-dark);
+            line-height: 1.6;
+            margin-bottom: 16px;
+            font-style: italic;
+        }
+        .review-name {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 2px;
+        }
+        .review-role {
+            font-size: 0.78rem;
+            color: var(--gray-dark);
+        }
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 22px;
+        }
+        .slider-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--secondary);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        .slider-dot.active {
+            background: var(--primary);
+            width: 28px;
+            border-radius: 10px;
+        }
+
+        /* ===== LOCATION SECTION ===== */
+        .location {
+            background: var(--gray);
+        }
+        .location-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        .location-info-card {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            margin-bottom: 18px;
+            background: var(--white);
+            padding: 18px 20px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition);
+        }
+        .location-info-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+        .location-icon-wrap {
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .location-info-card h4 {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 2px;
+        }
+        .location-info-card p {
+            font-size: 0.9rem;
+            color: var(--gray-dark);
+        }
+        .btn-location {
+            margin-top: 10px;
+            width: 100%;
+            text-align: center;
+        }
+        .location-map iframe {
+            width: 100%;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ===== CONTACT SECTION ===== */
+        .contact {
+            background: var(--white);
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+        }
+        .contact-form {
+            background: var(--gray);
+            padding: 30px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+            color: var(--dark);
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid transparent;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            background: var(--white);
+            transition: all var(--transition);
+            resize: vertical;
+            outline: none;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(139, 94, 60, 0.08);
+        }
+        .btn-submit {
+            width: 100%;
+            margin-top: 8px;
+        }
+        .form-success {
+            margin-top: 14px;
+            text-align: center;
+            font-weight: 500;
+            color: #2d7d46;
+            font-size: 0.9rem;
+        }
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            justify-content: center;
+        }
+        .contact-info-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 0.95rem;
+            color: var(--dark);
+            background: var(--gray);
+            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            transition: all var(--transition);
+        }
+        .contact-info-item:hover {
+            box-shadow: var(--shadow-sm);
+            background: var(--accent);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--dark);
+            color: #ccc;
+            padding: 50px 0 20px;
+        }
+        .footer-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .footer-logo {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            letter-spacing: 0.1em;
+            margin-bottom: 10px;
+        }
+        .footer-desc {
+            font-size: 0.88rem;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            color: #aaa;
+        }
+        .footer-social {
+            display: flex;
+            gap: 10px;
+        }
+        .social-link {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ccc;
+            transition: all var(--transition);
+        }
+        .social-link:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+        .footer-links h4,
+        .footer-contact-info h4 {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 12px;
+            font-size: 1.05rem;
+        }
+        .footer-links ul li,
+        .footer-contact-info ul li {
+            margin-bottom: 7px;
+            font-size: 0.88rem;
+            color: #aaa;
+        }
+        .footer-links ul li a {
+            color: #aaa;
+            transition: color var(--transition);
+        }
+        .footer-links ul li a:hover {
+            color: var(--secondary);
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 18px;
+            text-align: center;
+            font-size: 0.82rem;
+            color: #888;
+        }
+
+        /* ===== SCROLL REVEAL ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .hero-subtitle {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .hero-buttons {
+                justify-content: center;
+            }
+            .hero-stats {
+                justify-content: center;
+            }
+            .hero-illustration {
+                order: -1;
+                max-width: 350px;
+                margin: 0 auto;
+            }
+            .about-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .about-illustration {
+                max-width: 350px;
+                margin: 0 auto;
+            }
+            .about-cards {
+                grid-template-columns: 1fr 1fr;
+            }
+            .location-grid {
+                grid-template-columns: 1fr;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 75%;
+                max-width: 320px;
+                height: 100vh;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 100px 30px 30px;
+                gap: 8px;
+                transition: right var(--transition);
+                box-shadow: -10px 0 40px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+            }
+            .nav-menu.active {
+                right: 0;
+            }
+            .nav-link {
+                font-size: 1rem;
+                padding: 12px 16px;
+                width: 100%;
+                text-align: left;
+            }
+            .menu-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            .about-cards {
+                grid-template-columns: 1fr 1fr;
+            }
+            .review-card {
+                min-width: 260px;
+            }
+        }
+        @media (max-width: 480px) {
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-stats {
+                gap: 16px;
+            }
+            .stat-number {
+                font-size: 1.5rem;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .footer-social {
+                justify-content: center;
+            }
+            .floating-whatsapp {
+                bottom: 20px;
+                right: 16px;
+                width: 50px;
+                height: 50px;
+            }
+            .back-to-top {
+                bottom: 80px;
+                right: 16px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen" aria-hidden="true">
+        <div class="loading-content">
+            <svg class="loading-logo" width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="40" cy="40" r="36" stroke="#8B5E3C" stroke-width="2.5" stroke-dasharray="226" stroke-dashoffset="0" class="loading-circle"/>
+                <path d="M28 48C28 38.059 36.059 30 46 30C49.314 30 52.398 31.043 55 32.8" stroke="#8B5E3C" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="40" cy="40" r="6" fill="#D6B28D"/>
+            </svg>
+            <p class="loading-text">Doughlabel</p>
+        </div>
+    </div>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/6281534613968" class="floating-whatsapp" target="_blank" rel="noopener noreferrer" aria-label="Chat via WhatsApp" title="Chat WhatsApp">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+    </a>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Kembali ke atas" title="Kembali ke atas">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+    </button>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Navigasi utama">
+        <div class="nav-container">
+            <a href="#home" class="nav-logo" aria-label="Doughlabel Home">
+                <span class="logo-text">DOUGHLABEL</span>
+            </a>
+            <ul class="nav-menu" id="navMenu" role="menubar">
+                <li role="none"><a href="#home" class="nav-link active" role="menuitem">Home</a></li>
+                <li role="none"><a href="#about" class="nav-link" role="menuitem">About</a></li>
+                <li role="none"><a href="#menu" class="nav-link" role="menuitem">Menu</a></li>
+                <li role="none"><a href="#gallery" class="nav-link" role="menuitem">Gallery</a></li>
+                <li role="none"><a href="#reviews" class="nav-link" role="menuitem">Reviews</a></li>
+                <li role="none"><a href="#location" class="nav-link" role="menuitem">Location</a></li>
+                <li role="none"><a href="#contact" class="nav-link" role="menuitem">Contact</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Buka menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-star">⭐</span>
+                    <span>4.7 Rating • 308 Reviews</span>
+                </div>
+                <h1 class="hero-title">Fresh Coffee &<br>Delicious Pastry</h1>
+                <p class="hero-subtitle">Nikmati pengalaman ngopi dan bersantai terbaik di Doughlabel dengan suasana hangat dan menu berkualitas premium.</p>
+                <div class="hero-price-info">
+                    <span class="price-tag">Rp25K – Rp50K</span>
+                    <span class="price-per">/ orang</span>
+                </div>
+                <div class="hero-buttons">
+                    <a href="#menu" class="btn btn-primary">Lihat Menu</a>
+                    <a href="#contact" class="btn btn-outline">Hubungi Kami</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" data-count="47">0</span>
+                        <span class="stat-label">Rating 4.7</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-count="308">0</span>
+                        <span class="stat-label">Reviews</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-count="22">0</span>
+                        <span class="stat-label">Tutup Pukul</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-illustration" aria-hidden="true">
+                <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" class="hero-svg">
+                    <rect x="0" y="0" width="500" height="500" rx="30" fill="#F4E7D3"/>
+                    <rect x="0" y="0" width="500" height="300" fill="#E8D5B7"/>
+                    <rect x="0" y="280" width="500" height="20" fill="#D6B28D"/>
+                    <rect x="140" y="30" width="220" height="160" rx="20" fill="#A8D8EA" opacity="0.6"/>
+                    <rect x="140" y="30" width="220" height="160" rx="20" fill="none" stroke="#8B5E3C" stroke-width="4"/>
+                    <line x1="250" y1="30" x2="250" y2="190" stroke="#8B5E3C" stroke-width="3"/>
+                    <line x1="140" y1="110" x2="360" y2="110" stroke="#8B5E3C" stroke-width="3"/>
+                    <rect x="60" y="120" width="60" height="8" rx="3" fill="#8B5E3C"/>
+                    <circle cx="75" cy="100" r="15" fill="#6B8E5A" opacity="0.8"/>
+                    <circle cx="105" cy="95" r="18" fill="#5A7D4A" opacity="0.7"/>
+                    <line x1="180" y1="0" x2="180" y2="60" stroke="#8B5E3C" stroke-width="2"/>
+                    <ellipse cx="180" cy="72" rx="20" ry="14" fill="#D6B28D" opacity="0.9"/>
+                    <line x1="320" y1="0" x2="320" y2="50" stroke="#8B5E3C" stroke-width="2"/>
+                    <ellipse cx="320" cy="62" rx="22" ry="15" fill="#D6B28D" opacity="0.9"/>
+                    <rect x="40" y="320" width="420" height="25" rx="8" fill="#8B5E3C"/>
+                    <rect x="40" y="345" width="420" height="80" rx="0" fill="#7A5030"/>
+                    <rect x="50" y="350" width="400" height="70" rx="4" fill="#6B3E20" opacity="0.5"/>
+                    <ellipse cx="150" cy="318" rx="22" ry="8" fill="#D6B28D"/>
+                    <rect x="136" y="290" width="28" height="28" rx="4" fill="#FFFFFF" opacity="0.9"/>
+                    <ellipse cx="150" cy="290" rx="14" ry="5" fill="#8B5E3C"/>
+                    <ellipse cx="150" cy="320" rx="18" ry="6" fill="#C49A6C"/>
+                    <ellipse cx="250" cy="316" rx="20" ry="7" fill="#D6B28D"/>
+                    <rect x="238" y="292" width="24" height="24" rx="4" fill="#FFFFFF" opacity="0.85"/>
+                    <ellipse cx="250" cy="292" rx="12" ry="4" fill="#8B5E3C"/>
+                    <path d="M310 308 C300 285 330 275 340 290 C350 275 370 285 360 308" fill="#D6B28D" stroke="#C49A6C" stroke-width="2"/>
+                    <circle cx="420" cy="250" r="28" fill="#D6B28D"/>
+                    <rect x="398" y="275" width="44" height="50" rx="10" fill="#8B5E3C"/>
+                    <rect x="405" y="280" width="30" height="25" rx="4" fill="#F4E7D3"/>
+                    <rect x="430" y="290" width="35" height="10" rx="5" fill="#D6B28D" transform="rotate(-20 430 290)"/>
+                    <circle cx="100" cy="380" r="24" fill="#D6B28D"/>
+                    <rect x="80" y="400" width="40" height="45" rx="12" fill="#2C2C2C" opacity="0.7"/>
+                    <rect x="88" y="405" width="24" height="20" rx="4" fill="#F4E7D3"/>
+                    <rect x="75" y="440" width="50" height="10" rx="5" fill="#8B5E3C"/>
+                    <rect x="78" y="350" width="6" height="90" rx="3" fill="#8B5E3C"/>
+                    <rect x="30" y="350" width="14" height="30" rx="6" fill="#6B8E5A"/>
+                    <circle cx="37" cy="340" r="20" fill="#5A7D4A" opacity="0.8"/>
+                    <circle cx="28" cy="348" r="14" fill="#4A6D3A" opacity="0.7"/>
+                    <circle cx="46" cy="345" r="16" fill="#6B8E5A" opacity="0.75"/>
+                    <path d="M145 278 Q140 265 145 255" fill="none" stroke="#D6B28D" stroke-width="2" opacity="0.6"/>
+                    <path d="M155 275 Q150 258 155 248" fill="none" stroke="#D6B28D" stroke-width="2" opacity="0.5"/>
+                    <path d="M245 280 Q240 268 245 258" fill="none" stroke="#D6B28D" stroke-width="2" opacity="0.5"/>
+                    <circle cx="250" cy="80" r="100" fill="#F4E7D3" opacity="0.3"/>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="section-container">
+            <div class="about-grid reveal">
+                <div class="about-illustration" aria-hidden="true">
+                    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0" y="0" width="400" height="400" rx="24" fill="#F4E7D3"/>
+                        <rect x="0" y="0" width="400" height="250" fill="#E8D5B7"/>
+                        <rect x="50" y="60" width="140" height="140" rx="16" fill="#A8D8EA" opacity="0.5"/>
+                        <rect x="50" y="60" width="140" height="140" rx="16" fill="none" stroke="#8B5E3C" stroke-width="3"/>
+                        <line x1="120" y1="60" x2="120" y2="200" stroke="#8B5E3C" stroke-width="2"/>
+                        <line x1="50" y1="130" x2="190" y2="130" stroke="#8B5E3C" stroke-width="2"/>
+                        <rect x="60" y="240" width="280" height="20" rx="6" fill="#8B5E3C"/>
+                        <rect x="60" y="260" width="280" height="80" rx="4" fill="#7A5030"/>
+                        <ellipse cx="140" cy="238" rx="18" ry="6" fill="#D6B28D"/>
+                        <rect x="128" y="215" width="24" height="23" rx="3" fill="#FFFFFF" opacity="0.9"/>
+                        <ellipse cx="140" cy="215" rx="12" ry="4" fill="#8B5E3C"/>
+                        <circle cx="220" cy="200" r="30" fill="#D6B28D"/>
+                        <rect x="198" y="225" width="44" height="40" rx="8" fill="#8B5E3C"/>
+                        <rect x="280" y="320" width="14" height="35" rx="7" fill="#6B8E5A"/>
+                        <circle cx="287" cy="310" r="22" fill="#5A7D4A" opacity="0.75"/>
+                        <circle cx="275" cy="320" r="14" fill="#4A6D3A" opacity="0.6"/>
+                        <circle cx="300" cy="318" r="16" fill="#6B8E5A" opacity="0.7"/>
+                        <line x1="260" y1="0" x2="260" y2="45" stroke="#8B5E3C" stroke-width="2"/>
+                        <ellipse cx="260" cy="55" rx="18" ry="12" fill="#D6B28D" opacity="0.8"/>
+                    </svg>
+                </div>
+                <div class="about-content">
+                    <span class="section-label">Tentang Kami</span>
+                    <h2 class="section-title">Tentang Doughlabel</h2>
+                    <p class="about-text">Doughlabel adalah cafe modern yang menghadirkan pengalaman menikmati kopi, pastry, dan dessert berkualitas dalam suasana yang nyaman dan hangat untuk keluarga, teman, maupun rekan kerja.</p>
+                    <p class="about-text">Kami menggunakan biji kopi pilihan dari berbagai daerah terbaik di Indonesia, dipadukan dengan pastry yang dibuat segar setiap hari oleh chef berpengalaman.</p>
+                    <div class="about-cards">
+                        <div class="about-card">
+                            <span class="about-card-icon">⭐</span>
+                            <span class="about-card-value">4.7</span>
+                            <span class="about-card-label">Rating</span>
+                        </div>
+                        <div class="about-card">
+                            <span class="about-card-icon">💬</span>
+                            <span class="about-card-value">308</span>
+                            <span class="about-card-label">Reviews</span>
+                        </div>
+                        <div class="about-card">
+                            <span class="about-card-icon">🕐</span>
+                            <span class="about-card-value">22:00</span>
+                            <span class="about-card-label">Tutup</span>
+                        </div>
+                        <div class="about-card">
+                            <span class="about-card-icon">💰</span>
+                            <span class="about-card-value">25K-50K</span>
+                            <span class="about-card-label">Harga</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu" id="menu">
+        <div class="section-container">
+            <span class="section-label center">Menu Kami</span>
+            <h2 class="section-title center">Menu Favorit</h2>
+            <p class="section-subtitle center">Pilihan terbaik yang wajib Anda coba saat berkunjung ke Doughlabel</p>
+            <div class="menu-grid">
+                <div class="menu-card reveal">
+                    <div class="menu-card-image">
+                        <svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+                            <ellipse cx="100" cy="90" rx="35" ry="12" fill="#D6B28D"/>
+                            <rect x="75" y="40" width="50" height="55" rx="10" fill="#FFFFFF" opacity="0.95"/>
+                            <rect x="75" y="40" width="50" height="55" rx="10" fill="none" stroke="#8B5E3C" stroke-width="2"/>
+                            <ellipse cx="100" cy="40" rx="25" ry="8" fill="#8B5E3C"/>
+                            <path d="M88 52 C88 38 112 38 112 52" fill="#6B3E20"/>
+                            <rect x="82" y="75" width="36" height="6" rx="3" fill="#8B5E3C" opacity="0.5"/>
+                            <path d="M95 32 Q100 18 105 32" fill="none" stroke="#D6B28D" stroke-width="2" opacity="0.7"/>
+                            <path d="M92 28 Q100 10 108 28" fill="none" stroke="#D6B28D" stroke-width="1.5" opacity="0.5"/>
+                            <ellipse cx="100" cy="140" rx="50" ry="8" fill="#8B5E3C" opacity="0.3"/>
+                        </svg>
+                    </div>
+                    <div class="menu-card-content">
+                        <span class="menu-badge">Signature</span>
+                        <h3 class="menu-name">Signature Coffee</h3>
+                        <p class="menu-desc">Kopi khas Doughlabel dengan racikan spesial dari barista terbaik kami.</p>
+                        <div class="menu-rating">⭐ 4.9</div>
+                        <div class="menu-bottom">
+                            <span class="menu-price">Rp35.000</span>
+                            <button class="btn btn-sm btn-primary">Pesan</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-card reveal">
+                    <div class="menu-card-image">
+                        <svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+                            <ellipse cx="100" cy="88" rx="32" ry="10" fill="#D6B28D"/>
+                            <rect x="78" y="42" width="44" height="50" rx="8" fill="#FFFFFF" opacity="0.9"/>
+                            <ellipse cx="100" cy="42" rx="22" ry="7" fill="#F4E7D3"/>
+                            <ellipse cx="100" cy="42" rx="18" ry="5" fill="#D6B28D"/>
+                            <path d="M92 48 C92 38 108 38 108 48" fill="#8B5E3C" opacity="0.7"/>
+                            <path d="M94 28 Q100 14 106 28" fill="none" stroke="#D6B28D" stroke-width="2" opacity="0.6"/>
+                            <ellipse cx="100" cy="138" rx="48" ry="7" fill="#8B5E3C" opacity="0.3"/>
+                        </svg>
+                    </div>
+                    <div class="menu-card-content">
+                        <span class="menu-badge hot">Favorit</span>
+                        <h3 class="menu-name">Cappuccino</h3>
+                        <p class="menu-desc">Perpaduan espresso dan susu steamed dengan foam lembut yang sempurna.</p>
+                        <div class="menu-rating">⭐ 4.8</div>
+                        <div class="menu-bottom">
+                            <span class="menu-price">Rp30.000</span>
+                            <button class="btn btn-sm btn-primary">Pesan</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-card reveal">
+                    <div class="menu-card-image">
+                        <svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+                            <ellipse cx="100" cy="90" rx="33" ry="11" fill="#D6B28D"/>
+                            <rect x="74" y="38" width="52" height="56" rx="12" fill="#FFFFFF" opacity="0.9"/>
+                            <ellipse cx="100" cy="38" rx="26" ry="8" fill="#F4E7D3"/>
+                            <path d="M84 50 Q100 30 116 50" fill="none" stroke="#D6B28D" stroke-width="3"/>
+                            <path d="M88 54 Q100 38 112 54" fill="none" stroke="#8B5E3C" stroke-width="2"/>
+                            <path d="M95 26 Q100 10 105 26" fill="none" stroke="#D6B28D" stroke-width="2" opacity="0.6"/>
+                            <ellipse cx="100" cy="142" rx="52" ry="8" fill="#8B5E3C" opacity="0.3"/>
+                        </svg>
+                    </div>
+                    <div class="menu-card-content">
+                        <span class="menu-badge">Creamy</span>
+                        <h3 class="menu-name">Latte</h3>
+                        <p class="menu-desc">Kopi susu dengan latte art cantik, creamy dan nikmat di setiap tegukan.</p>
+                        <div class="menu-rating">⭐ 4.7</div>
+                        <div class="menu-bottom">
+                            <span class="menu-price">Rp32.000</span>
+                            <button class="btn btn-sm btn-primary">Pesan</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-card reveal">
+                    <div class="menu-card-image">
+                        <svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M60 130 C55 90 75 50 100 40 C125 50 145 90 140 130" fill="#D6B28D" stroke="#C49A6C" stroke-width="2"/>
+                            <path d="M65 120 C62 95 78 62 100 52 C122 62 138 95 135 120" fill="#E8C89E" stroke="#D6B28D" stroke-width="1.5"/>
+                            <path d="M70 110 C68 92 82 68 100 60 C118 68 132 92 130 110" fill="#F4D8B5" stroke="#E8C89E" stroke-width="1"/>
+                            <line x1="100" y1="42" x2="100" y2="20" stroke="#8B5E3C" stroke-width="2.5"/>
+                            <ellipse cx="100" cy="148" rx="45" ry="7" fill="#8B5E3C" opacity="0.3"/>
+                        </svg>
+                    </div>
+                    <div class="menu-card-content">
+                        <span class="menu-badge pastry">Pastry</span>
+                        <h3 class="menu-name">Croissant</h3>
+                        <p class="menu-desc">Croissant Prancis autentik, renyah di luar, lembut berlapis di dalam.</p>
+                        <div class="menu-rating">⭐ 4.9</div>
+                        <div class="menu-bottom">
+                            <span class="menu-price">Rp28.000</span>
+                            <button class="btn btn-sm btn-primary">Pesan</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-card reveal">
+                    <div class="menu-card-image">
+                        <svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="100" cy="75" r="45" fill="#D6B28D"/>
+                            <circle cx="100" cy="75" r="30" fill="#C49A6C"/>
+                            <circle cx="100" cy="75" r="14" fill="#8B5E3C" opacity="0.6"/>
+                            <circle cx="100" cy="75" r="45" fill="none" stroke="#8B5E3C" stroke-width="2.5"/>
+                            <circle cx="87" cy="65" r="5" fill="#F4E7D3" opacity="0.7"/>
+                            <circle cx="108" cy="60" r="4" fill="#F4E7D3" opacity="0.6"/>
+                            <circle cx="95" cy="82" r="3" fill="#F4E7D3" opacity="0.5"/>
+                            <ellipse cx="100" cy="140" rx="48" ry="7" fill="#8B5E3C" opacity="0.3"/>
+                        </svg>
+                    </div>
+                    <div class="menu-card-content">
+                        <span class="menu-badge sweet">Sweet</span>
+                        <h3 class="menu-name">Donut Premium</h3>
+                        <p class="menu-desc">Donut lembut dengan topping premium, cocok untuk teman ngopi Anda.</p>
+                        <div class="menu-rating">⭐ 4.8</div>
+                        <div class="menu-bottom">
+                            <span class="menu-price">Rp25.000</span>
+                            <button class="btn btn-sm btn-primary">Pesan</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-card reveal">
+                    <div class="menu-card-image">
+                        <svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="55" y="35" width="90" height="70" rx="10" fill="#4A2C1A"/>
+                            <rect x="60" y="40" width="80" height="60" rx="8" fill="#5C3A20"/>
+                            <rect x="65" y="45" width="70" height="50" rx="6" fill="#6B3E20"/>
+                            <rect x="55" y="30" width="90" height="12" rx="6" fill="#3E1F0A"/>
+                            <path d="M58 32 L62 20 L138 20 L142 32" fill="#2C1405"/>
+                            <circle cx="80" cy="55" r="4" fill="#D6B28D" opacity="0.5"/>
+                            <circle cx="110" cy="60" r="3" fill="#D6B28D" opacity="0.4"/>
+                            <ellipse cx="100" cy="145" rx="48" ry="7" fill="#8B5E3C" opacity="0.3"/>
+                        </svg>
+                    </div>
+                    <div class="menu-card-content">
+                        <span class="menu-badge sweet">Dessert</span>
+                        <h3 class="menu-name">Chocolate Cake</h3>
+                        <p class="menu-desc">Kue coklat lembut dengan lapisan ganache yang meleleh di mulut.</p>
+                        <div class="menu-rating">⭐ 4.9</div>
+                        <div class="menu-bottom">
+                            <span class="menu-price">Rp40.000</span>
+                            <button class="btn btn-sm btn-primary">Pesan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="section-container">
+            <span class="section-label center">Layanan</span>
+            <h2 class="section-title center">Layanan Kami</h2>
+            <div class="services-grid">
+                <div class="service-card reveal">
+                    <div class="service-icon">
+                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="30" cy="30" r="28" fill="#F4E7D3" stroke="#8B5E3C" stroke-width="2"/>
+                            <rect x="12" y="20" width="36" height="26" rx="3" fill="#8B5E3C" opacity="0.2"/>
+                            <rect x="14" y="22" width="32" height="22" rx="2" fill="#D6B28D" opacity="0.6"/>
+                            <circle cx="30" cy="38" r="8" fill="#8B5E3C"/>
+                            <circle cx="30" cy="38" r="5" fill="#F4E7D3"/>
+                            <rect x="26" y="14" width="8" height="10" rx="2" fill="#8B5E3C" opacity="0.5"/>
+                        </svg>
+                    </div>
+                    <h3 class="service-title">Dine In</h3>
+                    <p class="service-desc">Nikmati suasana nyaman cafe kami dengan pelayanan terbaik untuk pengalaman bersantai yang tak terlupakan.</p>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-icon">
+                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="30" cy="30" r="28" fill="#F4E7D3" stroke="#8B5E3C" stroke-width="2"/>
+                            <rect x="14" y="16" width="32" height="24" rx="4" fill="#D6B28D" opacity="0.6"/>
+                            <rect x="18" y="12" width="24" height="8" rx="3" fill="#8B5E3C" opacity="0.5"/>
+                            <path d="M24 20 L24 40" stroke="#8B5E3C" stroke-width="2" opacity="0.4"/>
+                            <rect x="22" y="28" width="16" height="2" rx="1" fill="#8B5E3C" opacity="0.3"/>
+                            <rect x="22" y="34" width="12" height="2" rx="1" fill="#8B5E3C" opacity="0.25"/>
+                        </svg>
+                    </div>
+                    <h3 class="service-title">Take Away</h3>
+                    <p class="service-desc">Pesan kopi dan pastry favorit Anda untuk dibawa pulang. Praktis dan tetap berkualitas premium.</p>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-icon">
+                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="30" cy="30" r="28" fill="#F4E7D3" stroke="#8B5E3C" stroke-width="2"/>
+                            <rect x="8" y="22" width="30" height="20" rx="4" fill="#D6B28D" opacity="0.6"/>
+                            <circle cx="46" cy="32" r="8" fill="#8B5E3C" opacity="0.3"/>
+                            <circle cx="46" cy="32" r="5" fill="#8B5E3C" opacity="0.5"/>
+                            <path d="M8 26 L38 26" stroke="#8B5E3C" stroke-width="1.5" opacity="0.4"/>
+                            <path d="M8 32 L34 32" stroke="#8B5E3C" stroke-width="1.5" opacity="0.3"/>
+                        </svg>
+                    </div>
+                    <h3 class="service-title">Delivery</h3>
+                    <p class="service-desc">Pesan dari mana saja dan kami antar langsung ke tempat Anda. Cepat, aman, dan mudah.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery" id="gallery">
+        <div class="section-container">
+            <span class="section-label center">Galeri</span>
+            <h2 class="section-title center">Suasana Doughlabel</h2>
+            <p class="section-subtitle center">Jelajahi keindahan dan kenyamanan cafe kami melalui galeri berikut</p>
+            <div class="gallery-grid" id="galleryGrid">
+                <div class="gallery-item reveal" data-index="0">
+                    <svg viewBox="0 0 300 250" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="300" height="250" rx="12" fill="#F4E7D3"/>
+                        <rect width="300" height="160" fill="#E8D5B7"/>
+                        <rect x="50" y="30" width="90" height="100" rx="10" fill="#A8D8EA" opacity="0.5"/>
+                        <rect x="50" y="30" width="90" height="100" rx="10" fill="none" stroke="#8B5E3C" stroke-width="2"/>
+                        <line x1="95" y1="30" x2="95" y2="130" stroke="#8B5E3C" stroke-width="1.5"/>
+                        <rect x="30" y="175" width="240" height="15" rx="5" fill="#8B5E3C"/>
+                        <rect x="30" y="190" width="240" height="50" rx="4" fill="#7A5030"/>
+                        <ellipse cx="100" cy="173" rx="15" ry="5" fill="#D6B28D"/>
+                        <rect x="90" y="155" width="20" height="18" rx="3" fill="#FFFFFF" opacity="0.85"/>
+                        <ellipse cx="100" cy="155" rx="10" ry="3.5" fill="#8B5E3C"/>
+                        <circle cx="180" cy="145" r="22" fill="#D6B28D"/>
+                        <rect x="160" y="163" width="40" height="35" rx="8" fill="#8B5E3C"/>
+                        <rect x="260" y="200" width="10" height="25" rx="5" fill="#6B8E5A"/>
+                        <circle cx="265" cy="192" r="16" fill="#5A7D4A" opacity="0.7"/>
+                        <text x="150" y="240" text-anchor="middle" fill="#8B5E3C" font-size="11" font-family="Inter,sans-serif">Interior Cafe</text>
+                    </svg>
+                </div>
+                <div class="gallery-item reveal" data-index="1">
+                    <svg viewBox="0 0 300 250" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="300" height="250" rx="12" fill="#E8F0E3"/>
+                        <rect width="300" height="140" fill="#D4E8C8"/>
+                        <rect x="20" y="20" width="120" height="80" rx="8" fill="#8B5E3C" opacity="0.3"/>
+                        <circle cx="200" cy="60" r="35" fill="#6B8E5A" opacity="0.5"/>
+                        <circle cx="240" cy="80" r="25" fill="#5A7D4A" opacity="0.4"/>
+                        <rect x="40" y="160" width="220" height="12" rx="4" fill="#8B5E3C"/>
+                        <rect x="40" y="172" width="220" height="60" rx="4" fill="#C49A6C" opacity="0.5"/>
+                        <circle cx="120" cy="180" r="16" fill="#D6B28D"/>
+                        <rect x="108" y="192" width="24" height="20" rx="4" fill="#FFFFFF" opacity="0.7"/>
+                        <text x="150" y="240" text-anchor="middle" fill="#5A7D4A" font-size="11" font-family="Inter,sans-serif">Area Outdoor</text>
+                    </svg>
+                </div>
+                <div class="gallery-item reveal" data-index="2">
+                    <svg viewBox="0 0 300 250" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="300" height="250" rx="12" fill="#FDF5EC"/>
+                        <rect width="300" height="160" fill="#F4E7D3"/>
+                        <rect x="80" y="30" width="140" height="100" rx="12" fill="#FFFFFF" opacity="0.8"/>
+                        <ellipse cx="150" cy="50" rx="30" ry="10" fill="#8B5E3C" opacity="0.7"/>
+                        <path d="M120 70 Q150 40 180 70" fill="none" stroke="#D6B28D" stroke-width="3"/>
+                        <path d="M130 80 Q150 55 170 80" fill="none" stroke="#8B5E3C" stroke-width="2"/>
+                        <rect x="60" y="175" width="180" height="14" rx="5" fill="#8B5E3C"/>
+                        <circle cx="150" cy="195" r="22" fill="#D6B28D"/>
+                        <text x="150" y="240" text-anchor="middle" fill="#8B5E3C" font-size="11" font-family="Inter,sans-serif">Coffee Brewing</text>
+                    </svg>
+                </div>
+                <div class="gallery-item reveal" data-index="3">
+                    <svg viewBox="0 0 300 250" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="300" height="250" rx="12" fill="#FFF8F0"/>
+                        <rect width="300" height="130" fill="#F4E7D3"/>
+                        <ellipse cx="100" cy="60" rx="50" ry="40" fill="#D6B28D" opacity="0.6"/>
+                        <ellipse cx="100" cy="55" rx="35" ry="28" fill="#E8C89E" opacity="0.5"/>
+                        <ellipse cx="200" cy="70" rx="45" ry="35" fill="#D6B28D" opacity="0.5"/>
+                        <ellipse cx="200" cy="65" rx="30" ry="25" fill="#C49A6C" opacity="0.4"/>
+                        <rect x="40" y="150" width="220" height="12" rx="4" fill="#8B5E3C"/>
+                        <circle cx="150" cy="180" r="25" fill="#6B3E20" opacity="0.4"/>
+                        <circle cx="150" cy="180" r="18" fill="#8B5E3C" opacity="0.5"/>
+                        <text x="150" y="240" text-anchor="middle" fill="#8B5E3C" font-size="11" font-family="Inter,sans-serif">Dessert Display</text>
+                    </svg>
+                </div>
+                <div class="gallery-item reveal" data-index="4">
+                    <svg viewBox="0 0 300 250" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="300" height="250" rx="12" fill="#F4E7D3"/>
+                        <rect width="300" height="150" fill="#E8D5B7"/>
+                        <circle cx="120" cy="80" r="30" fill="#D6B28D"/>
+                        <rect x="98" y="105" width="44" height="40" rx="8" fill="#8B5E3C"/>
+                        <circle cx="220" cy="90" r="28" fill="#D6B28D"/>
+                        <rect x="200" y="113" width="40" height="35" rx="7" fill="#2C2C2C" opacity="0.6"/>
+                        <rect x="40" y="168" width="220" height="12" rx="4" fill="#8B5E3C"/>
+                        <ellipse cx="140" cy="180" rx="15" ry="5" fill="#D6B28D"/>
+                        <rect x="130" y="162" width="20" height="18" rx="3" fill="#FFFFFF" opacity="0.85"/>
+                        <text x="150" y="240" text-anchor="middle" fill="#8B5E3C" font-size="11" font-family="Inter,sans-serif">Customer Menikmati Kopi</text>
+                    </svg>
+                </div>
+                <div class="gallery-item reveal" data-index="5">
+                    <svg viewBox="0 0 300 250" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="300" height="250" rx="12" fill="#FDF5EC"/>
+                        <rect width="300" height="140" fill="#F4E7D3"/>
+                        <circle cx="180" cy="80" r="35" fill="#D6B28D"/>
+                        <rect x="155" y="110" width="50" height="45" rx="10" fill="#8B5E3C"/>
+                        <rect x="162" y="115" width="36" height="22" rx="4" fill="#F4E7D3"/>
+                        <rect x="100" y="160" width="100" height="12" rx="4" fill="#8B5E3C"/>
+                        <ellipse cx="150" cy="175" rx="18" ry="6" fill="#D6B28D"/>
+                        <rect x="138" y="155" width="24" height="20" rx="3" fill="#FFFFFF" opacity="0.9"/>
+                        <path d="M145 145 Q150 130 155 145" fill="none" stroke="#D6B28D" stroke-width="2" opacity="0.6"/>
+                        <text x="150" y="240" text-anchor="middle" fill="#8B5E3C" font-size="11" font-family="Inter,sans-serif">Barista Bekerja</text>
+                    </svg>
+                </div>
+                <div class="gallery-item reveal" data-index="6">
+                    <svg viewBox="0 0 300 250" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="300" height="250" rx="12" fill="#F4E7D3"/>
+                        <rect width="300" height="130" fill="#E8D5B7"/>
+                        <rect x="60" y="40" width="180" height="70" rx="10" fill="#8B5E3C" opacity="0.3"/>
+                        <rect x="60" y="40" width="180" height="70" rx="10" fill="none" stroke="#8B5E3C" stroke-width="2"/>
+                        <ellipse cx="120" cy="55" rx="16" ry="5" fill="#D6B28D"/>
+                        <rect x="110" y="35" width="20" height="20" rx="3" fill="#FFFFFF" opacity="0.8"/>
+                        <ellipse cx="180" cy="58" rx="14" ry="4.5" fill="#D6B28D"/>
+                        <rect x="170" y="38" width="18" height="18" rx="3" fill="#FFFFFF" opacity="0.75"/>
+                        <rect x="50" y="155" width="200" height="12" rx="4" fill="#8B5E3C"/>
+                        <circle cx="150" cy="185" r="20" fill="#6B8E5A" opacity="0.5"/>
+                        <text x="150" y="240" text-anchor="middle" fill="#8B5E3C" font-size="11" font-family="Inter,sans-serif">Meja Cafe Estetik</text>
+                    </svg>
+                </div>
+                <div class="gallery-item reveal" data-index="7">
+                    <svg viewBox="0 0 300 250" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="300" height="250" rx="12" fill="#1A1A2E"/>
+                        <rect width="300" height="160" fill="#16213E"/>
+                        <circle cx="150" cy="50" r="20" fill="#F4E7D3" opacity="0.15"/>
+                        <circle cx="120" cy="35" r="12" fill="#F4E7D3" opacity="0.1"/>
+                        <rect x="40" y="100" width="220" height="70" rx="8" fill="#8B5E3C" opacity="0.4"/>
+                        <rect x="40" y="100" width="220" height="70" rx="8" fill="none" stroke="#D6B28D" stroke-width="1.5" opacity="0.5"/>
+                        <circle cx="100" cy="135" r="12" fill="#F4E7D3" opacity="0.6"/>
+                        <circle cx="160" cy="135" r="12" fill="#F4E7D3" opacity="0.5"/>
+                        <circle cx="220" cy="135" r="10" fill="#F4E7D3" opacity="0.4"/>
+                        <rect x="60" y="190" width="180" height="8" rx="4" fill="#D6B28D" opacity="0.4"/>
+                        <text x="150" y="240" text-anchor="middle" fill="#D6B28D" font-size="11" font-family="Inter,sans-serif">Suasana Malam Cafe</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+        <button class="lightbox-close" id="lightboxClose" aria-label="Tutup lightbox">&times;</button>
+        <div class="lightbox-content" id="lightboxContent"></div>
+    </div>
+
+    <!-- Reviews Section -->
+    <section class="reviews" id="reviews">
+        <div class="section-container">
+            <span class="section-label center">Testimoni</span>
+            <h2 class="section-title center">Apa Kata Mereka</h2>
+            <p class="section-subtitle center">Pengalaman pelanggan setia yang telah menikmati suasana dan menu Doughlabel</p>
+            <div class="reviews-slider" id="reviewsSlider">
+                <div class="reviews-track" id="reviewsTrack">
+                    <div class="review-card">
+                        <div class="review-avatar">
+                            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="30" cy="30" r="28" fill="#D6B28D"/>
+                                <circle cx="30" cy="24" r="10" fill="#F4E7D3"/>
+                                <ellipse cx="30" cy="48" rx="18" ry="10" fill="#F4E7D3" opacity="0.7"/>
+                            </svg>
+                        </div>
+                        <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                        <p class="review-text">"Tempatnya cozy banget! Kopinya enak, croissant-nya renyah. Cocok buat nugas atau nongkrong santai. Interiornya estetik abis!"</p>
+                        <h4 class="review-name">Amanda Putri</h4>
+                        <span class="review-role">Pelanggan Setia</span>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-avatar">
+                            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="30" cy="30" r="28" fill="#C49A6C"/>
+                                <circle cx="30" cy="24" r="10" fill="#F4E7D3"/>
+                                <ellipse cx="30" cy="48" rx="18" ry="10" fill="#F4E7D3" opacity="0.7"/>
+                            </svg>
+                        </div>
+                        <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                        <p class="review-text">"Signature coffee-nya juara! Harganya affordable banget untuk kualitas premium. Pelayanan ramah, tempatnya bersih."</p>
+                        <h4 class="review-name">Rizky Pratama</h4>
+                        <span class="review-role">Coffee Enthusiast</span>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-avatar">
+                            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="30" cy="30" r="28" fill="#B8956A"/>
+                                <circle cx="30" cy="24" r="10" fill="#F4E7D3"/>
+                                <ellipse cx="30" cy="48" rx="18" ry="10" fill="#F4E7D3" opacity="0.7"/>
+                            </svg>
+                        </div>
+                        <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                        <p class="review-text">"Donut premiumnya enak banget, lembut dan toppingnya generous. Tempat favorit keluarga saya setiap weekend."</p>
+                        <h4 class="review-name">Sari Dewi</h4>
+                        <span class="review-role">Ibu Rumah Tangga</span>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-avatar">
+                            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="30" cy="30" r="28" fill="#D6B28D"/>
+                                <circle cx="30" cy="24" r="10" fill="#F4E7D3"/>
+                                <ellipse cx="30" cy="48" rx="18" ry="10" fill="#F4E7D3" opacity="0.7"/>
+                            </svg>
+                        </div>
+                        <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                        <p class="review-text">"Cocok untuk meeting informal. WiFi kencang, colokan banyak, dan suasananya bikin betah berjam-jam."</p>
+                        <h4 class="review-name">Bayu Nugroho</h4>
+                        <span class="review-role">Freelancer</span>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-avatar">
+                            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="30" cy="30" r="28" fill="#C49A6C"/>
+                                <circle cx="30" cy="24" r="10" fill="#F4E7D3"/>
+                                <ellipse cx="30" cy="48" rx="18" ry="10" fill="#F4E7D3" opacity="0.7"/>
+                            </svg>
+                        </div>
+                        <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                        <p class="review-text">"Chocolate cake-nya the best! Saya udah langganan sejak opening. Konsisten kualitasnya."</p>
+                        <h4 class="review-name">Dian Permata</h4>
+                        <span class="review-role">Food Blogger</span>
+                    </div>
+                </div>
+            </div>
+            <div class="slider-dots" id="sliderDots"></div>
+        </div>
+    </section>
+
+    <!-- Location Section -->
+    <section class="location" id="location">
+        <div class="section-container">
+            <span class="section-label center">Lokasi</span>
+            <h2 class="section-title center">Temukan Kami</h2>
+            <div class="location-grid">
+                <div class="location-info">
+                    <div class="location-info-card reveal">
+                        <div class="location-icon-wrap">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8B5E3C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        </div>
+                        <div>
+                            <h4>Alamat</h4>
+                            <p>Jl. Jenderal Ahmad Yani, Pekan Binjai, Kec. Binjai Kota, Kota Binjai, Sumatera Utara 20742</p>
+                        </div>
+                    </div>
+                    <div class="location-info-card reveal">
+                        <div class="location-icon-wrap">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8B5E3C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </div>
+                        <div>
+                            <h4>Jam Operasional</h4>
+                            <p>Buka setiap hari hingga pukul 22.00 WIB</p>
+                        </div>
+                    </div>
+                    <div class="location-info-card reveal">
+                        <div class="location-icon-wrap">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8B5E3C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        </div>
+                        <div>
+                            <h4>Telepon</h4>
+                            <p>0815-3461-3968</p>
+                        </div>
+                    </div>
+                    <div class="location-info-card reveal">
+                        <div class="location-icon-wrap">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8B5E3C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        </div>
+                        <div>
+                            <h4>Harga Rata-Rata</h4>
+                            <p>Rp25.000 – Rp50.000 / orang</p>
+                        </div>
+                    </div>
+                    <a href="https://maps.google.com/?q=Jl.+Jenderal+Ahmad+Yani+Pekan+Binjai+Kec.+Binjai+Kota+Kota+Binjai+Sumatera+Utara+20742" class="btn btn-primary btn-location" target="_blank" rel="noopener noreferrer">Buka Google Maps</a>
+                </div>
+                <div class="location-map reveal">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31880.083284091!2d98.47!3d3.6!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zM8KwMzYnMDAuMCJOIDk4wrAyOCcxMi4wIkU!5e0!3m2!1sid!2sid!4v1697000000000"
+                        width="100%" height="400" style="border:0; border-radius:16px;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade" title="Lokasi Doughlabel Cafe" aria-label="Google Maps Doughlabel">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="section-container">
+            <span class="section-label center">Kontak</span>
+            <h2 class="section-title center">Hubungi Kami</h2>
+            <p class="section-subtitle center">Punya pertanyaan atau ingin reservasi? Jangan ragu untuk menghubungi kami</p>
+            <div class="contact-grid">
+                <form class="contact-form reveal" id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Nama</label>
+                        <input type="text" id="name" name="name" placeholder="Nama Anda" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Email Anda" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Pesan</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Tulis pesan Anda..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-submit">Kirim Pesan</button>
+                    <p class="form-success" id="formSuccess" style="display:none;">✅ Pesan Anda telah terkirim! Kami akan segera menghubungi Anda.</p>
+                </form>
+                <div class="contact-info reveal">
+                    <div class="contact-info-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8B5E3C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        <span>0815-3461-3968</span>
+                    </div>
+                    <div class="contact-info-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                        <span>WhatsApp: 0815-3461-3968</span>
+                    </div>
+                    <div class="contact-info-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8B5E3C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        <span>Jl. Jenderal Ahmad Yani, Pekan Binjai, Binjai Kota</span>
+                    </div>
+                    <div class="contact-info-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8B5E3C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <span>Buka setiap hari hingga 22.00 WIB</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3 class="footer-logo">DOUGHLABEL</h3>
+                    <p class="footer-desc">Cafe modern dengan kopi premium, pastry lezat, dan suasana hangat untuk semua kalangan.</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Instagram" class="social-link">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5" fill="#fff"/><circle cx="17.5" cy="6.5" r="1.5" fill="#fff"/></svg>
+                        </a>
+                        <a href="#" aria-label="Facebook" class="social-link">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        </a>
+                        <a href="#" aria-label="Twitter" class="social-link">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#menu">Menu</a></li>
+                        <li><a href="#gallery">Gallery</a></li>
+                        <li><a href="#reviews">Reviews</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Layanan</h4>
+                    <ul>
+                        <li><a href="#services">Dine In</a></li>
+                        <li><a href="#services">Take Away</a></li>
+                        <li><a href="#services">Delivery</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact-info">
+                    <h4>Kontak</h4>
+                    <ul>
+                        <li>📍 Jl. Jend. Ahmad Yani, Binjai</li>
+                        <li>📞 0815-3461-3968</li>
+                        <li>🕐 Buka setiap hari, tutup 22.00</li>
+                        <li>💰 Rp25K - Rp50K / orang</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Doughlabel. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // ===== LOADING SCREEN =====
+            const loadingScreen = document.getElementById('loadingScreen');
+            window.addEventListener('load', function () {
+                setTimeout(function () {
+                    loadingScreen.classList.add('hidden');
+                }, 800);
+            });
+            // Fallback if load event already fired
+            if (document.readyState === 'complete') {
+                setTimeout(function () {
+                    loadingScreen.classList.add('hidden');
+                }, 400);
+            }
+
+            // ===== NAVBAR SCROLL EFFECT =====
+            const navbar = document.getElementById('navbar');
+            const backToTop = document.getElementById('backToTop');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section[id]');
+
+            function updateNavOnScroll() {
+                const scrollY = window.scrollY;
+                if (scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                    backToTop.classList.add('visible');
+                } else {
+                    navbar.classList.remove('scrolled');
+                    backToTop.classList.remove('visible');
+                }
+
+                // Update active nav link
+                let current = '';
+                sections.forEach(function (section) {
+                    const sectionTop = section.offsetTop - 120;
+                    const sectionHeight = section.offsetHeight;
+                    if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                navLinks.forEach(function (link) {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+                if (!current && scrollY < 200) {
+                    navLinks[0].classList.add('active');
+                }
+            }
+            window.addEventListener('scroll', updateNavOnScroll, { passive: true });
+
+            // ===== HAMBURGER MENU =====
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('navMenu');
+            hamburger.addEventListener('click', function () {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+                const expanded = hamburger.getAttribute('aria-expanded') === 'true' || false;
+                hamburger.setAttribute('aria-expanded', !expanded);
+            });
+            // Close menu on link click
+            navMenu.querySelectorAll('a').forEach(function (link) {
+                link.addEventListener('click', function () {
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                });
+            });
+            // Close menu on outside click
+            document.addEventListener('click', function (e) {
+                if (!navMenu.contains(e.target) && !hamburger.contains(e.target) && navMenu.classList.contains('active')) {
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // ===== BACK TO TOP =====
+            backToTop.addEventListener('click', function () {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // ===== ANIMATED COUNTERS =====
+            function animateCounters() {
+                const counters = document.querySelectorAll('.stat-number');
+                counters.forEach(function (counter) {
+                    const target = parseInt(counter.getAttribute('data-count'));
+                    if (!target) return;
+                    const duration = 1800;
+                    const step = Math.ceil(target / (duration / 20));
+                    let current = 0;
+                    const timer = setInterval(function () {
+                        current += step;
+                        if (current >= target) {
+                            counter.textContent = target;
+                            clearInterval(timer);
+                        } else {
+                            counter.textContent = current;
+                        }
+                    }, 20);
+                });
+            }
+            // Trigger counters when hero is visible
+            const heroSection = document.getElementById('home');
+            let countersAnimated = false;
+            const observerForCounters = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting && !countersAnimated) {
+                        animateCounters();
+                        countersAnimated = true;
+                    }
+                });
+            }, { threshold: 0.3 });
+            if (heroSection) observerForCounters.observe(heroSection);
+
+            // ===== SCROLL REVEAL =====
+            const revealElements = document.querySelectorAll('.reveal, .menu-card, .service-card, .gallery-item, .location-info-card, .contact-form, .contact-info, .location-map');
+            const revealObserver = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+            revealElements.forEach(function (el) {
+                el.classList.add('reveal');
+                revealObserver.observe(el);
+            });
+
+            // ===== GALLERY LIGHTBOX =====
+            const lightbox = document.getElementById('lightbox');
+            const lightboxContent = document.getElementById('lightboxContent');
+            const lightboxClose = document.getElementById('lightboxClose');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+
+            galleryItems.forEach(function (item) {
+                item.addEventListener('click', function () {
+                    const svg = item.querySelector('svg');
+                    if (svg) {
+                        lightboxContent.innerHTML = '';
+                        const clonedSvg = svg.cloneNode(true);
+                        clonedSvg.removeAttribute('width');
+                        clonedSvg.removeAttribute('height');
+                        clonedSvg.style.width = '100%';
+                        clonedSvg.style.height = 'auto';
+                        clonedSvg.style.maxHeight = '70vh';
+                        lightboxContent.appendChild(clonedSvg);
+                        lightbox.classList.add('active');
+                        lightbox.setAttribute('aria-hidden', 'false');
+                        document.body.style.overflow = 'hidden';
+                    }
+                });
+            });
+            lightboxClose.addEventListener('click', closeLightbox);
+            lightbox.addEventListener('click', function (e) {
+                if (e.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                    closeLightbox();
+                }
+            });
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                lightbox.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+                setTimeout(function () {
+                    lightboxContent.innerHTML = '';
+                }, 300);
+            }
+
+            // ===== REVIEWS SLIDER =====
+            const reviewsTrack = document.getElementById('reviewsTrack');
+            const sliderDotsContainer = document.getElementById('sliderDots');
+            const reviewCards = reviewsTrack.querySelectorAll('.review-card');
+            let currentSlide = 0;
+            const totalSlides = reviewCards.length;
+            let slideInterval;
+
+            // Create dots
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('span');
+                dot.classList.add('slider-dot');
+                if (i === 0) dot.classList.add('active');
+                dot.setAttribute('data-index', i);
+                dot.addEventListener('click', function () {
+                    goToSlide(parseInt(this.getAttribute('data-index')));
+                    resetInterval();
+                });
+                sliderDotsContainer.appendChild(dot);
+            }
+            const dots = sliderDotsContainer.querySelectorAll('.slider-dot');
+
+            function goToSlide(index) {
+                currentSlide = index;
+                if (currentSlide < 0) currentSlide = totalSlides - 1;
+                if (currentSlide >= totalSlides) currentSlide = 0;
+                const cardWidth = reviewCards[0].offsetWidth + 20; // +gap
+                reviewsTrack.style.transform = 'translateX(' + (-currentSlide * cardWidth) + 'px)';
+                dots.forEach(function (dot, i) {
+                    dot.classList.toggle('active', i === currentSlide);
+                });
+            }
+
+            function nextSlide() {
+                goToSlide(currentSlide + 1);
+            }
+
+            function resetInterval() {
+                clearInterval(slideInterval);
+                slideInterval = setInterval(nextSlide, 4000);
+            }
+
+            slideInterval = setInterval(nextSlide, 4000);
+            // Pause on hover
+            const reviewsSlider = document.getElementById('reviewsSlider');
+            reviewsSlider.addEventListener('mouseenter', function () {
+                clearInterval(slideInterval);
+            });
+            reviewsSlider.addEventListener('mouseleave', function () {
+                slideInterval = setInterval(nextSlide, 4000);
+            });
+            // Handle resize
+            window.addEventListener('resize', function () {
+                goToSlide(currentSlide);
+            });
+
+            // ===== CONTACT FORM =====
+            const contactForm = document.getElementById('contactForm');
+            const formSuccess = document.getElementById('formSuccess');
+            contactForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const message = document.getElementById('message').value.trim();
+                if (name && email && message) {
+                    formSuccess.style.display = 'block';
+                    contactForm.reset();
+                    setTimeout(function () {
+                        formSuccess.style.display = 'none';
+                    }, 4000);
+                }
+            });
+
+            // ===== SMOOTH SCROLL FOR ALL ANCHOR LINKS =====
+            document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+                anchor.addEventListener('click', function (e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    const targetEl = document.querySelector(targetId);
+                    if (targetEl) {
+                        e.preventDefault();
+                        const navHeight = navbar.offsetHeight + 20;
+                        const targetPosition = targetEl.getBoundingClientRect().top + window.pageYOffset - navHeight;
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // ===== INITIAL LOAD =====
+            updateNavOnScroll();
+        });
+    </script>
+</body>
+</html>
